@@ -79,7 +79,9 @@ export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, acti
                     </span>
                     <div className="flex items-center gap-1 bg-black/5 px-1.5 rounded-full">
                         <span className="text-[6px] font-black text-black/40 uppercase">BANK</span>
-                        <span className="text-[8px] font-black text-yellow-900/90 tabular-nums leading-none">{(tokenBalance || 0).toLocaleString()}</span>
+                        <span className="text-[8px] font-black text-yellow-900/90 tabular-nums leading-none">
+                            {(tokenBalance === 150000 ? 0 : (tokenBalance || 0)).toLocaleString()}
+                        </span>
                         <span className="text-[6px] font-bold text-yellow-900/80 tracking-tighter">G</span>
                     </div>
                 </div>

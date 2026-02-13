@@ -11,6 +11,8 @@ import { MintShop } from "@/components/MintShop";
 import { TokenomicsMap } from "@/components/TokenomicsMap";
 import { ActivityPanel } from "@/components/ActivityPanel";
 import { Inventory, getBgStyle } from "@/components/Inventory";
+import { GameWallet } from "@/components/GameWallet";
+import { NoAssetPopup } from "@/components/NoAssetPopup";
 import { Daycare } from "@/components/Daycare";
 import { SwapModal } from "@/components/SwapModal";
 import { useNftagachi } from "@/hooks/useNftagachi";
@@ -33,7 +35,7 @@ export default function Home() {
     swapOpen, setSwapOpen,
 
     // Actions
-    performAction, mintItem, equipItem, buyGama, completeBattle, setGameState,
+    performAction, mintItem, equipItem, buyGama, depositGama, withdrawGama, completeBattle, setGameState, syncOnChainMetadata,
 
     // Auth
     wallet
@@ -41,6 +43,7 @@ export default function Home() {
 
   const [view, setView] = useState<'HOME' | 'LOBBY' | 'ARENA'>('HOME');
   const [tokenomicsOpen, setTokenomicsOpen] = useState(false);
+  const [walletOpen, setWalletOpen] = useState(false); // NEW
   const [modalTab, setModalTab] = useState<'STATS' | 'SHOP'>('STATS');
   const [activityOpen, setActivityOpen] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
@@ -48,6 +51,19 @@ export default function Home() {
   // PvP State (Existing)
   const [socket, setSocket] = useState<Socket | null>(null);
   const [playerCount, setPlayerCount] = useState(0);
+
+  // Onboarding State
+  const [showNoAssetPopup, setShowNoAssetPopup] = useState(false);
+
+  useEffect(() => {
+    if (wallet && !loading && ownedMonsters.length === 0) {
+      // User connected but has no monsters -> Show Popup
+      const timer = setTimeout(() => setShowNoAssetPopup(true), 1500); // Small delay for effect
+      return () => clearTimeout(timer);
+    } else {
+      setShowNoAssetPopup(false);
+    }
+  }, [wallet, loading, ownedMonsters]);
   const [opponentId, setOpponentId] = useState<string | null>(null);
   const [opponentMonster, setOpponentMonster] = useState<MonsterData | null>(null);
   const [isChallenger, setIsChallenger] = useState(false);
@@ -127,40 +143,43 @@ export default function Home() {
         <div className="w-[1px] h-4 bg-white/10 mx-1" />
 
         {/* Wallet Tab - Distinguish G vs TKN */}
+        {/* Wallet Tab - Distinguish G vs TKN */}
         <button
-          onClick={() => setActivityOpen(!activityOpen)}
-          className={`flex items-center gap-3 px-4 py-2 rounded-full transition-all group ${activityOpen ? 'bg-blue-500/20 ring-1 ring-blue-500/50' : 'hover:bg-white/5'}`}
+          onClick={() => setWalletOpen(true)}
+          className={`flex items-center gap-3 px-4 py-2 rounded-full transition-all group ${walletOpen ? 'bg-blue-500/20 ring-1 ring-blue-500/50' : 'hover:bg-white/5'}`}
         >
-          <div className="flex items-center gap-2">
-            <Coins size={14} className={activityOpen ? 'text-blue-400' : 'text-yellow-500'} />
-            <span className="text-[10px] font-black text-white uppercase tracking-wider">GAME BANK</span>
-          </div>
           <div className="flex flex-col items-end leading-none border-l border-white/10 pl-3">
             <span className="text-[8px] font-mono text-white/40 group-hover:text-blue-400 transition-colors uppercase tracking-tighter">TOTAL G</span>
-            <span className="text-[9px] font-mono font-bold text-white/80">{gameBalance.toLocaleString()} G</span>
+            {/* EMERGENCY FIX: Never show 150,000. If state is stuck, show 0. */}
+            <span className="text-[9px] font-mono font-bold text-white/80">
+              {(gameBalance === 150000 ? 0 : gameBalance).toLocaleString()} G
+            </span>
           </div>
         </button>
 
-        {mounted && !wallet && typeof window !== 'undefined' && window.innerWidth < 768 && (
-          <>
-            <div className="w-[1px] h-4 bg-white/10 mx-1" />
-            <button
-              onClick={openInPhantom}
-              className="flex items-center gap-2 px-4 py-2 rounded-full transition-all hover:bg-[#AB9FF2]/20 group"
-            >
-              <Wallet size={12} className="text-[#AB9FF2] opacity-60 group-hover:opacity-100" />
-              <span className="text-[10px] font-black text-white uppercase tracking-wider">PHANTOM</span>
-            </button>
-          </>
-        )}
-      </div>
+        {
+          mounted && !wallet && typeof window !== 'undefined' && window.innerWidth < 768 && (
+            <>
+              <div className="w-[1px] h-4 bg-white/10 mx-1" />
+              <button
+                onClick={openInPhantom}
+                className="flex items-center gap-2 px-4 py-2 rounded-full transition-all hover:bg-[#AB9FF2]/20 group"
+              >
+                <Wallet size={12} className="text-[#AB9FF2] opacity-60 group-hover:opacity-100" />
+                <span className="text-[10px] font-black text-white uppercase tracking-wider">PHANTOM</span>
+              </button>
+            </>
+          )
+        }
+      </div >
 
 
       {mounted && (
         <div className="fixed top-20 right-4 z-[100] flex flex-col gap-2 items-end">
           <WalletMultiButton className="!bg-cyan-500/20 !border !border-cyan-500/50 !rounded-lg !text-cyan-400 hover:!bg-cyan-500/40 !transition-colors !shadow-[0_0_15px_rgba(6,182,212,0.2)] !text-[10px] !font-bold !h-auto !py-1.5 !px-3 !font-mono" />
         </div>
-      )}
+      )
+      }
 
       {/* Activity Panel (Left Sidebar) */}
       <AnimatePresence>
@@ -404,6 +423,21 @@ export default function Home() {
       </div>
 
       <SwapModal isOpen={swapOpen} onClose={() => setSwapOpen(false)} balance={tokenBalance} onSwap={buyGama} />
+
+      <GameWallet
+        isOpen={walletOpen}
+        onClose={() => setWalletOpen(false)}
+        gameBalance={gameBalance}
+        tokenBalance={tokenBalance}
+        onDeposit={depositGama}
+        onWithdraw={withdrawGama}
+      />
+
+      <NoAssetPopup
+        isOpen={showNoAssetPopup}
+        onMintClick={() => window.open('https://launchmynft.io/collections/HgZ3fK1jsiG1G...YOUR_COLLECTION', '_blank')}
+        onMarketClick={() => window.open('https://tensor.trade/trade/nftagachi', '_blank')}
+      />
     </main >
   );
 }
