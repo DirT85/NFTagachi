@@ -81,6 +81,14 @@ io.on('connection', (socket) => {
         io.to(targetId).emit('opponentAction', { action, success });
     });
 
+    socket.on('calculate_result', ({ targetId, damage, chargeSpecial, message }) => {
+        io.to(targetId).emit('turn_result', { damage, chargeSpecial, message });
+    });
+
+    socket.on('forfeit', ({ targetId }) => {
+        io.to(targetId).emit('battleEnded', { win: true, reason: 'Opponent Forfeited' });
+    });
+
     socket.on('battleEnd', ({ targetId, win }) => {
         io.to(targetId).emit('battleEnded', { win: !win });
     });
