@@ -1,0 +1,60 @@
+{
+  "name": "Bully Alien #100",
+  "symbol": "NFTG",
+  "description": "A unique COMMON Bully Alien from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "100.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Bully Alien"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "COMMON"
+    },
+    {
+      "trait_type": "Type",
+      "value": "EARTH"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 116
+    },
+    {
+      "trait_type": "ATK",
+      "value": 59
+    },
+    {
+      "trait_type": "DEF",
+      "value": 17
+    },
+    {
+      "trait_type": "SPD",
+      "value": 73
+    },
+    {
+      "trait_type": "Weight",
+      "value": 16
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "100.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "name": "Cosmic Dragon #879",
+  "symbol": "NFTG",
+  "description": "A unique MYTHIC Cosmic Dragon from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "879.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Cosmic Dragon"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "MYTHIC"
+    },
+    {
+      "trait_type": "Type",
+      "value": "MAGIC"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 129
+    },
+    {
+      "trait_type": "ATK",
+      "value": 30
+    },
+    {
+      "trait_type": "DEF",
+      "value": 36
+    },
+    {
+      "trait_type": "SPD",
+      "value": 70
+    },
+    {
+      "trait_type": "Weight",
+      "value": 18
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "879.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

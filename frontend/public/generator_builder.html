@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Factory Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .pixelated {
+            image-rendering: pixelated;
+        }
+
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white p-8 font-mono">
+
+    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- PREVIEW -->
+        <div class="flex flex-col items-center">
+            <h2 class="text-2xl text-green-400 mb-4">Live Preview</h2>
+            <div
+                class="relative w-64 h-64 bg-gray-800 rounded-lg border-2 border-gray-700 shadow-[0_0_20px_rgba(0,255,255,0.2)] flex items-center justify-center">
+
+                <!-- Helper Canvas for Tinting -->
+                <canvas id="output-canvas" width="64" height="64" class="w-full h-full pixelated"></canvas>
+
+            </div>
+            <div class="mt-4 text-gray-500 text-sm mb-4">
+                High-Fidelity 32x32 (Scaled 2x)
+            </div>
+            <button onclick="downloadSprite()"
+                class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded shadow-lg flex items-center gap-2">
+                <span>💾</span> Download Sprite
+            </button>
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+            <h2 class="text-xl text-blue-400 mb-6 border-b border-gray-700 pb-2">AI Generator</h2>
+
+            <div class="mb-6">
+                <label class="block text-sm text-gray-400 mb-2">Describe your character:</label>
+                <textarea id="prompt-input" rows="4"
+                    class="w-full bg-gray-900 border border-gray-600 rounded p-3 text-white focus:border-green-500 focus:outline-none"
+                    placeholder="e.g. A goblin with red pants, a blue shirt, and a gold sword."></textarea>
+            </div>
+
+            <button onclick="generateFromPrompt()"
+                class="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded text-lg shadow-lg mb-4">
+                ✨ GENERATE
+            </button>
+
+            <div class="text-xs text-gray-500">
+                <p><strong>Keywords:</strong> human, goblin, pants, shirt, hair, sword</p>
+                <p><strong>Colors:</strong> red, blue, green, gold, purple, black, white</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ASSETS DATABASE ---
+        const ASSETS = {
+            base: {
+                human: 'layers/base_human.svg',
+                goblin: 'layers/base_human.svg', // Re-use human shape for now, allow color change
+            },
+            legs: {
+                pants: 'layers/pants_base.svg'
+            },
+            torso: {
+                shirt: 'layers/shirt_base.svg'
+            },
+            head: {
+                hair: 'layers/hair_base.svg'
+            },
+            weapon: {
+                sword: 'layers/weapon_sword.svg'
+            }
+        };
+
+        const COLORS = {
+            red: '#ef4444',
+            blue: '#3b82f6',
+            green: '#22c55e',
+            yellow: '#eab308',
+            gold: '#fbbf24',
+            purple: '#a855f7',
+            pink: '#ec4899',
+            black: '#1f2937',
+            white: '#f3f4f6',
+            gray: '#9ca3af',
+            skin: '#fca5a5', // Default skin
+            goblin_skin: '#84cc16'
+        };
+
+        // Current Design State
+        let currentDesign = {
+            base: { src: 'layers/base_human.svg', color: COLORS.skin },
+            legs: { src: null, color: null },
+            torso: { src: null, color: null },
+            head: { src: null, color: null },
+            weapon: { src: null, color: null }
+        };
+
+        // --- NLP PARSER ---
+        function parsePrompt(text) {
+            const lower = text.toLowerCase();
+
+            // 1. Base Race
+            if (lower.includes('goblin')) {
+                currentDesign.base.color = COLORS.goblin_skin;
+            } else {
+                currentDesign.base.color = COLORS.skin;
+            }
+
+            // 2. Equipment Detection (Regex for "color item")
+            // Helper to find color before a keyword
+            const getColorFor = (keyword) => {
+                const words = lower.split(' ');
+                const idx = words.indexOf(keyword);
+                if (idx > 0) {
+                    const prev = words[idx - 1];
+                    if (COLORS[prev]) return COLORS[prev];
+                }
+                return null;
+            };
+
+            // Legs
+            if (lower.includes('pants') || lower.includes('jeans')) {
+                currentDesign.legs.src = ASSETS.legs.pants;
+                currentDesign.legs.color = getColorFor('pants') || getColorFor('jeans') || COLORS.blue;
+            }
+
+            // Torso
+            if (lower.includes('shirt')) {
+                currentDesign.torso.src = ASSETS.torso.shirt;
+                currentDesign.torso.color = getColorFor('shirt') || COLORS.white;
+            }
+
+            // Hair
+            if (lower.includes('hair')) {
+                currentDesign.head.src = ASSETS.head.hair;
+                currentDesign.head.color = getColorFor('hair') || COLORS.black;
+            }
+
+            // Weapon
+            if (lower.includes('sword')) {
+                currentDesign.weapon.src = ASSETS.weapon.sword;
+                currentDesign.weapon.color = getColorFor('sword') || COLORS.gray;
+            }
+
+            renderComposite();
+        }
+
+        // --- RENDER ENGINE ---
+        async function renderComposite() {
+            const canvas = document.getElementById('output-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 64, 64);
+
+            // Draw Order: Base -> Legs -> Torso -> Head -> Weapon
+            const order = ['base', 'legs', 'torso', 'head', 'weapon'];
+
+            for (const part of order) {
+                const layer = currentDesign[part];
+                if (layer.src && layer.color) {
+                    await drawTintedLayer(ctx, layer.src, layer.color);
+                }
+            }
+        }
+
+        async function drawTintedLayer(ctx, src, color) {
+            // 1. Load Image
+            const img = new Image();
+            img.src = src;
+            await new Promise(r => img.onload = r);
+
+            // 2. Create Offscreen Canvas for Tinting
+            const offCard = document.createElement('canvas');
+            offCard.width = 64;
+            offCard.height = 64;
+            const offCtx = offCard.getContext('2d');
+
+            // 3. Draw Mask (The white shape)
+            offCtx.drawImage(img, 0, 0, 64, 64);
+
+            // 4. Tint: Composite 'source-in' (Keep alpha, replace color)
+            offCtx.globalCompositeOperation = 'source-in';
+            offCtx.fillStyle = color;
+            offCtx.fillRect(0, 0, 64, 64);
+
+            // 5. Draw back to Main Canvas
+            ctx.drawImage(offCard, 0, 0);
+        }
+
+        function generateFromPrompt() {
+            const text = document.getElementById('prompt-input').value;
+            parsePrompt(text);
+        }
+
+        function downloadSprite() {
+            const canvas = document.getElementById('output-canvas');
+            const link = document.createElement('a');
+            link.download = 'generated_hero.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Initial Render
+        renderComposite();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+{
+  "name": "Mino Dragon X #167",
+  "symbol": "NFTG",
+  "description": "A unique COMMON Mino Dragon X from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "167.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Mino Dragon X"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "COMMON"
+    },
+    {
+      "trait_type": "Type",
+      "value": "FIRE"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 138
+    },
+    {
+      "trait_type": "ATK",
+      "value": 58
+    },
+    {
+      "trait_type": "DEF",
+      "value": 5
+    },
+    {
+      "trait_type": "SPD",
+      "value": 64
+    },
+    {
+      "trait_type": "Weight",
+      "value": 15
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "167.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

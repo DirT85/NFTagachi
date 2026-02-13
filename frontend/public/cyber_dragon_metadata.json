@@ -1,0 +1,34 @@
+{
+    "name": "Cyber Dragon",
+    "width": 832,
+    "height": 1344,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "animations": {
+        "IDLE": {
+            "row": 10,
+            "frameCount": 9,
+            "loop": true
+        },
+        "WALK": {
+            "row": 11,
+            "frameCount": 9,
+            "loop": true
+        },
+        "EAT": {
+            "row": 0,
+            "frameCount": 7,
+            "loop": false
+        },
+        "DIE": {
+            "row": 20,
+            "frameCount": 6,
+            "loop": false
+        },
+        "ATTACK": {
+            "row": 2,
+            "frameCount": 7,
+            "loop": false
+        }
+    }
+}

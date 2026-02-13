@@ -1,0 +1,60 @@
+{
+  "name": "Lich King #561",
+  "symbol": "NFTG",
+  "description": "A unique RARE Lich King from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "561.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Lich King"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "RARE"
+    },
+    {
+      "trait_type": "Type",
+      "value": "MAGIC"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 141
+    },
+    {
+      "trait_type": "ATK",
+      "value": 53
+    },
+    {
+      "trait_type": "DEF",
+      "value": 7
+    },
+    {
+      "trait_type": "SPD",
+      "value": 64
+    },
+    {
+      "trait_type": "Weight",
+      "value": 22
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "561.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

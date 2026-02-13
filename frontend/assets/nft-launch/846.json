@@ -1,0 +1,60 @@
+{
+  "name": "Abyssal Kraken #846",
+  "symbol": "NFTG",
+  "description": "A unique RARE Abyssal Kraken from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "846.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Abyssal Kraken"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "RARE"
+    },
+    {
+      "trait_type": "Type",
+      "value": "WATER"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 126
+    },
+    {
+      "trait_type": "ATK",
+      "value": 23
+    },
+    {
+      "trait_type": "DEF",
+      "value": 52
+    },
+    {
+      "trait_type": "SPD",
+      "value": 64
+    },
+    {
+      "trait_type": "Weight",
+      "value": 15
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "846.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

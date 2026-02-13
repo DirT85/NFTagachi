@@ -1,0 +1,60 @@
+{
+  "name": "Void Walker #691",
+  "symbol": "NFTG",
+  "description": "A unique MYTHIC Void Walker from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "691.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Void Walker"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "MYTHIC"
+    },
+    {
+      "trait_type": "Type",
+      "value": "MAGIC"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 138
+    },
+    {
+      "trait_type": "ATK",
+      "value": 30
+    },
+    {
+      "trait_type": "DEF",
+      "value": 6
+    },
+    {
+      "trait_type": "SPD",
+      "value": 91
+    },
+    {
+      "trait_type": "Weight",
+      "value": 17
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "691.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "name": "Obsidian Golem #782",
+  "symbol": "NFTG",
+  "description": "A unique RARE Obsidian Golem from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "782.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Obsidian Golem"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "RARE"
+    },
+    {
+      "trait_type": "Type",
+      "value": "EARTH"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 146
+    },
+    {
+      "trait_type": "ATK",
+      "value": 51
+    },
+    {
+      "trait_type": "DEF",
+      "value": 37
+    },
+    {
+      "trait_type": "SPD",
+      "value": 31
+    },
+    {
+      "trait_type": "Weight",
+      "value": 19
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "782.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

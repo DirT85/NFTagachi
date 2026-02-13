@@ -1,0 +1,60 @@
+{
+  "name": "Copper Cupid #49",
+  "symbol": "NFTG",
+  "description": "A unique COMMON Copper Cupid from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "49.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Copper Cupid"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "COMMON"
+    },
+    {
+      "trait_type": "Type",
+      "value": "MAGIC"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 122
+    },
+    {
+      "trait_type": "ATK",
+      "value": 39
+    },
+    {
+      "trait_type": "DEF",
+      "value": 60
+    },
+    {
+      "trait_type": "SPD",
+      "value": 44
+    },
+    {
+      "trait_type": "Weight",
+      "value": 16
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "49.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

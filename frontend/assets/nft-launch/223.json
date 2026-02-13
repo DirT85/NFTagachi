@@ -1,0 +1,60 @@
+{
+  "name": "Spectral Hydra #223",
+  "symbol": "NFTG",
+  "description": "A unique RARE Spectral Hydra from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "223.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Spectral Hydra"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "RARE"
+    },
+    {
+      "trait_type": "Type",
+      "value": "WATER"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 115
+    },
+    {
+      "trait_type": "ATK",
+      "value": 72
+    },
+    {
+      "trait_type": "DEF",
+      "value": 40
+    },
+    {
+      "trait_type": "SPD",
+      "value": 38
+    },
+    {
+      "trait_type": "Weight",
+      "value": 19
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "223.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFTagachi Collection Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .pixelated {
+            image-rendering: pixelated;
+        }
+
+        .card {
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-4xl font-bold text-green-400 font-mono">NFTagachi Collection V2</h1>
+                <p class="text-gray-400">Total Supply: 300 | Rarity: Magic (10%), Legendary (1%)</p>
+            </div>
+            <button onclick="generateCollection()"
+                class="bg-green-600 px-6 py-2 rounded hover:bg-green-500 font-bold">REGENERATE</button>
+        </header>
+
+        <div id="grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <!-- Items injected here -->
+        </div>
+    </div>
+
+    <script>
+        const BASES = ['pet_water_clean.png', 'pet_fire_clean.png', 'pet_grass_clean.png'];
+        const TYPES = {
+            WATER: { color: 'text-blue-400', hue: 210 },
+            FIRE: { color: 'text-red-400', hue: 0 },
+            EARTH: { color: 'text-green-400', hue: 120 },
+            MAGIC: { color: 'text-purple-400', hue: 270 },
+            HUMAN: { color: 'text-yellow-400', hue: 0 }
+        };
+
+        const MONSTER_STYLES = [
+            { id: 0, name: 'Cosmic Dragon', tier: 'MYTHIC', type: 'MAGIC', baseIndex: 1, variant: 'SPECTRAL' },
+            { id: 1, name: 'Void Walker', tier: 'MYTHIC', type: 'MAGIC', baseIndex: 0, variant: 'SHADOW' },
+            { id: 5, name: 'Phoenix', tier: 'RARE', type: 'FIRE', baseIndex: 1, variant: 'GOLD' },
+            { id: 6, name: 'Obsidian Golem', tier: 'RARE', type: 'EARTH', baseIndex: 2, variant: 'SHADOW' },
+        ];
+
+        function getVariantStyle(v) {
+            switch (v) {
+                // ... same entries ...
+                case 'SHADOW': return 'brightness(0.3) grayscale(1) drop-shadow(0 0 5px rgba(0,0,0,0.8))';
+                case 'SPECTRAL': return 'opacity(0.8) hue-rotate(180deg) saturate(200%) drop-shadow(0 0 5px cyan)';
+                case 'GOLD': return 'sepia(1) saturate(300%) hue-rotate(20deg) brightness(1.2)';
+                case 'UNDEAD': return 'grayscale(1) contrast(150%) brightness(0.8) hue-rotate(90deg)';
+                case 'MAGMA': return 'contrast(150%) saturate(200%) hue-rotate(-20deg)';
+                case 'TOXIC': return 'hue-rotate(60deg) saturate(150%) brightness(1.2)';
+                default: return ''; // Normal
+            }
+        };
+
+        function getMonsterData(id) {
+            // WIZARD (NEW) - Procedural High-Quality Variants
+            if (id >= 120 && id <= 129) {
+                // Expanded Blue Wizard + 4 Procedural Variants
+                const bases = [
+                    'wizard1.png',
+                    'wizard_generated_1.png',
+                    'wizard_generated_2.png',
+                    'wizard_generated_3.png',
+                    'wizard_generated_4.png'
+                ];
+                const variants = ['NORMAL', 'SPECTRAL', 'TOXIC', 'MAGMA', 'UNDEAD', 'GOLD', 'SHADOW'];
+                const baseIndex = (id - 120) % bases.length;
+                const variantIndex = (id - 120) % variants.length;
+                const variantNames = ['', 'Spectral', 'Toxic', 'Infernal', 'Undead', 'Golden', 'Shadow'];
+
+                return {
+                    id,
+                    type: 'MAGIC',
+                    tier: 'MYTHIC',
+                    name: `${variantNames[variantIndex]} Wizard #${id - 120}`,
+                    variant: variants[variantIndex],
+                    isSpriteSheet: true,
+                    isElite: true,
+                    customSrc: bases[baseIndex]
+                };
+            }
+            // ELITE
+            if (id >= 101 && id <= 110) {
+                return { id, type: 'MAGIC', tier: 'MYTHIC', name: `Cyber Thug #${id - 100}`, variant: '', isSpriteSheet: true, isElite: true };
+            }
+            // COMMON / PROCEDURAL
+            let type = 'EARTH';
+            let tier = 'COMMON';
+            if (id % 3 === 0) { type = 'WATER'; }
+            if (id % 3 === 1) { type = 'FIRE'; }
+            if (id % 20 === 0) { tier = 'RARE'; }
+            if (id % 50 === 0) { tier = 'MYTHIC'; }
+
+            return { id, type, tier, name: 'Wild Monster', isSpriteSheet: true };
+        }
+
+        function generateCollection() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+
+            for (let i = 0; i < 300; i++) {
+                const data = getMonsterData(i);
+                const typeConfig = TYPES[data.type] || TYPES.EARTH;
+
+                const card = document.createElement('div');
+                card.className = `card bg-gray-800 rounded-xl p-4 border transition-all duration-300 ${data.tier === 'MYTHIC' ? 'border-purple-500 shadow-[0_0_25px_rgba(168,85,247,0.3)]' : data.tier === 'RARE' ? 'border-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.2)]' : 'border-gray-700'}`;
+
+                card.innerHTML = `
+                    <div class="relative h-32 mb-3 flex items-center justify-center bg-black/40 rounded-xl overflow-hidden group">
+                        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:10px_10px]"></div>
+                        
+                        <!-- Animated Sprite Rendering (4x4 Matrix) -->
+                        <div class="h-16 w-16 image-pixelated relative z-10 scale-[2] group-hover:scale-[2.2] transition-transform duration-500"
+                              style="
+                                background-image: url('${data.customSrc || (data.isElite ? `/thug${(data.id - 100) % 4 || 1}.png` : `/collection_v6/sheet_${i % 300}.svg`)}');
+                                background-position: 0 ${data.isElite ? '-640px' : '0px'};
+                                background-size: ${data.isElite ? '1152px 1472px' : '256px 256px'};
+                                animation: npc-idle 0.8s steps(4) infinite;
+                                filter: ${getVariantStyle(data.variant)};
+                              "
+                         ></div>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div class="flex flex-col">
+                            <span class="${typeConfig.color} font-black font-mono text-xs uppercase tracking-tighter">${data.name}</span>
+                            <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">${data.type}</span>
+                        </div>
+                        <div class="text-[9px] text-gray-600 font-mono">#${String(i).padStart(3, '0')}</div>
+                    </div>
+                    ${data.tier !== 'COMMON' ? `<div class="text-[9px] uppercase tracking-[0.2em] ${data.tier === 'MYTHIC' ? 'text-purple-400' : 'text-yellow-500'} font-black mt-2">${data.tier}</div>` : ''}
+                `;
+                grid.appendChild(card);
+            }
+        }
+
+        // CSS Animation for the preview
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes npc-idle {
+                from { background-position-x: 0px; }
+                to { background-position-x: -256px; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Init
+        generateCollection();
+    </script>
+</body>
+
+</html>

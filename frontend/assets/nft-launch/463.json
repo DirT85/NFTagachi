@@ -1,0 +1,60 @@
+{
+  "name": "Chaos Engine #463",
+  "symbol": "NFTG",
+  "description": "A unique MYTHIC Chaos Engine from the NFTagachi ecosystem.",
+  "seller_fee_basis_points": 500,
+  "image": "463.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Chaos Engine"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "MYTHIC"
+    },
+    {
+      "trait_type": "Type",
+      "value": "FIRE"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "NORMAL"
+    },
+    {
+      "trait_type": "HP",
+      "value": 106
+    },
+    {
+      "trait_type": "ATK",
+      "value": 42
+    },
+    {
+      "trait_type": "DEF",
+      "value": 61
+    },
+    {
+      "trait_type": "SPD",
+      "value": 56
+    },
+    {
+      "trait_type": "Weight",
+      "value": 20
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "463.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_HERE",
+        "share": 100
+      }
+    ]
+  }
+}
