@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: nftagachi-frontend
+    env: node
+    plan: free
+    branch: main
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
