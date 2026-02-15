@@ -8,6 +8,6 @@
     "pngjs": "^7.0.0"
   },
   "devDependencies": {
-    "next": "^15.1.9"
+    "next": "^15.5.12"
   }
 }

@@ -28,7 +28,7 @@
     "jpeg-js": "^0.4.4",
     "jszip": "^3.10.1",
     "lucide-react": "^0.563.0",
-    "next": "^15.1.9",
+    "next": "^15.5.12",
     "pngjs": "^7.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
@@ -43,7 +43,7 @@
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "15.1.6",
+    "eslint-config-next": "^15.5.12",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
