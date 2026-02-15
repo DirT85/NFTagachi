@@ -5,15 +5,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // output: 'standalone', // Disabled for Netlify compatibility
   productionBrowserSourceMaps: false,
-  // EXTREME MEMORY SAVING FOR RENDER FREE TIER
-  experimental: {
-    webpackBuildWorker: false,
-    parallelServerCompiles: false,
-    parallelServerBuildTraces: false,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
+  // @ts-ignore
   eslint: {
     ignoreDuringBuilds: true,
   },
