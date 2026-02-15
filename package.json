@@ -1,7 +1,7 @@
 {
   "name": "nftagachi-root",
   "scripts": {
-    "build": "([ -d frontend ] && cd frontend || true) && npm install --legacy-peer-deps && CI=false next build"
+    "build": "([ -d frontend ] && cd frontend || true) && npm install --legacy-peer-deps && CI=false npx next build"
   },
   "dependencies": {
     "jpeg-js": "^0.4.4",
