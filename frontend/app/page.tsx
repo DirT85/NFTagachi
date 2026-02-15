@@ -36,6 +36,7 @@ export default function Home() {
 
     // Actions
     performAction, mintItem, equipItem, buyGama, depositGama, depositGamaFromWallet, withdrawGama, completeBattle, setGameState, syncOnChainMetadata,
+    mintTestMonster,
 
     // Auth
     wallet
@@ -439,6 +440,7 @@ export default function Home() {
         isOpen={showNoAssetPopup}
         onMintClick={() => window.open('https://launchmynft.io/collections/HgZ3fK1jsiG1G...YOUR_COLLECTION', '_blank')}
         onMarketClick={() => window.open('https://tensor.trade/trade/nftagachi', '_blank')}
+        onTestMint={mintTestMonster}
       />
     </main >
   );

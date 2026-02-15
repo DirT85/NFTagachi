@@ -274,10 +274,23 @@ export const useNftagachi = () => {
 
     // Initialize Monster on Mount (Default to first owned if not set)
     useEffect(() => {
-        if (ownedMonsters.length > 0 && !monsterData) {
-            setMonsterData(ownedMonsters[0]);
+        if (typeof window !== 'undefined') {
+            const savedActiveId = localStorage.getItem('nftagachi_active_monster_id');
+            if (ownedMonsters.length > 0) {
+                if (savedActiveId) {
+                    const active = ownedMonsters.find(m => m.id === parseInt(savedActiveId));
+                    if (active) setMonsterData(active);
+                    else setMonsterData(ownedMonsters[0]);
+                } else {
+                    setMonsterData(ownedMonsters[0]);
+                }
+            } else if (MOCK_MODE) {
+                // If in Mock Mode and NO monsters found, give them the Trial Dragon automatically
+                // This ensures the user has a "Guest Mode" experience immediately.
+                mintTestMonster();
+            }
         }
-    }, [ownedMonsters, monsterData]);
+    }, [ownedMonsters]);
 
     const [isAuthenticating, setIsAuthenticating] = useState(false);
 
@@ -988,6 +1001,40 @@ export const useNftagachi = () => {
         }, 1500);
     };
 
+    const mintTestMonster = async () => {
+        setLoading(true);
+        // Artificial delay for feedback
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const testMonster: MonsterData = {
+            id: 9999,
+            name: "Trial Dragon (TEST)",
+            tier: "LEGENDARY",
+            type: "FIRE",
+            variant: "GLOWING",
+            baseImageIndex: 0,
+            baseStats: {
+                level: 1, exp: 0, hp: 100, maxHp: 100,
+                atk: 15, def: 12, spd: 14,
+                hunger: 50, happiness: 80, energy: 100,
+                waste: 0, weight: 20, power: 10, bodyCondition: 'NORMAL'
+            }
+        };
+
+        setOwnedMonsters(prev => {
+            const exists = prev.find(m => m.id === testMonster.id);
+            if (exists) return prev;
+            return [...prev, testMonster];
+        });
+
+        if (!monsterData) {
+            setMonsterData(testMonster);
+        }
+
+        setLoading(false);
+        console.log("Trial Dragon Summoned for testing.");
+    };
+
 
 
     const completeBattle = (win: boolean, xpGained: number) => {
@@ -1065,6 +1112,7 @@ export const useNftagachi = () => {
         // Auth
         ownedMonsters,
         switchMonster,
-        isAuthenticating
+        isAuthenticating,
+        mintTestMonster
     };
 };

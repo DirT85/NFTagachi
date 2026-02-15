@@ -7,9 +7,10 @@ interface NoAssetPopupProps {
     isOpen: boolean;
     onMintClick: () => void; // Redirect to LaunchMyNFT
     onMarketClick: () => void; // Redirect to Tensor/MagicEden
+    onTestMint: () => void; // Summon Trial Monster
 }
 
-export const NoAssetPopup = ({ isOpen, onMintClick, onMarketClick }: NoAssetPopupProps) => {
+export const NoAssetPopup = ({ isOpen, onMintClick, onMarketClick, onTestMint }: NoAssetPopupProps) => {
     return (
         <AnimatePresence>
             {isOpen && (
@@ -55,6 +56,18 @@ export const NoAssetPopup = ({ isOpen, onMintClick, onMarketClick }: NoAssetPopu
                             >
                                 <ShoppingCart size={14} /> Buy on Market
                             </button>
+
+                            <div className="pt-4 border-t border-white/5">
+                                <button
+                                    onClick={onTestMint}
+                                    className="w-full bg-blue-600/20 border border-blue-500/30 text-blue-400 font-bold py-3 rounded-xl hover:bg-blue-600/30 transition-all flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.2em]"
+                                >
+                                    <Sparkles size={14} className="animate-pulse" /> Try Guest Mode (FREE)
+                                </button>
+                                <p className="text-[8px] text-gray-500 mt-2 font-mono">
+                                    * Trial dragons are for UI testing only and stay local.
+                                </p>
+                            </div>
                         </div>
 
                         {/* Footer */}
