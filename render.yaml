@@ -6,7 +6,7 @@ services:
     branch: main
     rootDir: frontend
     buildCommand: "npm install --prefer-offline --no-audit && NODE_OPTIONS=--max-old-space-size=450 npm run build"
-    startCommand: "npm start"
+    startCommand: "node .next/standalone/server.js"
     envVars:
       - key: NODE_ENV
         value: "production"
