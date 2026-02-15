@@ -5,8 +5,24 @@ services:
     plan: free
     branch: main
     rootDir: frontend
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: "npm install && NODE_OPTIONS=--max-old-space-size=2048 npm run build"
+    startCommand: "npm start"
     envVars:
       - key: NODE_ENV
-        value: production
+        value: "production"
+      - key: NODE_VERSION
+        value: "20.11.0"
+
+  - type: web
+    name: nftagachi-lobby
+    env: node
+    plan: free
+    branch: main
+    rootDir: server
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    envVars:
+      - key: NODE_ENV
+        value: "production"
+      - key: PORT
+        value: "10000"
