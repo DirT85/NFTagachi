@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 // Force restart to clear stale generatorV8 cache
 // @ts-ignore
-// @ts-ignore
 const nextConfig: NextConfig = {
   output: 'standalone',
   productionBrowserSourceMaps: false,
