@@ -1,28 +1,129 @@
 "use client";
 
-import { useState } from "react";
-import { Upload, Sliders, Save, RefreshCw, Cpu, Download } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import {
+    Upload, Sliders, Save, RefreshCw, Cpu, Download, Coins,
+    Image as ImageIcon, Ghost, LayoutGrid, Package, Sparkles
+} from "lucide-react";
+import dynamic from "next/dynamic";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import { useMetaplex } from "../../../hooks/useMetaplex";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { create } from "@metaplex-foundation/mpl-core";
+import { generateSigner, publicKey, createGenericFile } from "@metaplex-foundation/umi";
+import { Device } from "@/components/Device";
+import { BACKGROUND_URIS } from "@/utils/BackgroundMetadata";
+import { DEVICE_URIS } from "@/utils/DeviceMetadata";
+
+const WalletMultiButton = dynamic(
+    () => import("@solana/wallet-adapter-react-ui").then((mod) => mod.WalletMultiButton),
+    { ssr: false }
+);
+
+import { Sprite } from "@/components/Sprite";
+import { LcdBackground } from "@/components/LcdBackground";
+import { BACKGROUND_IDS } from "@/utils/BackgroundMetadata";
+import { toPng } from "html-to-image";
 
 export default function AdminDashboard() {
-    const [activeTab, setActiveTab] = useState<'ASSETS' | 'GENERATE'>('ASSETS');
     const [genSeed, setGenSeed] = useState("");
-    const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+    const [genBody, setGenBody] = useState("male");
+    const [genTheme, setGenTheme] = useState("");
+    const [genWeapon, setGenWeapon] = useState("random");
+    const [genHead, setGenHead] = useState("random");
+    const [genHair, setGenHair] = useState("random");
+    const [generatedImages, setGeneratedImages] = useState<{ id: string, src: string, seed: string }[]>([]);
     const [isGenerating, setIsGenerating] = useState(false);
+    const [showGenerator, setShowGenerator] = useState(false);
+    const [previewState, setPreviewState] = useState("IDLE");
+    const [showSheetView, setShowSheetView] = useState(false);
+    const [showPackGen, setShowPackGen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+    const [generatedPacks, setGeneratedPacks] = useState<any[]>([]);
+    const [exportStatus, setExportStatus] = useState<string>("");
+    const [isExporting, setIsExporting] = useState(false);
+    const [isMinting, setIsMinting] = useState(false);
+    const [batchExportCount, setBatchExportCount] = useState(1);
+    const [showDebug, setShowDebug] = useState(false);
+    const [salvagePreviewId, setSalvagePreviewId] = useState("0");
+
+    // --- HYBRID CAPTURE CACHE ---
+    const deviceCaptureCache = useRef<Record<string, Blob>>({});
+    const backgroundCaptureCache = useRef<Record<string, Blob>>({});
+    const captureRef = useRef<HTMLDivElement>(null);
+    const [currentCaptureTarget, setCurrentCaptureTarget] = useState<{ type: 'device' | 'bg', id: string } | null>(null);
+
+    const umi = useMetaplex();
+    const wallet = useWallet();
+
+    const dataUriToBlob = (dataUri: string) => {
+        const byteString = atob(dataUri.split(',')[1]);
+        const mimeString = dataUri.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: mimeString });
+    };
+
+    const fetchAsDataUri = async (url: string) => {
+        if (!url) return "";
+        // If it's already a Data URI, return it directly
+        if (url.startsWith('data:')) return url;
+
+        try {
+            // Use server-side proxy to bypass CORS
+            const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+            const response = await fetch(proxyUrl);
+            if (!response.ok) {
+                console.error("Proxy fetch failed:", response.status, url);
+                return url;
+            }
+            const blob = await response.blob();
+            return new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (e) {
+            console.error("Failed to fetch as Data URI:", url.length > 100 ? url.substring(0, 100) + "..." : url, e);
+            return url; // Fallback to original URL
+        }
+    };
+
+    const callGenerateAPI = async (seed: string) => {
+        const res = await fetch('/api/admin/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-admin-password': 'shagrat1qaZ' },
+            body: JSON.stringify({
+                seed: seed,
+                bodyType: genBody,
+                theme: genTheme,
+                weapon: genWeapon,
+                head: genHead,
+                hair: genHair
+            })
+        });
+        return await res.json();
+    };
+
+    // Single Generation
     const handleGenerate = async () => {
         setIsGenerating(true);
-        setGeneratedImage(null);
+        setGeneratedImages([]);
         try {
-            const res = await fetch('/api/admin/generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-admin-password': 'shagrat1qaZ' },
-                body: JSON.stringify({ seed: genSeed || Math.floor(Math.random() * 9999) })
-            });
-            const data = await res.json();
-            if (data.image) {
-                setGeneratedImage(data.image);
-            } else {
-                alert("Generation returned no image data");
+            const seedVal = genSeed || Math.floor(Math.random() * 999999).toString();
+            const data = await callGenerateAPI(seedVal);
+            if (data?.image) {
+                setGeneratedImages([{ id: seedVal, src: data.image, seed: seedVal }]);
             }
         } catch (e: any) {
             alert("Generation Failed: " + e.message);
@@ -31,106 +132,727 @@ export default function AdminDashboard() {
         }
     };
 
+    // Batch Generation
+    const handleBatchGenerate = async () => {
+        setIsGenerating(true);
+        setGeneratedImages([]);
+        try {
+            const promises = [];
+            for (let i = 0; i < 5; i++) {
+                const seedVal = Math.floor(Math.random() * 999999).toString();
+                promises.push(callGenerateAPI(seedVal).then(data => ({ ...data, seed: seedVal })));
+            }
+            const results = await Promise.all(promises);
+            const validImages = results.filter(r => r.image).map(r => ({
+                id: r.seed,
+                src: r.image,
+                seed: r.seed
+            }));
+            setGeneratedImages(validImages);
+        } catch (e: any) {
+            alert("Batch Generation Failed: " + e.message);
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
+    // Surprise Me
+    const handleRandomize = () => {
+        const bodies = ['male', 'female', 'skeleton', 'zombie', 'orc', 'lizard'];
+        const themes = ['light', 'dark', 'red', 'green', 'blue', 'gold', ''];
+        const weapons = ['random', 'dagger', 'longsword', 'spear', 'mace', 'waraxe', 'bow'];
+        const heads = ['random', 'human_male', 'human_female', 'skeleton', 'zombie', 'orc'];
+        const hairs = ['random', 'messy', 'long', 'ponytail', 'bedhead', 'spiked'];
+
+        setGenBody(bodies[Math.floor(Math.random() * bodies.length)]);
+        setGenTheme(themes[Math.floor(Math.random() * themes.length)]);
+        setGenWeapon(weapons[Math.floor(Math.random() * weapons.length)]);
+        setGenHead(heads[Math.floor(Math.random() * heads.length)]);
+        setGenHair(hairs[Math.floor(Math.random() * hairs.length)]);
+        setGenSeed(Math.floor(Math.random() * 999999).toString());
+    };
+
+    const handleSalvagePreview = async () => {
+        setIsGenerating(true);
+        try {
+            const res = await fetch(`/test-mint/${salvagePreviewId}.json`);
+            if (!res.ok) throw new Error("Salvage JSON not found. Supported IDs: 0, 500, 999");
+            const data = await res.json();
+
+            // Format for preview in the Device component
+            const previewPkg = {
+                name: data.name,
+                description: data.description,
+                image: `/test-mint/${data.image}`,
+                assets: {
+                    spritesheet_uri: `/test-mint/${data.properties.assets.spritesheet_uri}`,
+                    device: "MODERN_JET",
+                    background: "LIGHT_CITY",
+                    character: data.name
+                },
+                attributes: data.attributes,
+                stats: {
+                    hp: data.attributes.find((a: any) => a.trait_type === 'HP')?.value || 100,
+                    attack: data.attributes.find((a: any) => a.trait_type === 'ATK')?.value || 10,
+                }
+            };
+            setGeneratedPacks([previewPkg]);
+            setShowPackGen(true);
+            setShowGenerator(false);
+        } catch (e: any) {
+            alert("Salvage Preview Error: " + e.message);
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
+    const handleGeneratePack = async () => {
+        setIsGenerating(true);
+        setGeneratedPacks([]);
+        setExportStatus("");
+        try {
+            const promises = [];
+            for (let i = 0; i < 5; i++) {
+                const seedVal = Math.floor(Math.random() * 999999).toString();
+                promises.push(fetch('/api/admin/package', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': 'shagrat1qaZ' },
+                    body: JSON.stringify({ seed: seedVal })
+                }).then(res => res.json()));
+            }
+            const results = await Promise.all(promises);
+            setGeneratedPacks(results.map(r => r.package).filter(p => p));
+        } catch (e: any) {
+            alert("Pack Generation Failed: " + e.message);
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
+    const handleLaunchMyNFTExport = async () => {
+        setIsExporting(true);
+        setExportStatus("Initializing Export...");
+
+        try {
+            const zip = new JSZip();
+            const assetsFolder = zip.folder("assets");
+            const metadataFolder = zip.folder("metadata");
+
+            if (!assetsFolder || !metadataFolder) throw new Error("Failed to create zip folders");
+
+            for (let i = 0; i < batchExportCount; i++) {
+                setExportStatus(`Generating & Packing Character ${i + 1} of ${batchExportCount}...`);
+
+                // 1. GENERATE FRESH PACKAGE FROM SERVER
+                const seedVal = Math.floor(Math.random() * 9999999).toString();
+                const res = await fetch('/api/admin/package', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': 'shagrat1qaZ' },
+                    body: JSON.stringify({ seed: seedVal })
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error || "Generation failed at index " + i);
+                const pkg = data.package;
+
+                // 2. CAPTURE DEVICE & BG IF NOT CACHED
+                const dev = pkg.assets.device;
+                const bg = pkg.assets.background;
+
+                if (!deviceCaptureCache.current[dev]) {
+                    setExportStatus(`Capturing Unique Device: ${dev}...`);
+                    setCurrentCaptureTarget({ type: 'device', id: dev });
+                    await new Promise(r => setTimeout(r, 150)); // Allow render + styles
+                    if (captureRef.current) {
+                        const dataUrl = await toPng(captureRef.current, { width: 384, height: 256, pixelRatio: 2 });
+                        deviceCaptureCache.current[dev] = dataUriToBlob(dataUrl);
+                    }
+                }
+
+                if (!backgroundCaptureCache.current[bg]) {
+                    setExportStatus(`Capturing Unique Background: ${bg}...`);
+                    setCurrentCaptureTarget({ type: 'bg', id: bg });
+                    await new Promise(r => setTimeout(r, 150)); // Allow render
+                    if (captureRef.current) {
+                        const dataUrl = await toPng(captureRef.current, { width: 384, height: 256, pixelRatio: 2 });
+                        backgroundCaptureCache.current[bg] = dataUriToBlob(dataUrl);
+                    }
+                }
+
+                // 3. RETRIEVE CACHED ASSETS
+                const spriteBlob = dataUriToBlob(pkg.image);
+                assetsFolder.file(`${i}.png`, spriteBlob);
+
+                const deviceBlob = deviceCaptureCache.current[dev] || deviceCaptureCache.current["CLASSIC"];
+                if (deviceBlob) assetsFolder.file(`${i}_device.png`, deviceBlob);
+
+                const bgBlob = backgroundCaptureCache.current[bg] || backgroundCaptureCache.current["DEFAULT"];
+                if (bgBlob) assetsFolder.file(`${i}_bg.png`, bgBlob);
+
+                // 4. CONSTRUCT MODULAR METADATA
+                const metadata = {
+                    name: pkg.name,
+                    symbol: "AGACHI",
+                    description: pkg.description,
+                    image: `${i}.png`,
+                    attributes: [
+                        ...pkg.attributes,
+                        { trait_type: "Device", value: dev },
+                        { trait_type: "Background", value: bg }
+                    ],
+                    properties: {
+                        files: [
+                            { uri: `${i}.png`, type: "image/png", description: "Character Sprite Sheet" },
+                            { uri: `${i}_device.png`, type: "image/png", description: "Device Frame Overlay" },
+                            { uri: `${i}_bg.png`, type: "image/png", description: "Environment Background" }
+                        ],
+                        category: "image",
+                        assets: {
+                            spritesheet_uri: `${i}.png`,
+                            device_uri: `${i}_device.png`,
+                            background_uri: `${i}_bg.png`,
+                            stats: pkg.stats
+                        }
+                    }
+                };
+
+                metadataFolder.file(`${i}.json`, JSON.stringify(metadata, null, 2));
+            }
+
+            setCurrentCaptureTarget(null);
+            setExportStatus("Bundling Modular Zip...");
+            const content = await zip.generateAsync({ type: "blob" });
+            saveAs(content, `nftagachi_modular_${batchExportCount}.zip`);
+            setExportStatus("Modular Export Complete! ✅");
+        } catch (e: any) {
+            console.error(e);
+            setExportStatus("Export Error: " + e.message);
+            alert("Export Failed: " + e.message);
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
+    const handleMintAllPacks = async () => {
+        if (!umi || !wallet.publicKey) {
+            alert("Please connect your wallet first.");
+            return;
+        }
+        if (generatedPacks.length === 0) {
+            alert("Generate a preview pack first.");
+            return;
+        }
+
+        setIsMinting(true);
+        try {
+            let monsterCollection = localStorage.getItem("nftagachi_monster_collection");
+            if (!monsterCollection) {
+                alert("Please go to /admin/mint and create a 'Species' collection first.");
+                setIsMinting(false);
+                return;
+            }
+
+            for (let i = 0; i < generatedPacks.length; i++) {
+                const pkg = generatedPacks[i];
+                setExportStatus(`Preparing Modular Mint ${i + 1}/${generatedPacks.length}: ${pkg.name}...`);
+
+                // 2. UPLOAD ASSETS
+                const charBlob = dataUriToBlob(pkg.image);
+                const charFile = await createGenericFile(new Uint8Array(await charBlob.arrayBuffer()), "spritesheet.png", { contentType: "image/png" });
+                const [sheetUri] = await umi.uploader.upload([charFile]);
+
+                // Create a "Hero Shot" (Static frame for wallet preview)
+                // We'll use the package's preview if available, or just the sheet for now (Sprite will handle it)
+                const heroUri = sheetUri;
+
+                // 3. UPLOAD OTHER ASSETS (Feeding/Training)
+                const feedBlob = dataUriToBlob(pkg.assets.feeding_art);
+                const feedFile = await createGenericFile(new Uint8Array(await feedBlob.arrayBuffer()), "feeding.png", { contentType: "image/png" });
+                const [feedUri] = await umi.uploader.upload([feedFile]);
+
+                const trainBlob = dataUriToBlob(pkg.assets.training_art);
+                const trainFile = await createGenericFile(new Uint8Array(await trainBlob.arrayBuffer()), "training.png", { contentType: "image/png" });
+                const [trainUri] = await umi.uploader.upload([trainFile]);
+
+                const metadata = {
+                    name: pkg.name,
+                    description: pkg.description,
+                    image: heroUri, // Primary image
+                    attributes: [
+                        ...pkg.attributes,
+                        { trait_type: "Has Sprite Sheet", value: "Yes" }
+                    ],
+                    properties: {
+                        files: [
+                            { uri: sheetUri, type: "image/png", description: "Sprite Sheet" }
+                        ],
+                        category: "image",
+                        assets: {
+                            spritesheet_uri: sheetUri,
+                            feeding_uri: feedUri,
+                            training_uri: trainUri,
+                            device: pkg.assets.device,
+                            background: pkg.assets.background
+                        },
+                        stats: pkg.stats
+                    }
+                };
+
+                const metadataUri = await umi.uploader.uploadJson(metadata);
+
+                const assetSigner = generateSigner(umi);
+                await create(umi, {
+                    asset: assetSigner,
+                    collection: { publicKey: publicKey(monsterCollection) },
+                    name: pkg.name,
+                    uri: metadataUri,
+                }).sendAndConfirm(umi);
+            }
+
+            setExportStatus("MODULAR MINT COMPLETE! ✅");
+            alert("Modular Mint Successful! Characters added to Devnet.");
+        } catch (e: any) {
+            console.error(e);
+            setExportStatus("Mint Error: " + e.message);
+            alert("Minting Failed: " + e.message);
+        } finally {
+            setIsMinting(false);
+        }
+    };
+
     return (
-        <div className="min-h-screen bg-black text-white p-8 font-mono">
-            <header className="flex justify-between items-center mb-12 border-b border-gray-800 pb-4">
-                <h1 className="text-xl font-black tracking-widest text-red-500">ADMIN_DASHBOARD_v1.2</h1>
-                <div className="text-xs text-gray-500">USER: ADMIN (SECURE)</div>
-            </header>
-
-            <div className="flex gap-4 mb-8">
-                <button
-                    onClick={() => setActiveTab('ASSETS')}
-                    className={`px-4 py-2 rounded text-xs font-bold tracking-wider transition-colors ${activeTab === 'ASSETS' ? 'bg-red-600' : 'bg-gray-800 hover:bg-gray-700'}`}
-                >
-                    ASSET MIGRATION
-                </button>
-                <button
-                    onClick={() => setActiveTab('GENERATE')}
-                    className={`px-4 py-2 rounded text-xs font-bold tracking-wider flex items-center gap-2 transition-colors ${activeTab === 'GENERATE' ? 'bg-blue-600' : 'bg-gray-800 hover:bg-gray-700'}`}
-                >
-                    <Cpu size={14} /> GENERATORS (V8)
-                </button>
-            </div>
-
-            {activeTab === 'ASSETS' && (
-                <div className="bg-gray-900/50 p-8 rounded-xl border border-gray-800">
-                    <div className="border-2 border-dashed border-gray-700 rounded-xl h-64 flex flex-col items-center justify-center text-gray-500 hover:border-red-500 hover:text-red-500 transition-colors cursor-pointer group">
-                        <Upload size={48} className="mb-4 group-hover:scale-110 transition-transform" />
-                        <span className="text-lg font-bold">DRAG & DROP ASSETS HERE</span>
-                        <span className="text-xs mt-2 opacity-50">(Sprites, Skins, Backgrounds)</span>
+        <div className="min-h-screen bg-[#050510] text-white p-4 md:p-8 font-mono bg-[url('/grid.svg')]">
+            <div className="max-w-7xl mx-auto">
+                {/* HEADER */}
+                <header className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-white/10 pb-6 bg-black/20 backdrop-blur-sm p-6 rounded-2xl gap-4">
+                    <div>
+                        <h1 className="text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 tracking-tighter">
+                            ADMIN_COMMAND_CENTER
+                        </h1>
+                        <div className="flex items-center gap-2 mt-2">
+                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]" />
+                            <span className="text-xs text-green-500 font-bold tracking-widest uppercase">SYSTEM ONLINE // v2.4.0 (BATCH)</span>
+                        </div>
                     </div>
-                    <p className="mt-4 text-xs text-gray-600 text-center">
-                        System will automatically categorize based on filename prefix (e.g. `bg_`, `skin_`).
-                    </p>
+                    <WalletMultiButton />
+                </header>
+
+                {/* NAVIGATION GRID (Compact) */}
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+                    <Link href="/admin/token" className="bg-gray-900/60 border border-white/10 rounded-xl p-4 hover:border-yellow-500/50 transition-all flex flex-col items-center justify-center text-center gap-2 group">
+                        <Coins className="text-yellow-500 group-hover:scale-110 transition-transform" />
+                        <span className="text-xs font-bold text-gray-300">Token Forge</span>
+                    </Link>
+                    <Link href="/admin/upload" className="bg-gray-900/60 border border-white/10 rounded-xl p-4 hover:border-green-500/50 transition-all flex flex-col items-center justify-center text-center gap-2 group">
+                        <Upload className="text-green-500 group-hover:scale-110 transition-transform" />
+                        <span className="text-xs font-bold text-gray-300">Device Uploader</span>
+                    </Link>
+                    <Link href="/admin/monsters" className="bg-gray-900/60 border border-white/10 rounded-xl p-4 hover:border-purple-500/50 transition-all flex flex-col items-center justify-center text-center gap-2 group">
+                        <Ghost className="text-purple-500 group-hover:scale-110 transition-transform" />
+                        <span className="text-xs font-bold text-gray-300">Monster DB</span>
+                    </Link>
+                    <Link href="/admin/backgrounds" className="bg-gray-900/60 border border-white/10 rounded-xl p-4 hover:border-cyan-500/50 transition-all flex flex-col items-center justify-center text-center gap-2 group">
+                        <ImageIcon className="text-cyan-500 group-hover:scale-110 transition-transform" />
+                        <span className="text-xs font-bold text-gray-300">Backgrounds</span>
+                    </Link>
+                    <button
+                        onClick={() => { setShowPackGen(!showPackGen); setShowGenerator(false); }}
+                        className={`bg-gray-900/60 border border-white/10 rounded-xl p-4 transition-all flex flex-col items-center justify-center text-center gap-2 group ${showPackGen ? 'border-orange-500 ring-1 ring-orange-500 bg-orange-900/20' : 'hover:border-orange-500/50'}`}
+                    >
+                        <Package className="text-orange-500 group-hover:scale-110 transition-transform" />
+                        <span className="text-xs font-bold text-gray-300">LMNFT Pack</span>
+                    </button>
+                    <button
+                        onClick={() => { setShowGenerator(!showGenerator); setShowPackGen(false); }}
+                        className={`bg-gray-900/60 border border-white/10 rounded-xl p-4 transition-all flex flex-col items-center justify-center text-center gap-2 group ${showGenerator ? 'border-blue-500 ring-1 ring-blue-500 bg-blue-900/20' : 'hover:border-blue-500/50'}`}
+                    >
+                        <Cpu className="text-blue-500 group-hover:scale-110 transition-transform" />
+                        <span className="text-xs font-bold text-gray-300">V8 Generator</span>
+                    </button>
+                    <div className="bg-gray-900/60 border border-white/10 rounded-xl p-4 hover:border-red-500/50 transition-all flex flex-col items-center justify-center text-center gap-2 group">
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="text"
+                                value={salvagePreviewId}
+                                onChange={(e) => setSalvagePreviewId(e.target.value)}
+                                className="w-12 bg-black border border-white/10 rounded px-1 text-xs text-center"
+                                placeholder="ID"
+                            />
+                            <button
+                                onClick={handleSalvagePreview}
+                                className="bg-red-600 hover:bg-red-500 p-1.5 rounded transition-colors"
+                                title="Preview Salvaged Asset"
+                            >
+                                <Sparkles size={14} />
+                            </button>
+                        </div>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase">Salvage Preview</span>
+                    </div>
                 </div>
-            )}
 
-            {activeTab === 'GENERATE' && (
-                <div className="bg-gray-900/50 p-8 rounded-xl border border-gray-800 flex flex-col md:flex-row gap-8">
-                    <div className="w-full md:w-1/3 space-y-6">
-                        <div>
-                            <h3 className="text-xl font-bold text-blue-400 mb-1">Monster Generator V8</h3>
-                            <p className="text-xs text-gray-400">Procedurally generate 256x256 sprite sheets using the ported V8 engine (Node.js/PNGjs).</p>
-                        </div>
+                {/* GENERATOR SECTION (Expanded) */}
+                {showGenerator && (
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="bg-gray-900/80 backdrop-blur-md p-6 rounded-2xl border border-blue-500/30 shadow-2xl">
+                            <div className="flex flex-col lg:flex-row gap-8 h-[calc(100vh-350px)] min-h-[600px]">
+                                {/* CONTROLS COLUMN (Fixed Width) */}
+                                <div className="w-full lg:w-80 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar">
+                                    <div className="bg-black/40 p-4 rounded-xl border border-white/10">
+                                        <h3 className="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                            <Sliders size={14} /> Configuration
+                                        </h3>
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="text-xs text-gray-500 font-bold mb-1 block">BODY TYPE</label>
+                                                <select
+                                                    value={genBody}
+                                                    onChange={(e) => setGenBody(e.target.value)}
+                                                    className="w-full bg-black/50 border border-gray-700 p-2 rounded text-sm text-white focus:border-blue-500 outline-none"
+                                                >
+                                                    <option value="male">Human Male</option>
+                                                    <option value="female">Human Female</option>
+                                                    <option value="teen">Human Teen</option>
+                                                    <option value="skeleton">Skeleton</option>
+                                                    <option value="zombie">Zombie</option>
+                                                    <option value="orc">Orc</option>
+                                                    <option value="lizard">Lizard</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-xs text-gray-500 font-bold mb-1 block">THEME</label>
+                                                <select
+                                                    value={genTheme}
+                                                    onChange={(e) => setGenTheme(e.target.value)}
+                                                    className="w-full bg-black/50 border border-gray-700 p-2 rounded text-sm text-white focus:border-blue-500 outline-none"
+                                                >
+                                                    <option value="">Any</option>
+                                                    <option value="light">Light</option>
+                                                    <option value="dark">Dark</option>
+                                                    <option value="red">Red</option>
+                                                    <option value="green">Green</option>
+                                                    <option value="blue">Blue</option>
+                                                    <option value="gold">Gold</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-xs text-gray-500 font-bold mb-1 block">WEAPON</label>
+                                                <select
+                                                    value={genWeapon}
+                                                    onChange={(e) => setGenWeapon(e.target.value)}
+                                                    className="w-full bg-black/50 border border-gray-700 p-2 rounded text-sm text-white focus:border-blue-500 outline-none"
+                                                >
+                                                    <option value="random">Random</option>
+                                                    <option value="none">None</option>
+                                                    <option value="dagger">Dagger</option>
+                                                    <option value="longsword">Sword</option>
+                                                    <option value="spear">Spear</option>
+                                                    <option value="mace">Mace</option>
+                                                    <option value="waraxe">Axe</option>
+                                                    <option value="bow">Bow</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-xs text-gray-500 font-bold mb-1 block">HEAD TYPE</label>
+                                                <select
+                                                    value={genHead}
+                                                    onChange={(e) => setGenHead(e.target.value)}
+                                                    className="w-full bg-black/50 border border-gray-700 p-2 rounded text-sm text-white focus:border-blue-500 outline-none"
+                                                >
+                                                    <option value="random">Random</option>
+                                                    <option value="human_male">Human Male</option>
+                                                    <option value="human_female">Human Female</option>
+                                                    <option value="elf_male">Elf Male</option>
+                                                    <option value="elf_female">Elf Female</option>
+                                                    <option value="skeleton">Skeleton</option>
+                                                    <option value="zombie">Zombie</option>
+                                                    <option value="orc">Orc</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-xs text-gray-500 font-bold mb-1 block">HAIR STYLE</label>
+                                                <select
+                                                    value={genHair}
+                                                    onChange={(e) => setGenHair(e.target.value)}
+                                                    className="w-full bg-black/50 border border-gray-700 p-2 rounded text-sm text-white focus:border-blue-500 outline-none"
+                                                >
+                                                    <option value="random">Random</option>
+                                                    <option value="none">Bald</option>
+                                                    <option value="messy">Messy</option>
+                                                    <option value="long">Long</option>
+                                                    <option value="ponytail">Ponytail</option>
+                                                    <option value="bedhead">Bedhead</option>
+                                                    <option value="spiked">Spiked</option>
+                                                    <option value="mop">Mop</option>
+                                                    <option value="unkempt">Unkempt</option>
+                                                    <option value="page">Page</option>
+                                                    <option value="curtains">Curtains</option>
+                                                    <option value="afro">Afro</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={handleRandomize}
+                                            className="flex-1 py-3 rounded-xl border border-dashed border-gray-600 text-gray-400 hover:text-white hover:border-white hover:bg-white/5 transition-all text-xs font-bold"
+                                        >
+                                            🎲 SURPRISE ME
+                                        </button>
+                                    </div>
+                                    <div className="space-y-2 mt-auto">
+                                        <button
+                                            onClick={handleGenerate}
+                                            disabled={isGenerating}
+                                            className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                                        >
+                                            {isGenerating ? <RefreshCw className="animate-spin" size={16} /> : <Cpu size={16} />}
+                                            GENERATE (x1)
+                                        </button>
+                                        <button
+                                            onClick={handleBatchGenerate}
+                                            disabled={isGenerating}
+                                            className="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-sm border border-white/10 hover:border-white/30 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <LayoutGrid size={16} />
+                                            BATCH GENERATE (x5)
+                                        </button>
+                                    </div>
+                                </div>
 
-                        <div className="bg-black/50 p-4 rounded border border-gray-800">
-                            <label className="block text-[10px] text-gray-500 uppercase font-bold mb-2">Generation Seed</label>
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    value={genSeed}
-                                    onChange={(e) => setGenSeed(e.target.value)}
-                                    className="flex-1 bg-black border border-gray-700 p-2 rounded text-white text-sm font-mono focus:border-blue-500 outline-none transition-colors"
-                                    placeholder="Random..."
-                                />
-                                <button onClick={() => setGenSeed(Math.floor(Math.random() * 99999).toString())} className="p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400">
-                                    <RefreshCw size={16} />
-                                </button>
+                                {/* RESULTS COLUMN (Flexible) */}
+                                <div className="flex-1 bg-black/40 rounded-xl border border-white/10 p-4 overflow-y-auto custom-scrollbar relative">
+                                    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none" />
+                                    {/* ANIMATION CONTROLS (Global) */}
+                                    <div className="absolute top-4 right-4 z-10 flex gap-2 bg-black/60 backdrop-blur rounded p-1 border border-white/10">
+                                        {['IDLE', 'WALK', 'ATTACK', 'EAT', 'TRAIN', 'DIE'].map((state) => (
+                                            <button
+                                                key={state}
+                                                onClick={() => setPreviewState(state)}
+                                                className={`px-2 py-1 rounded text-[10px] font-bold transition-all ${previewState === state ? 'bg-blue-600 text-white' : 'hover:bg-white/10 text-gray-400'}`}
+                                            >
+                                                {state}
+                                            </button>
+                                        ))}
+                                        <button
+                                            onClick={() => setShowSheetView(!showSheetView)}
+                                            className={`ml-2 px-2 py-1 rounded text-[10px] font-bold border transition-all ${showSheetView ? 'bg-orange-600 border-orange-500 text-white' : 'border-white/20 text-gray-400 hover:bg-white/10'}`}
+                                        >
+                                            {showSheetView ? 'ANIMATION' : 'SHEET VIEW'}
+                                        </button>
+                                    </div>
+                                    {generatedImages.length > 0 ? (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pt-12">
+                                            {generatedImages.map((img, idx) => (
+                                                <div key={idx} className="bg-gray-900/80 rounded-xl border border-white/10 overflow-hidden group hover:border-blue-500/50 transition-all">
+                                                    <div className="aspect-square relative flex items-center justify-center bg-[#1a1a2e] overflow-hidden">
+                                                        {showSheetView ? (
+                                                            <img
+                                                                src={img.src}
+                                                                className="w-full h-auto rendering-pixelated"
+                                                                alt="Sheet"
+                                                            />
+                                                        ) : (
+                                                            <Sprite
+                                                                id={parseInt(img.seed)}
+                                                                spriteSheet={{
+                                                                    src: img.src,
+                                                                    frameSize: 128,
+                                                                    framesPerRow: 8,
+                                                                    rows: {
+                                                                        IDLE: { row: 0, frames: 1 },
+                                                                        WALK: { row: 0, frames: 8 },
+                                                                        WALK_EAST: { row: 1, frames: 8 },
+                                                                        WALK_NORTH: { row: 2, frames: 8 },
+                                                                        WALK_WEST: { row: 3, frames: 8 },
+                                                                        ATTACK: { row: 4, frames: 8 },
+                                                                        DIE: { row: 5, frames: 6 },
+                                                                        EAT: { row: 6, frames: 8 },
+                                                                        EATING: { row: 6, frames: 8 },
+                                                                        TRAIN: { row: 7, frames: 8 },
+                                                                        TRAINING: { row: 7, frames: 8 }
+                                                                    }
+                                                                }}
+                                                                state={previewState}
+                                                                className="w-48 h-48 rendering-pixelated"
+                                                            />
+                                                        )}
+                                                    </div>
+                                                    <div className="p-3 flex justify-between items-center border-t border-white/10 bg-black/20">
+                                                        <span className="text-[10px] text-gray-500 font-mono">#{img.seed}</span>
+                                                        <a
+                                                            href={img.src}
+                                                            download={`monster_${img.seed}.png`}
+                                                            className="text-gray-400 hover:text-green-400 transition-colors"
+                                                            title="Download PNG"
+                                                        >
+                                                            <Download size={16} />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="h-full flex flex-col items-center justify-center text-gray-600 gap-4">
+                                            <div className="w-24 h-24 rounded-full border-2 border-dashed border-gray-800 flex items-center justify-center animate-pulse">
+                                                <Cpu className="opacity-20" size={48} />
+                                            </div>
+                                            <span className="text-xs font-mono uppercase tracking-widest opacity-50">READY TO SYNTHESIZE</span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
-
-                        <button
-                            onClick={handleGenerate}
-                            disabled={isGenerating}
-                            className={`w-full font-bold py-4 rounded flex items-center justify-center gap-2 transition-all ${isGenerating ? 'bg-blue-900 text-blue-200 cursor-wait' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_20px_rgba(37,99,235,0.3)]'}`}
-                        >
-                            {isGenerating ? <RefreshCw className="animate-spin" /> : <Cpu />}
-                            {isGenerating ? 'PROCESSING...' : 'EXECUTE GENERATION'}
-                        </button>
                     </div>
+                )}
 
-                    <div className="flex-1 bg-black rounded-xl border border-gray-800 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none" />
-
-                        {generatedImage ? (
-                            <div className="text-center z-10 animate-in fade-in zoom-in duration-300">
-                                <div className="relative group">
-                                    <img src={generatedImage} alt="Generated" className="w-64 h-64 pixelated border-2 border-slate-700 rounded-lg shadow-2xl mb-6 bg-slate-900" />
-                                    <div className="absolute inset-0 border-2 border-white/0 group-hover:border-white/20 transition-all rounded-lg pointer-events-none" />
+                {/* LMNFT PACK SECTION */}
+                {showPackGen && (
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="bg-gray-900/80 backdrop-blur-md p-6 rounded-2xl border border-orange-500/30 shadow-2xl">
+                            <div className="flex justify-between items-center mb-6">
+                                <div>
+                                    <h2 className="text-xl font-bold text-orange-400 uppercase tracking-tighter">LMNFT_BUNCH_GENERATOR</h2>
+                                    <p className="text-xs text-gray-400">Randomized rarity, balanced stats, and dynamic assets.</p>
                                 </div>
+                                <div className="flex flex-wrap items-center gap-4">
+                                    <div className="flex items-center bg-black/40 border border-white/10 rounded-lg p-1.5 px-3 gap-3">
+                                        <span className="text-[10px] text-gray-500 font-bold uppercase whitespace-nowrap">Batch Count</span>
+                                        <input
+                                            type="number"
+                                            value={batchExportCount}
+                                            onChange={(e) => setBatchExportCount(parseInt(e.target.value) || 1)}
+                                            className="w-16 bg-transparent text-orange-500 font-bold text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/50 rounded px-1"
+                                            min="1"
+                                            max="1000"
+                                        />
+                                    </div>
 
-                                <div className="flex justify-center gap-4">
-                                    <a
-                                        href={generatedImage}
-                                        download={`monster_v8_${genSeed || 'random'}.png`}
-                                        className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded text-xs font-bold flex items-center gap-2 transition-colors"
+                                    {generatedPacks.length > 0 && (
+                                        <button
+                                            onClick={handleMintAllPacks}
+                                            disabled={isExporting || isMinting}
+                                            className="px-6 py-2 bg-green-600 hover:bg-green-500 text-white rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-green-900/40"
+                                        >
+                                            {isMinting ? <RefreshCw className="animate-spin" size={16} /> : <Sparkles size={16} />}
+                                            MINT_TEST_PACK
+                                        </button>
+                                    )}
+
+                                    <button
+                                        onClick={handleLaunchMyNFTExport}
+                                        disabled={isExporting || isMinting}
+                                        className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-900/40"
                                     >
-                                        <Download size={14} /> SAVE PNG
-                                    </a>
+                                        {isExporting ? <RefreshCw className="animate-spin" size={16} /> : <Download size={16} />}
+                                        LP_EXPORT_ZIP
+                                    </button>
+
+                                    <div className="w-[1px] h-8 bg-white/10 mx-2 hidden md:block" />
+
+                                    <button
+                                        onClick={handleGeneratePack}
+                                        disabled={isGenerating || isExporting}
+                                        className="px-6 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-orange-900/40"
+                                    >
+                                        {isGenerating ? <RefreshCw className="animate-spin" size={16} /> : <Sliders size={16} />}
+                                        PREVIEW_PACK
+                                    </button>
                                 </div>
                             </div>
-                        ) : (
-                            <div className="text-gray-700 flex flex-col items-center gap-4">
-                                <div className="w-16 h-16 rounded-full border-2 border-dashed border-gray-800 flex items-center justify-center">
-                                    <Cpu className="opacity-20" size={32} />
+
+                            {exportStatus && (
+                                <div className="mb-4 p-3 bg-blue-900/40 border border-blue-500/30 rounded-xl flex items-center gap-3">
+                                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_#3b82f6]" />
+                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-widest">{exportStatus}</span>
                                 </div>
-                                <span className="text-xs font-mono uppercase tracking-widest">Awaiting Input Stream...</span>
+                            )}
+                            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto pb-4">
+                                {generatedPacks.map((pkg, idx) => (
+                                    <div key={idx} className="bg-black/60 rounded-xl border border-white/10 p-4 hover:border-orange-500/50 transition-all flex flex-col gap-3">
+                                        <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden border border-white/5 relative group">
+                                            <div
+                                                className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-80 transition-opacity"
+                                                style={{ backgroundImage: `url(${BACKGROUND_URIS[pkg.assets.background]})` }}
+                                            />
+                                            <img src={pkg.image} className="relative z-10 w-full h-full object-contain rendering-pixelated" />
+                                            <div className="absolute top-2 right-2 px-2 py-0.5 bg-black/80 rounded text-[8px] font-bold text-orange-400 border border-orange-500/30">
+                                                {pkg.attributes.find((a: any) => a.trait_type === 'Rarity')?.value}
+                                            </div>
+                                            <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/80 rounded text-[8px] font-mono text-cyan-400 border border-cyan-500/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                BG: {pkg.assets.background}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-bold truncate">{pkg.name}</h4>
+                                            <p className="text-[10px] text-gray-400 truncate">{pkg.assets.character}</p>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-1 mt-auto font-mono">
+                                            <div className="bg-white/5 p-1 rounded">
+                                                <p className="text-[8px] text-gray-500 font-bold uppercase">Feed Art</p>
+                                                <div className="aspect-square bg-black/40 rounded mt-1 overflow-hidden border border-white/5">
+                                                    <img src={pkg.assets.feeding_art} className="w-full h-full object-contain rendering-pixelated" />
+                                                </div>
+                                            </div>
+                                            <div className="bg-white/5 p-1 rounded">
+                                                <p className="text-[8px] text-gray-500 font-bold uppercase">Train Art</p>
+                                                <div className="aspect-square bg-black/40 rounded mt-1 overflow-hidden border border-white/5">
+                                                    <img src={pkg.assets.training_art} className="w-full h-full object-contain rendering-pixelated" />
+                                                </div>
+                                            </div>
+                                            <div className="bg-white/5 p-1 rounded col-span-1">
+                                                <p className="text-[8px] text-gray-500">HP</p>
+                                                <p className="text-[10px] font-bold text-green-400 font-mono">{pkg.stats.hp}</p>
+                                            </div>
+                                            <div className="bg-white/5 p-1 rounded col-span-1">
+                                                <p className="text-[8px] text-gray-500">ATK</p>
+                                                <p className="text-[10px] font-bold text-red-400 font-mono">{pkg.stats.attack}</p>
+                                            </div>
+                                            <div className="bg-white/5 p-1 rounded text-center col-span-2">
+                                                <p className="text-[8px] text-gray-500 truncate">DEVICE: {pkg.assets.device}</p>
+                                            </div>
+                                            <div className="bg-white/5 p-1 rounded text-center col-span-2">
+                                                <p className="text-[8px] text-gray-500 truncate">WEAPON: {pkg.assets.weapon?.toUpperCase() || 'NONE'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                {generatedPacks.length === 0 && (
+                                    <div className="col-span-5 py-20 border-2 border-dashed border-white/5 rounded-2xl flex flex-col items-center justify-center text-gray-600">
+                                        <Package size={48} className="opacity-10 mb-4" />
+                                        <p className="text-xs uppercase tracking-[0.2em]">Ready for Bulk Synthesis</p>
+                                    </div>
+                                )}
                             </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+            {/* --- HYBRID CAPTURE PORTAL (Hidden) --- */}
+            {isMounted && (
+                <div className="fixed -left-[2000px] top-0 opacity-0 pointer-events-none">
+                    <div
+                        ref={captureRef}
+                        style={{ width: '384px', height: '256px', position: 'relative', overflow: 'hidden' }}
+                    >
+                        {currentCaptureTarget?.type === 'device' && (
+                            <Device device={currentCaptureTarget.id} hideButtons hideLogo isCapturing>
+                                <div className="w-full h-full bg-transparent" />
+                            </Device>
+                        )}
+                        {currentCaptureTarget?.type === 'bg' && (
+                            <LcdBackground id={currentCaptureTarget.id} />
                         )}
                     </div>
                 </div>
             )}
+
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .pixel-art {
+                    image-rendering: pixelated;
+                    image-rendering: -moz-pixelated;
+                    image-rendering: crisp-edges;
+                }
+            ` }} />
         </div>
     );
 }
