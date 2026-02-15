@@ -96,7 +96,7 @@ export interface MonsterStats {
 export interface SpriteSheet {
     src: string;
     frameSize: number; // e.g., 64 (for 64x64 frames)
-    rows: Record<string, { row: number, frames: number } | number>;
+    rows: Record<string, { row: number, frames: number }>;
     framesPerRow: number; // Max width for calculations
     blinkRow?: number; // Specific row for blinking animation
     yOffset?: number; // Adjustment for sheets with vertical leakage
@@ -114,6 +114,7 @@ export interface MonsterData {
     variant: string; // Visual filter style
     baseStats: MonsterStats; // Now using full stats object
     spriteSheet?: SpriteSheet; // New Animation Support
+    originalSrc?: string; // Static image fallback
     mintAddress?: string; // On-chain Asset PK
 }
 
@@ -156,15 +157,17 @@ export const getMonsterData = (id: number): MonsterData | null => {
             src: `/collection_v8/sheet_${id}.png?v=23`,
             frameSize: 64,
             rows: {
-                IDLE: { row: 10, frames: 1 },
-                WALK: { row: 10, frames: frames - 1 },
-                EAT: { row: 2, frames: 7 },
-                ATTACK: { row: 14, frames: 6 },
-                TRAIN: { row: 6, frames: 8 },
-                CLEAN: { row: 0, frames: 7 },
-                DIE: { row: 20, frames: 6 }
+                IDLE: { row: 0, frames: 1 },
+                WALK: { row: 0, frames: 8 },
+                EAT: { row: 6, frames: 8 },
+                EATING: { row: 6, frames: 8 },
+                ATTACK: { row: 4, frames: 8 },
+                TRAIN: { row: 7, frames: 8 },
+                TRAINING: { row: 7, frames: 8 },
+                CLEAN: { row: 0, frames: 8 },
+                DIE: { row: 5, frames: 6 }
             },
-            framesPerRow: frames
+            framesPerRow: 8
         };
     }
     // 3. NEW CUSTOM SPECIES (IDs 200+)
@@ -190,15 +193,17 @@ export const getMonsterData = (id: number): MonsterData | null => {
             src: `/collection_v8/sheet_${id}.png?v=23`,
             frameSize: 64,
             rows: {
-                IDLE: { row: 10, frames: frames === 18 ? 9 : 1 },
-                WALK: { row: 10, frames: frames === 18 ? 9 : 9 },
-                EAT: { row: 2, frames: 7 },
-                ATTACK: { row: 14, frames: 6 },
-                TRAIN: { row: 6, frames: 8 },
-                CLEAN: { row: 0, frames: 7 },
-                DIE: { row: 20, frames: 6 }
+                IDLE: { row: 0, frames: 1 },
+                WALK: { row: 0, frames: 8 },
+                EAT: { row: 6, frames: 8 },
+                EATING: { row: 6, frames: 8 },
+                ATTACK: { row: 4, frames: 8 },
+                TRAIN: { row: 7, frames: 8 },
+                TRAINING: { row: 7, frames: 8 },
+                CLEAN: { row: 0, frames: 8 },
+                DIE: { row: 5, frames: 6 }
             },
-            framesPerRow: frames,
+            framesPerRow: 8,
             removeBackground: true
         };
     }
@@ -216,17 +221,19 @@ export const getMonsterData = (id: number): MonsterData | null => {
         // Includes baked weapons and food props for ALL monsters
         spriteSheet = {
             src: `/collection_v8/sheet_${id}.png?v=23`,
-            frameSize: 64,
+            frameSize: 128,
             rows: {
-                IDLE: { row: 10, frames: (id >= 200 && (id === 201 || id === 202 || id === 203 || id === 204)) ? 9 : 1 },
-                WALK: { row: 10, frames: (id >= 200 && (id === 201 || id === 202 || id === 203 || id === 204)) ? 9 : 9 },
-                EAT: { row: 2, frames: 7 },
-                ATTACK: { row: 14, frames: 6 },
-                TRAIN: { row: 6, frames: 8 },
-                CLEAN: { row: 0, frames: 7 },
-                DIE: { row: 20, frames: 6 }
+                IDLE: { row: 0, frames: 1 },
+                WALK: { row: 0, frames: 8 },
+                EAT: { row: 6, frames: 8 },
+                EATING: { row: 6, frames: 8 },
+                ATTACK: { row: 4, frames: 8 },
+                TRAIN: { row: 7, frames: 8 },
+                TRAINING: { row: 7, frames: 8 },
+                CLEAN: { row: 0, frames: 8 },
+                DIE: { row: 5, frames: 6 }
             },
-            framesPerRow: (id >= 200 && (id === 201 || id === 202 || id === 203 || id === 204)) ? 18 : 13
+            framesPerRow: 8
         };
         if (id === 100 || id === 42) spriteSheet.framesPerRow = 10;
     }

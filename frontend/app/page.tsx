@@ -30,12 +30,12 @@ export default function Home() {
     ownedDevices, ownedBackgrounds,
     currentDevice, currentBackground,
     loading, boostActive, tokenBalance,
-    gameBalance,
+    gameBalance, solBalance,
     ownedMonsters, switchMonster, isAuthenticating,
     swapOpen, setSwapOpen,
 
     // Actions
-    performAction, mintItem, equipItem, buyGama, depositGama, withdrawGama, completeBattle, setGameState, syncOnChainMetadata,
+    performAction, mintItem, equipItem, buyGama, depositGama, depositGamaFromWallet, withdrawGama, completeBattle, setGameState, syncOnChainMetadata,
 
     // Auth
     wallet
@@ -300,7 +300,7 @@ export default function Home() {
           }}
         >
           <Device
-            skin={currentDevice}
+            device={currentDevice}
             hideLogo={view === 'LOBBY'}
             hideButtons={view === 'LOBBY'}
             isWhale={boostActive}
@@ -364,6 +364,7 @@ export default function Home() {
                         monsterData={monsterData}
                         backgroundId={currentBackground}
                         tokenBalance={gameBalance}
+                        solBalance={solBalance}
                         actionLabels={currentDevice === 'DIGI' ? undefined : (view === 'HOME' ? ['FEED', 'TRAIN', 'CLEAN'] : ['ATTACK', 'BLOCK', 'SPECIAL'])}
                         loopLimit={gameState === 'IDLE' ? undefined : 2}
                         onAnimationComplete={() => setGameState('IDLE')}
@@ -395,6 +396,7 @@ export default function Home() {
             onSyncMetadata={syncOnChainMetadata}
             gameBalance={gameBalance}
             tokenBalance={tokenBalance}
+            solBalance={solBalance}
           />
         </motion.div>
       </div>
@@ -429,8 +431,8 @@ export default function Home() {
         onClose={() => setWalletOpen(false)}
         gameBalance={gameBalance}
         tokenBalance={tokenBalance}
-        onDeposit={depositGama}
-        onWithdraw={withdrawGama}
+        onDepositGama={depositGamaFromWallet} // GAMA -> GAME
+        onWithdraw={withdrawGama} // GAME -> GAMA
       />
 
       <NoAssetPopup

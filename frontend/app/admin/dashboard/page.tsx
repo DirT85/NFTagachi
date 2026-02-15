@@ -188,7 +188,8 @@ export default function AdminDashboard() {
                     spritesheet_uri: `/test-mint/${data.properties.assets.spritesheet_uri}`,
                     device: "MODERN_JET",
                     background: "LIGHT_CITY",
-                    character: data.name
+                    character: data.name,
+                    weapon: data.attributes.find((a: any) => a.trait_type === 'Weapon')?.value
                 },
                 attributes: data.attributes,
                 stats: {

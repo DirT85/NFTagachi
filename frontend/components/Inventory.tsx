@@ -21,6 +21,7 @@ interface InventoryProps {
     onSyncMetadata?: () => void;
     gameBalance?: number;
     tokenBalance?: number;
+    solBalance?: number; // New SOL Prop
 }
 
 export const Inventory = ({
@@ -32,7 +33,8 @@ export const Inventory = ({
     isAuthenticating,
     onSyncMetadata,
     gameBalance = 0,
-    tokenBalance = 0
+    tokenBalance = 0,
+    solBalance = 0
 }: InventoryProps) => {
     const [tab, setTab] = useState<'DEVICE' | 'BG' | 'PETS'>('PETS');
     const [viewingMonster, setViewingMonster] = useState<MonsterData | null>(null);
@@ -61,6 +63,17 @@ export const Inventory = ({
                             <h2 className="text-xl font-bold text-white tracking-wider flex items-center gap-2">
                                 INVENTORY
                             </h2>
+                            {/* SOL & GAMA Display */}
+                            <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/10">
+                                    <span className="text-[10px] font-black text-blue-400">◎ {solBalance?.toFixed(3) || '0.000'}</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/10">
+                                    <div className="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_5px_rgba(234,179,8,0.8)]" />
+                                    <span className="text-[10px] font-black text-white/90">{gameBalance?.toLocaleString()} G</span>
+                                </div>
+                            </div>
+
                             {onSyncMetadata && (
                                 <button
                                     onClick={onSyncMetadata}
@@ -222,7 +235,7 @@ const MonsterCard = React.memo(({ monster, isActive, onEquip, isAuthenticating }
                     </div>
                     <div className="flex items-center gap-1.5 text-orange-500/90 group-hover:text-orange-400 transition-colors">
                         <Swords size={10} fill="currentColor" className="opacity-40" />
-                        <span>{monster.baseStats.atk} ATK</span>
+                        <span>{(monster as any).weapon || 'Fists'}</span>
                     </div>
                 </div>
 

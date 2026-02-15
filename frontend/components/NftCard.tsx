@@ -83,6 +83,12 @@ export const NftCard = ({ monster, isSelected, onClick }: NftCardProps) => {
                         <StatItem icon={<Zap size={10} className="text-yellow-400" />} label="SPD" value={monster.baseStats.spd} />
                     </div>
 
+                    {/* Weapon Badge */}
+                    <div className="mb-3 px-2 py-1 bg-white/5 rounded-lg border border-white/5 flex items-center justify-between">
+                        <span className="text-[7px] text-zinc-500 font-black uppercase">Equipment</span>
+                        <span className="text-[9px] font-black text-white uppercase tracking-tight">{(monster as any).weapon || 'Bare Fists'}</span>
+                    </div>
+
                     {/* Weight & Power Footer */}
                     <div className="flex justify-between items-center pt-2 border-t border-white/5">
                         <div className="flex items-center gap-2">

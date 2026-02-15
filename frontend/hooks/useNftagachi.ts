@@ -12,6 +12,13 @@ import { generateSigner, transactionBuilder, percentAmount } from '@metaplex-fou
 
 import { create, fetchAssetsByOwner, updateV1, fetchAssetV1 } from '@metaplex-foundation/mpl-core';
 import { useMetaplex } from './useMetaplex';
+import { GAMA_MINT_ADDRESS, TREASURY_ADDRESS, INITIAL_GAME_BALANCE } from '../utils/constants';
+import {
+    TOKEN_PROGRAM_ID,
+    createTransferInstruction,
+    getAssociatedTokenAddress
+} from "@solana/spl-token";
+import { Transaction } from "@solana/web3.js";
 
 const PROGRAM_ID = new PublicKey("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
@@ -73,52 +80,82 @@ export const useNftagachi = () => {
                 ]);
                 const chainSkins = skinAccounts.map(s => (s.account as any).variantId);
 
-                // 2. Fetch Metaplex Core Assets (Admin Minted)
+                // 2. Fetch Metaplex Core Assets (Collection Based)
                 let coreSkins: string[] = [];
                 let coreBgs: string[] = [];
                 let coreMonsters: MonsterData[] = [];
 
                 if (umi) {
                     try {
+                        const monsterCol = localStorage.getItem("nftagachi_monster_collection");
+                        const skinCol = localStorage.getItem("nftagachi_skin_collection");
+                        const bgCol = localStorage.getItem("nftagachi_bg_collection");
+
                         const assets = await fetchAssetsByOwner(umi, wallet.publicKey.toString());
-                        assets.forEach(asset => {
-                            if (asset.name.startsWith("NFTagachi Skin: ")) {
-                                coreSkins.push(asset.name.replace("NFTagachi Skin: ", ""));
-                            }
-                            if (asset.name.startsWith("NFTagachi Background: ")) {
-                                coreBgs.push(asset.name.replace("NFTagachi Background: ", ""));
-                            }
-                            if (asset.name.startsWith("NFTagachi Species: ")) {
-                                const idStr = asset.name.replace("NFTagachi Species: ", "");
-                                const id = parseInt(idStr);
-                                if (!isNaN(id)) {
-                                    const baseData = getMonsterData(id);
-                                    if (baseData) {
-                                        coreMonsters.push({
-                                            ...baseData,
-                                            mintAddress: asset.publicKey.toString(),
-                                            baseStats: {
-                                                level: 1,
-                                                exp: 0,
-                                                hp: baseData.baseStats.hp,
-                                                maxHp: baseData.baseStats.hp,
-                                                atk: baseData.baseStats.atk,
-                                                def: baseData.baseStats.def,
-                                                spd: baseData.baseStats.spd,
-                                                hunger: 50,
-                                                happiness: 50,
-                                                energy: 100,
-                                                waste: 0,
-                                                weight: 20,
-                                                power: 10,
-                                                bodyCondition: 'NORMAL',
+
+                        // Use Promise.all with metadata hydration
+                        const hydratedResults = await Promise.all(assets.map(async (asset) => {
+                            try {
+                                // 1. Check if asset belongs to our collections (OR has our prefix as legacy fallback)
+                                const updateAuth = asset.updateAuthority?.address?.toString();
+                                const isMonster = (monsterCol && updateAuth === monsterCol) || asset.name.startsWith("NFTagachi Species: ");
+                                const isSkin = (skinCol && updateAuth === skinCol) || asset.name.startsWith("NFTagachi Skin: ");
+                                const isBg = (bgCol && updateAuth === bgCol) || asset.name.startsWith("NFTagachi Background: ");
+
+                                if (!isMonster && !isSkin && !isBg) return null;
+
+                                // 2. Fetch JSON Metadata
+                                const metaRes = await fetch(asset.uri, { signal: AbortSignal.timeout(5000) });
+                                const metadata = await metaRes.json();
+
+                                if (isSkin) coreSkins.push(metadata.name || asset.name.replace("NFTagachi Skin: ", ""));
+                                if (isBg) coreBgs.push(metadata.name || asset.name.replace("NFTagachi Background: ", ""));
+
+                                if (isMonster) {
+                                    const idStr = asset.name.split("#").pop() || "";
+                                    const id = parseInt(idStr) || Math.floor(Math.random() * 999999);
+
+                                    // Extract components
+                                    const props = metadata.properties || {};
+                                    const assetsMap = props.assets || {};
+
+                                    return {
+                                        id,
+                                        name: metadata.name || asset.name,
+                                        tier: metadata.attributes?.find((a: any) => a.trait_type === 'Tier')?.value || 'COMMON',
+                                        type: metadata.attributes?.find((a: any) => a.trait_type === 'Type')?.value || 'EARTH',
+                                        weapon: metadata.attributes?.find((a: any) => a.trait_type === 'Weapon')?.value || 'None',
+                                        variant: 'NORMAL',
+                                        baseImageIndex: 0,
+                                        spriteSheet: assetsMap.spritesheet_uri ? {
+                                            src: assetsMap.spritesheet_uri,
+                                            frameSize: 128,
+                                            framesPerRow: 8,
+                                            rows: {
+                                                IDLE: { row: 0, frames: 1 },
+                                                WALK: { row: 0, frames: 8 },
+                                                ATTACK: { row: 4, frames: 8 },
+                                                DIE: { row: 5, frames: 6 }
                                             }
-                                        });
-                                    }
+                                        } : undefined,
+                                        originalSrc: metadata.image || asset.uri.replace(".json", ".png"),
+                                        mintAddress: asset.publicKey.toString(),
+                                        baseStats: props.stats || {
+                                            level: 1, exp: 0, hp: 100, maxHp: 100,
+                                            atk: 10, def: 10, spd: 10,
+                                            hunger: 50, happiness: 50, energy: 100,
+                                            waste: 0, weight: 20, power: 10, bodyCondition: 'NORMAL'
+                                        }
+                                    } as MonsterData;
                                 }
+                            } catch (e) {
+                                console.warn("Failed to hydrate metadata for asset:", asset.name, e);
                             }
-                        });
-                        console.log("Fetched Metaplex Assets:", coreSkins, coreBgs, coreMonsters.length);
+                            return null;
+                        }));
+
+                        coreMonsters = hydratedResults.filter((m): m is MonsterData => m !== null);
+                        console.log("Fetched & Hydrated Metaplex Assets:", coreSkins.length, coreBgs.length, coreMonsters.length);
                     } catch (fetchErr) {
                         console.error("Metaplex fetch failed:", fetchErr);
                     }
@@ -151,19 +188,50 @@ export const useNftagachi = () => {
                     });
                 }
 
-                // 4. Fetch GAMA Token Balance
+                // 4. Fetch GAMA Token Balance & SOL Balance
                 if (wallet.publicKey) {
+                    // SOL Balance
                     try {
-                        const globalAccounts = await program.account.globalState.all();
-                        if (globalAccounts.length > 0) {
-                            const rewardMint = globalAccounts[0].account.rewardMint;
+                        const sol = await connection.getBalance(wallet.publicKey);
+                        setSolBalance(sol / web3.LAMPORTS_PER_SOL);
+                    } catch (solErr) {
+                        console.error("Failed to fetch SOL balance:", solErr);
+                    }
+
+                    // GAMA Balance
+                    try {
+                        let rewardMint: PublicKey | null = null;
+
+                        // Check Constant First
+                        if (GAMA_MINT_ADDRESS !== "YOUR_GAMA_MINT_ADDRESS_HERE") {
+                            try {
+                                rewardMint = new PublicKey(GAMA_MINT_ADDRESS);
+                            } catch (e) {
+                                console.warn("Invalid GAMA_MINT_ADDRESS constant:", e);
+                            }
+                        }
+
+                        // Fallback to On-Chain State
+                        if (!rewardMint) {
+                            const globalAccounts = await program.account.globalState.all();
+                            if (globalAccounts.length > 0) {
+                                rewardMint = globalAccounts[0].account.rewardMint;
+                            }
+                        }
+
+                        // Check Balance using SPL Token Logic
+                        if (rewardMint) {
                             const tokenAccounts = await connection.getParsedTokenAccountsByOwner(wallet.publicKey, {
                                 mint: rewardMint
                             });
                             if (tokenAccounts.value.length > 0) {
                                 const balance = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
                                 setTokenBalance(balance || 0);
+                            } else {
+                                setTokenBalance(0);
                             }
+                        } else {
+                            console.warn("GAMA Mint Address not configured in constants.ts and not found on-chain.");
                         }
                     } catch (tokenErr) {
                         console.error("Failed to fetch token balance:", tokenErr);
@@ -280,6 +348,7 @@ export const useNftagachi = () => {
 
     const [tokenBalance, setTokenBalance] = useState(0);
     const [gameBalance, setGameBalance] = useState(0); // "Session" Balance
+    const [solBalance, setSolBalance] = useState(0); // New SOL Balance
     const [boostActive, setBoostActive] = useState(false);
 
     // PERSISTENCE: Load Game Balance & History on Mount
@@ -291,14 +360,14 @@ export const useNftagachi = () => {
             // FORCE FIX: If user has the old hardcoded 150,000, nuke it.
             if (parsed === 150000) {
                 console.log("Found glitch 150k balance. Resetting to 0.");
-                setGameBalance(0);
-                localStorage.setItem('nftagachi_gameBalance_v2', '0');
+                setGameBalance(INITIAL_GAME_BALANCE);
+                localStorage.setItem('nftagachi_gameBalance_v2', INITIAL_GAME_BALANCE.toString());
             } else {
                 setGameBalance(parsed);
             }
         } else {
-            // New User: Start with 0. Starter Pack (1000 G) is granted upon connecting a Monster.
-            setGameBalance(0);
+            // New User: Start with default.
+            setGameBalance(INITIAL_GAME_BALANCE);
         }
     }, [wallet]); // Re-run on wallet connect to ensure fresh checks
 
@@ -377,7 +446,6 @@ export const useNftagachi = () => {
         setBoostActive(isWhale);
     }, [tokenBalance]);
 
-    // ... (existing sync logic)
     // Sync initial petState with the active monster
     useEffect(() => {
         if (monsterData) {
@@ -388,15 +456,91 @@ export const useNftagachi = () => {
                 energy: (monsterData.baseStats as any).energy ?? 90,
                 waste: (monsterData.baseStats as any).waste ?? 0,
                 isFainted: monsterData.baseStats.hp <= 0,
-                weight: monsterData.baseStats.weight ?? (isWhale ? 30 : 20),
-                power: monsterData.baseStats.power ?? (isWhale ? 25 : 10),
+                weight: monsterData.baseStats.weight ?? (boostActive ? 30 : 20),
+                power: monsterData.baseStats.power ?? (boostActive ? 25 : 10),
                 maxHp: monsterData.baseStats.maxHp,
                 hp: monsterData.baseStats.hp,
                 level: monsterData.baseStats.level,
                 exp: monsterData.baseStats.exp
             });
         }
-    }, [monsterData]);
+    }, [monsterData, boostActive]);
+
+    const depositGamaFromWallet = async (amountGama: number) => {
+        if (!wallet || !wallet.publicKey) return;
+
+        // 1. Validate Config
+        if (GAMA_MINT_ADDRESS === "YOUR_GAMA_MINT_ADDRESS_HERE" || TREASURY_ADDRESS === "YOUR_TREASURY_WALLET_ADDRESS_HERE") {
+            alert("CONFIGURATION ERROR: Please set GAMA_MINT_ADDRESS and TREASURY_ADDRESS in frontend/utils/constants.ts");
+            return;
+        }
+
+        let mintPK: PublicKey;
+        let treasuryPK: PublicKey;
+        try {
+            mintPK = new PublicKey(GAMA_MINT_ADDRESS);
+            treasuryPK = new PublicKey(TREASURY_ADDRESS);
+        } catch (e) {
+            alert("Invalid Address in constants.ts");
+            return;
+        }
+
+        if (tokenBalance < amountGama) {
+            alert(`Insufficient Wallet GAMA! You have ${tokenBalance.toLocaleString()}.`);
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // 2. Prepare Transaction
+            const transaction = new Transaction();
+
+            // Get Source ATA
+            const sourceATA = await getAssociatedTokenAddress(
+                mintPK!,
+                wallet.publicKey
+            );
+
+            // Get Destination ATA (Treasury) - Create if needed
+            const destATA = await getAssociatedTokenAddress(
+                mintPK!,
+                treasuryPK!
+            );
+
+            // Fetch Mint Info to get Decimals? We assume 9 or fetch.
+            // For now, let's assume standard 9.
+            const DECIMALS = 9;
+            const rawAmount = Math.round(amountGama * Math.pow(10, DECIMALS));
+
+            // Add Transfer Instruction
+            transaction.add(
+                createTransferInstruction(
+                    sourceATA,
+                    destATA,
+                    wallet.publicKey,
+                    rawAmount,
+                    [],
+                    TOKEN_PROGRAM_ID
+                )
+            );
+
+            // 3. Send & Confirm
+            const signature = await sendTransaction(transaction, connection);
+            await connection.confirmTransaction(signature, 'confirmed');
+
+            // 4. Update Game State
+            setTokenBalance(prev => prev - amountGama);
+            setGameBalance(prev => prev + amountGama);
+
+            alert(`[SUCCESS] Deposited ${amountGama.toLocaleString()} GAMA!`);
+
+        } catch (err: any) {
+            console.error("Deposit Failed:", err);
+            alert(`Deposit Failed: ${err.message}`);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const depositToGame = async (amount: number) => {
         if (tokenBalance < amount) {
@@ -844,6 +988,8 @@ export const useNftagachi = () => {
         }, 1500);
     };
 
+
+
     const completeBattle = (win: boolean, xpGained: number) => {
         if (!monsterData) return;
 
@@ -900,6 +1046,7 @@ export const useNftagachi = () => {
         boostActive,
         tokenBalance,
         gameBalance,
+        solBalance,
         swapOpen,
         setSwapOpen,
 
@@ -908,7 +1055,8 @@ export const useNftagachi = () => {
         equipItem,
         performAction,
         buyGama: depositGama, // Alias for backward compatibility
-        depositGama,
+        depositGama, // SOL -> GAME
+        depositGamaFromWallet, // GAMA -> GAME
         withdrawGama,
         completeBattle,
         syncOnChainMetadata,

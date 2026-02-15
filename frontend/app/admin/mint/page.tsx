@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useMetaplex } from "../../../hooks/useMetaplex";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { SKIN_URIS } from "../../../utils/SkinMetadata";
+import { DEVICE_URIS } from "../../../utils/DeviceMetadata";
 import { BACKGROUND_URIS } from "../../../utils/BackgroundMetadata";
 import { MONSTER_URIS } from "../../../utils/MonsterMetadata";
 import { getMonsterData } from "../../../utils/GameLogic";
@@ -19,10 +19,10 @@ export default function AdminMintPage() {
     const umi = useMetaplex();
     const [mounted, setMounted] = useState(false);
     const [logs, setLogs] = useState<string[]>([]);
-    const [activeTab, setActiveTab] = useState<'SKINS' | 'BACKGROUNDS' | 'MONSTERS'>('SKINS');
+    const [activeTab, setActiveTab] = useState<'DEVICE' | 'BACKGROUNDS' | 'MONSTERS'>('DEVICE');
 
     // State
-    const [skinCollection, setSkinCollection] = useState<string | null>(null);
+    const [deviceCollection, setDeviceCollection] = useState<string | null>(null);
     const [bgCollection, setBgCollection] = useState<string | null>(null);
     const [monsterCollection, setMonsterCollection] = useState<string | null>(null);
     const [mintedItems, setMintedItems] = useState<Record<string, string>>({});
@@ -30,8 +30,8 @@ export default function AdminMintPage() {
 
     useEffect(() => {
         setMounted(true);
-        const col1 = localStorage.getItem("nftagachi_skin_collection");
-        if (col1) setSkinCollection(col1);
+        const col1 = localStorage.getItem("nftagachi_skin_collection"); // Keep key for compat
+        if (col1) setDeviceCollection(col1);
 
         const col2 = localStorage.getItem("nftagachi_bg_collection");
         if (col2) setBgCollection(col2);
@@ -45,11 +45,11 @@ export default function AdminMintPage() {
     if (!mounted) return <div className="p-8 bg-gray-900 text-white font-mono">Loading Admin Mint...</div>;
 
     // 1. Create Collection
-    const createCollectionNft = async (type: 'SKINS' | 'BACKGROUNDS' | 'MONSTERS') => {
+    const createCollectionNft = async (type: 'DEVICE' | 'BACKGROUNDS' | 'MONSTERS') => {
         if (!umi) return;
         setIsProcessing(true);
         try {
-            let name = "NFTagachi Skins Gen1";
+            let name = "NFTagachi Devices Gen1";
             if (type === 'BACKGROUNDS') name = "NFTagachi Backgrounds Gen1";
             if (type === 'MONSTERS') name = "NFTagachi Species Gen1";
 
@@ -66,8 +66,8 @@ export default function AdminMintPage() {
 
             log(`✅ Collection Created! Address: ${collectionSigner.publicKey}`);
 
-            if (type === 'SKINS') {
-                setSkinCollection(collectionSigner.publicKey.toString());
+            if (type === 'DEVICE') {
+                setDeviceCollection(collectionSigner.publicKey.toString());
                 localStorage.setItem("nftagachi_skin_collection", collectionSigner.publicKey.toString());
             } else if (type === 'BACKGROUNDS') {
                 setBgCollection(collectionSigner.publicKey.toString());
@@ -85,10 +85,10 @@ export default function AdminMintPage() {
     };
 
     // 2. Mint Item
-    const mintItem = async (id: string, type: 'SKINS' | 'BACKGROUNDS' | 'MONSTERS') => {
-        let collectionAddr = skinCollection;
-        let uriMap: Record<string, string> = SKIN_URIS;
-        let namePrefix = "Skin";
+    const mintItem = async (id: string, type: 'DEVICE' | 'BACKGROUNDS' | 'MONSTERS') => {
+        let collectionAddr = deviceCollection;
+        let uriMap: Record<string, string> = DEVICE_URIS;
+        let namePrefix = "Device";
 
         if (type === 'BACKGROUNDS') {
             collectionAddr = bgCollection;
@@ -127,16 +127,16 @@ export default function AdminMintPage() {
     };
 
     // 3. Mint All (Batch)
-    const mintAll = async (type: 'SKINS' | 'BACKGROUNDS' | 'MONSTERS') => {
-        const uriMap = type === 'SKINS' ? SKIN_URIS : (type === 'BACKGROUNDS' ? BACKGROUND_URIS : MONSTER_URIS);
+    const mintAll = async (type: 'DEVICE' | 'BACKGROUNDS' | 'MONSTERS') => {
+        const uriMap = type === 'DEVICE' ? DEVICE_URIS : (type === 'BACKGROUNDS' ? BACKGROUND_URIS : MONSTER_URIS);
         for (const id of Object.keys(uriMap)) {
             await mintItem(id, type);
             await new Promise(r => setTimeout(r, 1000));
         }
     };
 
-    const activeCollection = activeTab === 'SKINS' ? skinCollection : (activeTab === 'BACKGROUNDS' ? bgCollection : monsterCollection);
-    const activeUris = activeTab === 'SKINS' ? SKIN_URIS : (activeTab === 'BACKGROUNDS' ? BACKGROUND_URIS : MONSTER_URIS);
+    const activeCollection = activeTab === 'DEVICE' ? deviceCollection : (activeTab === 'BACKGROUNDS' ? bgCollection : monsterCollection);
+    const activeUris = activeTab === 'DEVICE' ? DEVICE_URIS : (activeTab === 'BACKGROUNDS' ? BACKGROUND_URIS : MONSTER_URIS);
 
     return (
         <div className="p-8 bg-gray-900 min-h-screen text-white font-mono">
@@ -156,10 +156,10 @@ export default function AdminMintPage() {
                 {/* TABS */}
                 <div className="flex gap-4 mb-6 border-b border-gray-700 pb-1">
                     <button
-                        onClick={() => setActiveTab('SKINS')}
-                        className={`px-4 py-2 font-bold ${activeTab === 'SKINS' ? 'text-green-400 border-b-2 border-green-400' : 'text-gray-500'}`}
+                        onClick={() => setActiveTab('DEVICE')}
+                        className={`px-4 py-2 font-bold ${activeTab === 'DEVICE' ? 'text-green-400 border-b-2 border-green-400' : 'text-gray-500'}`}
                     >
-                        SKINS
+                        DEVICES
                     </button>
                     <button
                         onClick={() => setActiveTab('BACKGROUNDS')}
@@ -188,7 +188,7 @@ export default function AdminMintPage() {
                         <button
                             onClick={() => createCollectionNft(activeTab)}
                             disabled={isprocessing}
-                            className={`px-6 py-2 rounded font-bold ${activeTab === 'SKINS' ? 'bg-green-600' :
+                            className={`px-6 py-2 rounded font-bold ${activeTab === 'DEVICE' ? 'bg-green-600' :
                                 activeTab === 'BACKGROUNDS' ? 'bg-purple-600' : 'bg-red-600'
                                 }`}
                         >
@@ -230,8 +230,8 @@ export default function AdminMintPage() {
                                 return (
                                     <div key={id} className="bg-black/30 p-4 rounded border border-gray-700 flex flex-col items-center">
                                         <div className="scale-0.5 origin-center mb-[-20px] mt-[-20px] w-full flex justify-center">
-                                            {activeTab === 'SKINS' ? (
-                                                <Device skin={id} hideLogo>
+                                            {activeTab === 'DEVICE' ? (
+                                                <Device device={id} hideLogo>
                                                     <div className="w-full h-full bg-black/20" />
                                                 </Device>
                                             ) : activeTab === 'BACKGROUNDS' ? (

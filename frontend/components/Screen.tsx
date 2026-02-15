@@ -24,6 +24,7 @@ interface ScreenProps {
     backgroundId?: string | number;
     actionLabels?: string[];
     tokenBalance?: number;
+    solBalance?: number; // New SOL Prop
     loopLimit?: number; // New
     onAnimationComplete?: () => void; // New
 }
@@ -51,7 +52,7 @@ function getAnimation(state: string) {
     }
 }
 
-export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, actionLabels, tokenBalance, loopLimit, onAnimationComplete }: ScreenProps) => {
+export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, actionLabels, tokenBalance, solBalance, loopLimit, onAnimationComplete }: ScreenProps) => {
     const [hueRotate, setHueRotate] = useState<number>(0);
 
     useEffect(() => {
@@ -70,13 +71,17 @@ export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, acti
             <LcdBackground id={backgroundId} active={state === 'TRAINING'} />
 
             {/* Stats Overlay - Z-Index 20 */}
-            {/* Stats Overlay - Z-Index 20 */}
-            {/* Stats Overlay - Z-Index 20 */}
             <div className="absolute inset-x-0 top-0 p-1.5 pointer-events-none z-20 flex flex-col gap-0.5 select-none bg-gradient-to-b from-black/20 to-transparent">
                 <div className="flex justify-between items-center opacity-90">
-                    <span className="text-[9px] font-black tracking-tighter text-black/90 flex items-center gap-1">
-                        <span className="uppercase text-[8px] opacity-70">LV. {monsterData?.baseStats?.level || 1}</span>
-                    </span>
+                    {/* SOL Balance (Top Left) */}
+                    <div className="flex items-center gap-1 bg-black/5 px-1.5 rounded-full">
+                        <span className="text-[6px] font-black text-black/40 uppercase">SOL</span>
+                        <span className="text-[8px] font-black text-blue-900/90 tabular-nums leading-none">
+                            {(solBalance || 0).toFixed(3)}
+                        </span>
+                    </div>
+
+                    {/* GAMA Balance (Top Right) */}
                     <div className="flex items-center gap-1 bg-black/5 px-1.5 rounded-full">
                         <span className="text-[6px] font-black text-black/40 uppercase">BANK</span>
                         <span className="text-[8px] font-black text-yellow-900/90 tabular-nums leading-none">
@@ -148,7 +153,6 @@ export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, acti
             ) : (
                 <Sprite
                     id={monsterData?.id || 0}
-                    baseIndex={monsterData?.baseImageIndex}
                     variant={monsterData?.variant}
                     animate={getAnimation(state)}
                     className={`z-10 ${state === 'FAINTED' ? 'grayscale opacity-50' : ''}`}
@@ -158,6 +162,7 @@ export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, acti
                             ? `drop-shadow(0 4px 2px rgba(0,0,0,0.2))`
                             : `hue-rotate(${hueRotate}deg) drop-shadow(0 4px 2px rgba(0,0,0,0.2))`
                     }}
+                    originalSrc={monsterData?.baseImageIndex === 0 ? '/pet_water.png' : monsterData?.baseImageIndex === 1 ? '/pet_fire.png' : '/pet_grass.png'}
                     spriteSheet={monsterData?.spriteSheet}
                     state={state}
                     loopLimit={loopLimit}
