@@ -34,10 +34,12 @@ yarn-error.log*
 .env*
 
 # vercel
-.vercel
+/.vercel/
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# Large Assets (Tracked externally or generated)
+/assets/
+/public/test-mint/
