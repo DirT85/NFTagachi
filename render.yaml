@@ -5,7 +5,7 @@ services:
     plan: free
     branch: main
     rootDir: frontend
-    buildCommand: "npm install --prefer-offline --no-audit && NODE_OPTIONS=--max-old-space-size=450 npm run build && mkdir -p .next/standalone/frontend/.next/static && cp -r .next/static .next/standalone/frontend/.next/static && cp -r public .next/standalone/frontend/public"
+    buildCommand: "npm install --prefer-offline --no-audit && NODE_OPTIONS=--max-old-space-size=350 npm run build && mkdir -p .next/standalone/frontend/.next/static && cp -r .next/static .next/standalone/frontend/.next/static && cp -r public .next/standalone/frontend/public"
     startCommand: "node .next/standalone/frontend/server.js"
     envVars:
       - key: NODE_ENV
