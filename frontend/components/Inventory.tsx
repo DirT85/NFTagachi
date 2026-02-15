@@ -55,7 +55,7 @@ export const Inventory = ({
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.9, y: 20 }}
                     className="bg-gray-900 border border-gray-700 w-full max-w-lg rounded-xl overflow-hidden shadow-2xl"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e: React.MouseEvent) => e.stopPropagation()}
                 >
                     {/* Header */}
                     <div className="flex justify-between items-center p-4 border-b border-gray-800 bg-gray-950">
