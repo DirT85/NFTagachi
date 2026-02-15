@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 // Force restart to clear stale generatorV8 cache
 // @ts-ignore
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  // output: 'standalone', // Disabled for Netlify compatibility
   productionBrowserSourceMaps: false,
   // EXTREME MEMORY SAVING FOR RENDER FREE TIER
   experimental: {
