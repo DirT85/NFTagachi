@@ -48,6 +48,38 @@ export const useNftagachi = () => {
     const { sendTransaction } = useWallet();
     const [program, setProgram] = useState<Program | null>(null);
 
+    const mintTestMonster = async () => {
+        setLoading(true);
+        console.log("[MINT] Summoning Trial Dragon...");
+        // Artificial delay for feedback
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        const testMonster: MonsterData = {
+            id: 9999,
+            name: "Trial Dragon (TEST)",
+            tier: "LEGENDARY",
+            type: "FIRE",
+            variant: "GLOWING",
+            baseImageIndex: 0,
+            baseStats: {
+                level: 1, exp: 0, hp: 100, maxHp: 100,
+                atk: 15, def: 12, spd: 14,
+                hunger: 50, happiness: 80, energy: 100,
+                waste: 0, weight: 20, power: 10, bodyCondition: 'NORMAL'
+            }
+        };
+
+        setOwnedMonsters(prev => {
+            const exists = prev.find(m => m.id === testMonster.id);
+            if (exists) return prev;
+            return [...prev, testMonster];
+        });
+
+        setMonsterData(testMonster);
+        setLoading(false);
+        console.log("[MINT] Trial Dragon Summoned Successfully.");
+    };
+
     // Metaplex Umi Instance
     const umi = useMetaplex();
 
@@ -285,12 +317,18 @@ export const useNftagachi = () => {
                     setMonsterData(ownedMonsters[0]);
                 }
             } else if (MOCK_MODE) {
-                // If in Mock Mode and NO monsters found, give them the Trial Dragon automatically
-                // This ensures the user has a "Guest Mode" experience immediately.
+                console.log("[DEBUG] MOCK_MODE active - Forcing Trial Dragon grant...");
                 mintTestMonster();
             }
         }
     }, [ownedMonsters]);
+
+    // Force-expose to window for ultimate debug accessibility
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            (window as any).mintTestMonster = mintTestMonster;
+        }
+    }, [mintTestMonster]);
 
     const [isAuthenticating, setIsAuthenticating] = useState(false);
 
@@ -1001,39 +1039,6 @@ export const useNftagachi = () => {
         }, 1500);
     };
 
-    const mintTestMonster = async () => {
-        setLoading(true);
-        // Artificial delay for feedback
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        const testMonster: MonsterData = {
-            id: 9999,
-            name: "Trial Dragon (TEST)",
-            tier: "LEGENDARY",
-            type: "FIRE",
-            variant: "GLOWING",
-            baseImageIndex: 0,
-            baseStats: {
-                level: 1, exp: 0, hp: 100, maxHp: 100,
-                atk: 15, def: 12, spd: 14,
-                hunger: 50, happiness: 80, energy: 100,
-                waste: 0, weight: 20, power: 10, bodyCondition: 'NORMAL'
-            }
-        };
-
-        setOwnedMonsters(prev => {
-            const exists = prev.find(m => m.id === testMonster.id);
-            if (exists) return prev;
-            return [...prev, testMonster];
-        });
-
-        if (!monsterData) {
-            setMonsterData(testMonster);
-        }
-
-        setLoading(false);
-        console.log("Trial Dragon Summoned for testing.");
-    };
 
 
 

@@ -57,14 +57,15 @@ export default function Home() {
   const [showNoAssetPopup, setShowNoAssetPopup] = useState(false);
 
   useEffect(() => {
-    if (wallet && !loading && ownedMonsters.length === 0) {
-      // User connected but has no monsters -> Show Popup
-      const timer = setTimeout(() => setShowNoAssetPopup(true), 1500); // Small delay for effect
+    // Show popup if NOT loading AND NO monsters found
+    // Wallet connection is NO LONGER a requirement to see this popup for trial mints
+    if (!loading && ownedMonsters.length === 0) {
+      const timer = setTimeout(() => setShowNoAssetPopup(true), 1500);
       return () => clearTimeout(timer);
     } else {
       setShowNoAssetPopup(false);
     }
-  }, [wallet, loading, ownedMonsters]);
+  }, [loading, ownedMonsters]);
   const [opponentId, setOpponentId] = useState<string | null>(null);
   const [opponentMonster, setOpponentMonster] = useState<MonsterData | null>(null);
   const [isChallenger, setIsChallenger] = useState(false);
