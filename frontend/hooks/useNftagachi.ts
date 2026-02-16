@@ -54,9 +54,11 @@ export const useNftagachi = () => {
         // Artificial delay for feedback
         await new Promise(resolve => setTimeout(resolve, 800));
 
+        // Use Date.now() for unique ID so we can have multiple
+        const uniqueId = Math.floor(Date.now() % 100000);
         const testMonster: MonsterData = {
-            id: 9999,
-            name: "Trial Dragon (TEST)",
+            id: uniqueId,
+            name: `Trial Dragon #${uniqueId}`,
             tier: "LEGENDARY",
             type: "FIRE",
             variant: "GLOWING",
@@ -77,7 +79,7 @@ export const useNftagachi = () => {
 
         setMonsterData(testMonster);
         setLoading(false);
-        console.log("[MINT] Trial Dragon Summoned Successfully.");
+        console.log(`[MINT] Trial Dragon #${uniqueId} Summoned Successfully.`);
     };
 
     // Metaplex Umi Instance
@@ -518,52 +520,59 @@ export const useNftagachi = () => {
     }, [monsterData, boostActive]);
 
     const depositGamaFromWallet = async (amountGama: number) => {
-        if (!wallet || !wallet.publicKey) return;
-
-        // 1. Validate Config
-        if (GAMA_MINT_ADDRESS === "YOUR_GAMA_MINT_ADDRESS_HERE" || TREASURY_ADDRESS === "YOUR_TREASURY_WALLET_ADDRESS_HERE") {
-            alert("CONFIGURATION ERROR: Please set GAMA_MINT_ADDRESS and TREASURY_ADDRESS in frontend/utils/constants.ts");
+        if (!wallet || !wallet.publicKey) {
+            alert("Connect wallet to deposit tokens!");
             return;
         }
 
-        let mintPK: PublicKey;
-        let treasuryPK: PublicKey;
+        // 1. Resolve Mint Address
+        let mintPK: PublicKey | null = null;
         try {
-            mintPK = new PublicKey(GAMA_MINT_ADDRESS);
-            treasuryPK = new PublicKey(TREASURY_ADDRESS);
+            if (GAMA_MINT_ADDRESS && GAMA_MINT_ADDRESS !== "YOUR_GAMA_MINT_ADDRESS_HERE") {
+                mintPK = new PublicKey(GAMA_MINT_ADDRESS);
+            }
         } catch (e) {
-            alert("Invalid Address in constants.ts");
+            console.warn("Invalid GAMA_MINT_ADDRESS config:", e);
+        }
+
+        if (!mintPK) {
+            alert("GAMA Token Mint address not set in constants.ts! Using simulation mode for UI testing.");
+            // Fallback simulation for testing UI without real tokens
+            setLoading(true);
+            await new Promise(r => setTimeout(r, 1000));
+            setTokenBalance(prev => Math.max(0, prev - amountGama));
+            setGameBalance(prev => prev + amountGama);
+            setLoading(false);
             return;
         }
 
-        if (tokenBalance < amountGama) {
-            alert(`Insufficient Wallet GAMA! You have ${tokenBalance.toLocaleString()}.`);
-            return;
-        }
+        const treasuryPK = new PublicKey(TREASURY_ADDRESS === "YOUR_TREASURY_WALLET_ADDRESS_HERE" ? wallet.publicKey.toBase58() : TREASURY_ADDRESS);
 
         setLoading(true);
         try {
-            // 2. Prepare Transaction
+            // Check balance first
+            const tokenAccounts = await connection.getParsedTokenAccountsByOwner(wallet.publicKey, {
+                mint: mintPK
+            });
+
+            const currentBalance = tokenAccounts.value.length > 0
+                ? tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount
+                : 0;
+
+            if (currentBalance < amountGama) {
+                alert(`Insufficient Balance! You have ${currentBalance || 0} GAMA tokens.`);
+                setLoading(false);
+                return;
+            }
+
+            // Prepare Transaction
             const transaction = new Transaction();
+            const sourceATA = await getAssociatedTokenAddress(mintPK, wallet.publicKey);
+            const destATA = await getAssociatedTokenAddress(mintPK, treasuryPK);
 
-            // Get Source ATA
-            const sourceATA = await getAssociatedTokenAddress(
-                mintPK!,
-                wallet.publicKey
-            );
-
-            // Get Destination ATA (Treasury) - Create if needed
-            const destATA = await getAssociatedTokenAddress(
-                mintPK!,
-                treasuryPK!
-            );
-
-            // Fetch Mint Info to get Decimals? We assume 9 or fetch.
-            // For now, let's assume standard 9.
             const DECIMALS = 9;
             const rawAmount = Math.round(amountGama * Math.pow(10, DECIMALS));
 
-            // Add Transfer Instruction
             transaction.add(
                 createTransferInstruction(
                     sourceATA,
@@ -575,14 +584,11 @@ export const useNftagachi = () => {
                 )
             );
 
-            // 3. Send & Confirm
             const signature = await sendTransaction(transaction, connection);
             await connection.confirmTransaction(signature, 'confirmed');
 
-            // 4. Update Game State
             setTokenBalance(prev => prev - amountGama);
             setGameBalance(prev => prev + amountGama);
-
             alert(`[SUCCESS] Deposited ${amountGama.toLocaleString()} GAMA!`);
 
         } catch (err: any) {

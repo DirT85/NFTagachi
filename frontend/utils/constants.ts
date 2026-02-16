@@ -6,13 +6,12 @@ import { PublicKey } from "@solana/web3.js";
 // =========================================================================
 
 // 1. GAMA TOKEN MINT
-// Replace this with your actual SPL Token Mint Address.
-// If not set, the game will try to fetch it from the on-chain program state (which might fail in Mock Mode).
+// Update this with your SPL Token Mint address created in the Devnet Admin Panel.
+// Example: "HgZ3fK1jsiG1G...YOUR_COLLECTION"
 export const GAMA_MINT_ADDRESS = "YOUR_GAMA_MINT_ADDRESS_HERE";
 
 // 2. GAME TREASURY WALLET
-// This is the wallet that receives deposits from users.
-// It should be a wallet you control (e.g., the Game Admin wallet).
+// This is where deposits are sent. Set it to your Admin or Game wallet.
 export const TREASURY_ADDRESS = "YOUR_TREASURY_WALLET_ADDRESS_HERE";
 
 // 3. GAME SETTINGS
