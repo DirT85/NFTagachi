@@ -31,6 +31,8 @@ export default function Home() {
     currentDevice, currentBackground,
     loading, boostActive, tokenBalance,
     gameBalance, solBalance,
+    treasuryStats,
+    rewardSettings,
     ownedMonsters, switchMonster, isAuthenticating,
     swapOpen, setSwapOpen,
 
@@ -38,7 +40,7 @@ export default function Home() {
     performAction, mintItem, equipItem, buyGama, depositGama, depositGamaFromWallet, withdrawGama, completeBattle, setGameState, syncOnChainMetadata,
     mintTestMonster,
 
-    // Auth
+    isWhale,
     wallet
   } = useNftagachi();
 
@@ -251,7 +253,10 @@ export default function Home() {
 
               <div className="flex-1 overflow-y-auto custom-scrollbar">
                 {modalTab === 'STATS' ? (
-                  <TokenomicsMap />
+                  <TokenomicsMap
+                    treasuryStats={treasuryStats}
+                    rewardSettings={rewardSettings}
+                  />
                 ) : (
                   <div className="p-6">
                     <MintShop
@@ -305,7 +310,7 @@ export default function Home() {
             device={currentDevice}
             hideLogo={view === 'LOBBY'}
             hideButtons={view === 'LOBBY'}
-            isWhale={boostActive}
+            isWhale={isWhale}
             isLobbyActive={playerCount > 0 || view === 'LOBBY' || view === 'ARENA'}
             actions={
               view === 'ARENA' ? {
@@ -348,6 +353,7 @@ export default function Home() {
                           ownedMonsters={ownedMonsters}
                           onSwitchMonster={switchMonster}
                           socket={socket}
+                          isWhale={isWhale}
                           onJoinArena={(id, monster, challenger) => {
                             setOpponentId(id);
                             setOpponentMonster(monster);

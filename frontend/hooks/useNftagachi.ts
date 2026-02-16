@@ -8,11 +8,28 @@ import idl from "../idl.json";
 import { getMonsterData, MonsterData } from '../utils/GameLogic';
 import { calculateLevelUp } from '../utils/BattleLogic';
 
-import { generateSigner, transactionBuilder, percentAmount } from '@metaplex-foundation/umi';
+import { generateSigner, transactionBuilder, percentAmount, publicKey } from '@metaplex-foundation/umi';
+import { DEVICE_URIS } from '../utils/DeviceMetadata';
+import { BACKGROUND_URIS } from '../utils/BackgroundMetadata';
 
 import { create, fetchAssetsByOwner, updateV1, fetchAssetV1 } from '@metaplex-foundation/mpl-core';
 import { useMetaplex } from './useMetaplex';
-import { GAMA_MINT_ADDRESS, TREASURY_ADDRESS, INITIAL_GAME_BALANCE } from '../utils/constants';
+import { GAMA_MINT_ADDRESS, TREASURY_ADDRESS, INITIAL_GAME_BALANCE, DEVICE_COLLECTION, BACKGROUND_COLLECTION } from '../utils/constants';
+
+// Helper for GAMA Balance fetching
+const getGamaBalance = async (connection: any, owner: PublicKey) => {
+    try {
+        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(owner, {
+            mint: new PublicKey(GAMA_MINT_ADDRESS)
+        });
+        if (tokenAccounts.value.length > 0) {
+            return tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount || 0;
+        }
+    } catch (e) {
+        console.error("Error fetching GAMA balance:", e);
+    }
+    return 0;
+};
 import {
     TOKEN_PROGRAM_ID,
     createTransferInstruction,
@@ -23,7 +40,7 @@ import { Transaction } from "@solana/web3.js";
 const PROGRAM_ID = new PublicKey("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
 // Set this to FALSE when you have deployed your contract to Devnet!
-const MOCK_MODE = true;
+const MOCK_MODE = false;
 
 export interface PetState {
     hunger: number;
@@ -234,38 +251,21 @@ export const useNftagachi = () => {
 
                     // GAMA Balance
                     try {
-                        let rewardMint: PublicKey | null = null;
-
-                        // Check Constant First
                         if (GAMA_MINT_ADDRESS !== "YOUR_GAMA_MINT_ADDRESS_HERE") {
                             try {
-                                rewardMint = new PublicKey(GAMA_MINT_ADDRESS);
+                                const balance = await getGamaBalance(connection, wallet.publicKey);
+                                setTokenBalance(balance);
                             } catch (e) {
-                                console.warn("Invalid GAMA_MINT_ADDRESS constant:", e);
-                            }
-                        }
-
-                        // Fallback to On-Chain State
-                        if (!rewardMint) {
-                            const globalAccounts = await program.account.globalState.all();
-                            if (globalAccounts.length > 0) {
-                                rewardMint = globalAccounts[0].account.rewardMint;
-                            }
-                        }
-
-                        // Check Balance using SPL Token Logic
-                        if (rewardMint) {
-                            const tokenAccounts = await connection.getParsedTokenAccountsByOwner(wallet.publicKey, {
-                                mint: rewardMint
-                            });
-                            if (tokenAccounts.value.length > 0) {
-                                const balance = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
-                                setTokenBalance(balance || 0);
-                            } else {
+                                console.warn("Invalid GAMA_MINT_ADDRESS constant or failed to fetch balance:", e);
                                 setTokenBalance(0);
                             }
+                        } else if (MOCK_MODE) {
+                            // Give some mock balance for testing whale features
+                            setTokenBalance(5000000);
+                            setGameBalance(6000000); // 11M Total = Whale
                         } else {
                             console.warn("GAMA Mint Address not configured in constants.ts and not found on-chain.");
+                            setTokenBalance(0);
                         }
                     } catch (tokenErr) {
                         console.error("Failed to fetch token balance:", tokenErr);
@@ -401,8 +401,46 @@ export const useNftagachi = () => {
 
     const [tokenBalance, setTokenBalance] = useState(0);
     const [gameBalance, setGameBalance] = useState(0); // "Session" Balance
+    const [treasuryStats, setTreasuryStats] = useState({ balance: 0, totalPaidOut: 0 });
+    const [rewardSettings, setRewardSettings] = useState({ battle: 100, clean: 5 });
+
+    const isWhale = (tokenBalance + gameBalance) >= 10_000_000;
+    const holderHpMultiplier = isWhale ? 1.2 : 1.0; // 20% Health Boost for Whales
     const [solBalance, setSolBalance] = useState(0); // New SOL Balance
     const [boostActive, setBoostActive] = useState(false);
+
+    // Dynamic Reward Settings
+    useEffect(() => {
+        const saved = localStorage.getItem("nftagachi_reward_settings");
+        if (saved) {
+            try {
+                setRewardSettings(JSON.parse(saved));
+            } catch (e) { /* Fallback to default */ }
+        }
+    }, []);
+
+    const fetchTreasuryStats = async () => {
+        if (!connection || TREASURY_ADDRESS === "YOUR_TREASURY_WALLET_ADDRESS_HERE") return;
+        try {
+            const treasuryPK = new PublicKey(TREASURY_ADDRESS);
+            const balance = await getGamaBalance(connection, treasuryPK);
+
+            // Calculate "Paid Out" by comparing with a reference initial supply (e.g. 100M allocated to treasury)
+            // This is a heuristic for the UI transparency.
+            const INITIAL_TREASURY_POOL = 100_000_000;
+            const paidOut = Math.max(0, INITIAL_TREASURY_POOL - balance);
+
+            setTreasuryStats({ balance, totalPaidOut: paidOut });
+        } catch (e) {
+            console.error("Failed to fetch treasury stats:", e);
+        }
+    };
+
+    useEffect(() => {
+        const interval = setInterval(fetchTreasuryStats, 30000); // 30s refresh
+        fetchTreasuryStats();
+        return () => clearInterval(interval);
+    }, [connection]);
 
     // PERSISTENCE: Load Game Balance & History on Mount
     // PERSISTENCE: Load Game Balance & History on Mount
@@ -650,7 +688,15 @@ export const useNftagachi = () => {
 
             if (action === 'feed') {
                 if (gameBalance < 10) { alert("Insufficient Game Balance (10 GAMA required)!"); setLoading(false); return; }
+
+                // BURN & RECYCLE LOGIC: 50% Burn, 50% Recycle (to fund rewards)
                 setGameBalance(prev => prev - 10);
+                setTreasuryStats(prev => ({
+                    ...prev,
+                    balance: prev.balance + 5 // Recycle 5 GAMA back to pool
+                }));
+                console.log("[ECONOMY] 10 GAMA spent: 5 Burned / 5 Recycled to Treasury");
+
                 newState.hunger = Math.max(0, newState.hunger - 20);
                 newState.hp = Math.min(newState.maxHp, newState.hp + 5);
                 newState.energy = Math.min(100, newState.energy + 10);
@@ -662,7 +708,15 @@ export const useNftagachi = () => {
                 setGameState("EATING");
             } else if (action === 'train') {
                 if (gameBalance < 15) { alert("Insufficient Game Balance (15 GAMA required)!"); setLoading(false); return; }
+
+                // BURN & RECYCLE LOGIC: 50% Burn, 50% Recycle
                 setGameBalance(prev => prev - 15);
+                setTreasuryStats(prev => ({
+                    ...prev,
+                    balance: prev.balance + 7.5
+                }));
+                console.log("[ECONOMY] 15 GAMA spent: 7.5 Burned / 7.5 Recycled to Treasury");
+
                 const gain = Math.floor(5 * strengthMultiplier);
                 newState.power = Math.min(100, newState.power + gain);
                 newState.strength += 1;
@@ -683,15 +737,18 @@ export const useNftagachi = () => {
 
                 setGameState("TRAINING");
             } else if (action === 'clean') {
-                if (newState.waste > 0) {
-                    setGameBalance(prev => prev + 5);
-                    newState.waste -= 1;
+                if (petState.waste > 0) {
+                    newState.waste = 0;
+                    const cleanReward = rewardSettings.clean;
+                    setGameBalance(prev => prev + cleanReward);
+                    console.log(`[ECONOMY] Monster Cleaned! +${cleanReward} GAMA Minted (Sustainability Reward)`);
                     newState.happiness = Math.min(100, newState.happiness + 20);
                     setGameState("HAPPY");
                 }
             } else if (action === 'revive') {
                 if (gameBalance < 50) { alert("Insufficient Game Balance (50 GAMA required)!"); setLoading(false); return; }
                 setGameBalance(prev => prev - 50);
+                console.log("[ECONOMY] 50 GAMA Burned via Revival");
                 // State update handled by current revive logic block above this
             }
 
@@ -733,43 +790,26 @@ export const useNftagachi = () => {
     // ... existing useEffect ...
 
     const mintItem = async (type: 'DEVICE' | 'BG', cost: number) => {
-        // ALLOW GUEST MINTING IN MOCK MODE
-        if ((!wallet || !program) && !MOCK_MODE) {
+        if (!wallet && !MOCK_MODE) {
             alert("Connect wallet to mint on-chain!");
             return;
         }
 
         const SOL_COST = 0.01;
-        const GAMA_BURN_AMOUNT = 1000;
+        const GAMA_TOTAL_AMOUNT = 1000;
 
-        // Check SOL Balance (approximate, since we don't track SOL in state efficiently yet)
-        // Assuming wallet has funds if they are connected, rely on wallet simulation to fail if not.
+        const treasuryPK = new PublicKey(TREASURY_ADDRESS !== "YOUR_TREASURY_WALLET_ADDRESS_HERE" ? TREASURY_ADDRESS : wallet?.publicKey?.toBase58() || "11111111111111111111111111111111");
 
-        if (tokenBalance < GAMA_BURN_AMOUNT) {
-            alert(`Insufficient GAMA! You need ${GAMA_BURN_AMOUNT} GAMA to burn.`);
+        // Primary check: Check In-Game Game Balance
+        if (gameBalance < GAMA_TOTAL_AMOUNT) {
+            alert(`Insufficient GAMA! You need ${GAMA_TOTAL_AMOUNT} GAMA in your Game Balance (50% Burn / 50% Treasury).`);
             return;
         }
 
         setLoading(true);
         try {
-            // TREASURY WALLET (For buying GAMA/Airdrops)
-            // FOR TESTING: We send the SOL to yourself (the connected wallet) so the transaction is valid.
-            // TODO: Replace this with your actual Cold/Treasury Wallet Address
-            // If Guest (no wallet), we skip this.
-            const TREASURY_PUBKEY = wallet ? wallet.publicKey : null;
-
-            // 1. Prepare SOL Transfer Instruction (Only if wallet exists)
-            let transferSolIx = null;
-            if (wallet && TREASURY_PUBKEY) {
-                transferSolIx = web3.SystemProgram.transfer({
-                    fromPubkey: wallet.publicKey,
-                    toPubkey: TREASURY_PUBKEY,
-                    lamports: SOL_COST * web3.LAMPORTS_PER_SOL
-                });
-            }
-
-            // 2. Prepare GAMA Burn Instruction (If we had the real mint)
-            // For now, we simulate the burn by "checking" logic.
+            let itemId = "";
+            let itemType = "";
 
             if (type === 'BG') {
                 const pool = ['SPACE', 'MATRIX', 'VOLCANO', 'OCEAN', 'FOREST', 'BEDROOM', 'BACKYARD',
@@ -781,76 +821,9 @@ export const useNftagachi = () => {
                     alert("All backgrounds owned!");
                     return;
                 }
-                const randomBg = available[Math.floor(Math.random() * available.length)];
-
-                // MINT ON-CHAIN
-                if (!MOCK_MODE && wallet && program && transferSolIx) {
-                    const seed = `bg_${Date.now()}`;
-                    const [bgPda] = await web3.PublicKey.findProgramAddress(
-                        [
-                            Buffer.from("background"),
-                            wallet.publicKey.toBuffer(),
-                            Buffer.from(seed)
-                        ],
-                        program.programId
-                    );
-
-                    await program.methods
-                        .mintBackground(seed, randomBg, "RARE")
-                        .accounts({
-                            background: bgPda,
-                            user: wallet.publicKey,
-                            systemProgram: web3.SystemProgram.programId,
-                        })
-                        .preInstructions([transferSolIx]) // Attach SOL Transfer
-                        .rpc();
-                } else {
-                    // Simulate On-Chain Delay
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    console.log(`[MOCK/GUEST] Minted Background ${randomBg} (Simulated)`);
-                }
-
-                // ECONOMY UPDATE: DUAL CURRENCY COST
-                // Cost: 1000 GAMA + 0.01 SOL
-                const GAMA_COST = 1000;
-                const SOL_COST = 0.01;
-
-                if (gameBalance < GAMA_COST) {
-                    alert(`Insufficient GAMA! You need ${GAMA_COST.toLocaleString()} G to mint.`);
-                    setLoading(false);
-                    return;
-                }
-
-                // Process SOL Payment
-                if (wallet) {
-                    try {
-                        const TREASURY_WALLET = wallet.publicKey;
-                        const transaction = new web3.Transaction().add(
-                            web3.SystemProgram.transfer({
-                                fromPubkey: wallet.publicKey,
-                                toPubkey: TREASURY_WALLET,
-                                lamports: SOL_COST * web3.LAMPORTS_PER_SOL,
-                            })
-                        );
-                        const signature = await sendTransaction(transaction, connection);
-                        await connection.confirmTransaction(signature, 'processed');
-                    } catch (paymentErr) {
-                        console.error("SOL Payment Failed:", paymentErr);
-                        alert("Mint Cancelled: SOL Payment Failed or Rejected.");
-                        setLoading(false);
-                        return;
-                    }
-                }
-
-                setGameBalance(prev => prev - GAMA_COST);
-                setOwnedBackgrounds(prev => {
-                    const next = [...prev, randomBg];
-                    return Array.from(new Set(next));
-                });
-                alert(`[SUCCESS] Minted Background: ${randomBg}. \n\n- ${GAMA_COST.toLocaleString()} GAMA Deducted\n- ${SOL_COST} SOL Sent to Treasury 💎`);
-            }
-
-            if (type === 'DEVICE') {
+                itemId = available[Math.floor(Math.random() * available.length)];
+                itemType = "Background";
+            } else {
                 const tiers = ['MATTE_BLACK', 'MATTE_WHITE', 'CLEAR_PURPLE', 'METAL_SILVER', 'STARDUST',
                     'OFF_WHITE', 'GLACIER_ICE', 'ATOMIC_PURPLE', 'JUNGLE_GREEN', 'SMOKE_BLACK',
                     'FIRE_RED', 'ELECTRIC_BLUE', 'PIKACHU_YELLOW', 'HOT_PINK',
@@ -860,83 +833,69 @@ export const useNftagachi = () => {
                     alert("All devices owned!");
                     return;
                 }
-                const randomDev = available[Math.floor(Math.random() * available.length)];
-
-                // MINT ON-CHAIN (PDA + Metaplex Core)
-                if (!MOCK_MODE && wallet && program && transferSolIx) {
-                    const seed = `skin_${Date.now()}`;
-                    const [skinPda] = await web3.PublicKey.findProgramAddress(
-                        [
-                            Buffer.from("skin"),
-                            wallet.publicKey.toBuffer(),
-                            Buffer.from(seed)
-                        ],
-                        program.programId
-                    );
-
-                    // 1. ANCHOR: Mint "Game Item" PDA (Backend Logic)
-                    const tx = await program.methods
-                        .mintSkin(seed, randomDev, "EPIC")
-                        .accounts({
-                            skin: skinPda,
-                            user: wallet.publicKey,
-                            systemProgram: web3.SystemProgram.programId,
-                        })
-                        .preInstructions([transferSolIx]) // Attach SOL Transfer
-                        .transaction();
-
-                    // Send Anchor Tx first (Payment + PDA)
-                    const sig = await sendTransaction(tx, connection);
-                    await connection.confirmTransaction(sig, 'confirmed');
-
-                    // 2. METAPLEX: Mint Real NFT (Asset)
-                    // Note: Ideally this would be done by the program or backend to ensure atomicity,
-                    // but for this phase we do it on frontend.
-                    try {
-                        if (umi) {
-                            const assetSigner = generateSigner(umi);
-                            console.log("Minting Metaplex Asset:", assetSigner.publicKey.toString());
-
-                            await create(umi, {
-                                asset: assetSigner,
-                                name: `NFTagachi Skin: ${randomDev}`,
-                                uri: 'https://arweave.net/PLACEHOLDER_URI', // TODO: Dynamic URIs
-                            }).sendAndConfirm(umi);
-
-                            alert(`Minted Real NFT! ${assetSigner.publicKey.toString()}`);
-                        }
-                    } catch (e) {
-                        console.error("Metaplex Mint Failed (PDA success):", e);
-                    }
-
-                } else {
-                    // Simulate On-Chain Delay
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    console.log(`[MOCK/GUEST] Minted Skin ${randomDev} (Simulated)`);
-                }
-
-                // ECONOMY UPDATE:
-                // Cost: 1000 GAMA
-                // Split: 500 Burn, 500 Smart Wallet (Treasury)
-                const MINT_COST = 1000;
-
-                if (gameBalance < MINT_COST) {
-                    alert("Insufficient GAMA! You need 1,000 G to mint.");
-                    setLoading(false);
-                    return;
-                }
-
-                setGameBalance(prev => prev - MINT_COST);
-                // In a real contract: 500 is burned, 500 sent to Treasury wallet.
-                // On frontend strict mode: We just deduct 1000. 
-                // The "Burn" and "Treasury" happening is implicit in the deduction for now until we wire the token transfer.
-
-                setOwnedDevices(prev => {
-                    const next = [...prev, randomDev];
-                    return Array.from(new Set(next));
-                });
-                alert(`[SUCCESS] Minted Skin: ${randomDev}. \n\n- 1,000 GAMA Deducted\n(500 Burned 🔥 / 500 Rewards 💎)`);
+                itemId = available[Math.floor(Math.random() * available.length)];
+                itemType = "Device";
             }
+
+            // --- ON-CHAIN MINTING (Metaplex Core) ---
+            if (!MOCK_MODE && wallet && umi) {
+                try {
+                    const collectionVar = type === 'BG' ? BACKGROUND_COLLECTION : DEVICE_COLLECTION;
+                    const storageKey = type === 'BG' ? "nftagachi_bg_collection" : "nftagachi_skin_collection";
+
+                    const colAddress = (collectionVar && collectionVar !== "YOUR_BG_COLLECTION_ADDRESS" && collectionVar !== "YOUR_DEVICE_COLLECTION_ADDRESS")
+                        ? collectionVar
+                        : localStorage.getItem(storageKey) || "";
+
+                    if (colAddress) {
+                        const assetSigner = generateSigner(umi);
+                        const uriMap = type === 'BG' ? BACKGROUND_URIS : DEVICE_URIS;
+                        const uri = uriMap[itemId] || "https://gateway.irys.xyz/PLACEHOLDER";
+
+                        await create(umi, {
+                            asset: assetSigner,
+                            collection: { publicKey: publicKey(colAddress) },
+                            name: `NFTagachi ${itemType}: ${itemId}`,
+                            uri: uri,
+                        }).sendAndConfirm(umi);
+
+                        console.log(`[ON-CHAIN] Minted ${itemType} NFT: ${assetSigner.publicKey}`);
+                    }
+                } catch (e) {
+                    console.error(`Metaplex ${itemType} Mint Failed:`, e);
+                }
+
+                // Process SOL Payment
+                try {
+                    const transaction = new Transaction().add(
+                        web3.SystemProgram.transfer({
+                            fromPubkey: wallet.publicKey,
+                            toPubkey: treasuryPK,
+                            lamports: SOL_COST * web3.LAMPORTS_PER_SOL,
+                        })
+                    );
+                    const signature = await sendTransaction(transaction, connection);
+                    await connection.confirmTransaction(signature, 'processed');
+                    console.log("[ECONOMY] SOL Payment Confirmed:", signature);
+                } catch (paymentErr) {
+                    console.error("SOL Payment Failed:", paymentErr);
+                }
+            } else {
+                // Simulation Mode
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                console.log(`[MOCK] Minted ${itemType} ${itemId} (Simulated)`);
+            }
+
+            // --- STATE UPDATE ---
+            setGameBalance(prev => prev - GAMA_TOTAL_AMOUNT);
+            if (type === 'BG') {
+                setOwnedBackgrounds(prev => Array.from(new Set([...prev, itemId])));
+            } else {
+                setOwnedDevices(prev => Array.from(new Set([...prev, itemId])));
+            }
+
+            alert(`[SUCCESS] Minted ${itemType}: ${itemId}. \n\n- ${GAMA_TOTAL_AMOUNT.toLocaleString()} GAMA Deducted\n- Real NFT Minted into Collection 💎`);
+
         } catch (err: any) {
             console.error("Mint failed:", err);
             alert("Mint failed: " + err.message);
@@ -945,54 +904,7 @@ export const useNftagachi = () => {
         }
     };
 
-    const equipItem = (type: 'DEVICE' | 'BG' | 'SHAPE', id: string) => {
-        if (type === 'DEVICE') setCurrentDevice(id);
-        if (type === 'BG') setCurrentBackground(id);
-        if (type === 'SHAPE') setCurrentShape(id as any);
 
-        // Auto-sync to "bake" the new skin/background to on-chain metadata
-        setTimeout(() => syncOnChainMetadata(), 500);
-    };
-
-    const syncOnChainMetadata = async () => {
-        if (!umi || !wallet || !monsterData || !monsterData.mintAddress) return;
-
-        console.log("Syncing baked metadata for:", monsterData.name);
-        setLoading(true);
-        try {
-            const asset = await fetchAssetV1(umi, monsterData.mintAddress as any);
-
-            // Construct Dynamic URI with current state baked in as query params
-            // This allows the metadata API to return dynamic traits and a dynamic "baked" image
-            const baseUrl = window.location.origin;
-            const params = new URLSearchParams({
-                skin: currentDevice,
-                bg: currentBackground.toString(),
-                level: petState.level.toString(),
-                hp: petState.hp.toString(),
-                maxHp: petState.maxHp.toString(),
-                atk: petState.strength.toString(),
-                pwr: petState.power.toString(),
-                wgt: petState.weight.toString(),
-                type: (monsterData as any).type || 'NEUTRAL',
-                tier: (monsterData as any).tier || 'COMMON'
-            });
-
-            const uri = `${baseUrl}/api/metadata/${monsterData.id}?${params.toString()}`;
-            console.log("Baking Metadata URI:", uri);
-
-            await updateV1(umi, {
-                asset: asset.publicKey,
-                newUri: uri,
-            }).sendAndConfirm(umi);
-
-            console.log("On-chain metadata baked successfully!");
-        } catch (err) {
-            console.error("Failed to bake on-chain metadata:", err);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const depositGama = async (amountSol: number) => {
         if (!wallet) {
@@ -1030,25 +942,96 @@ export const useNftagachi = () => {
     };
 
     const withdrawGama = async (amountGama: number) => {
+        if (!wallet || !wallet.publicKey) {
+            alert("Connect wallet to withdraw!");
+            return;
+        }
         if (gameBalance < amountGama) {
             alert("Insufficient Game Balance!");
             return;
         }
 
-        // Simulation for now
         setLoading(true);
-        setTimeout(() => {
+        try {
+            console.log(`[WITHDRAW] Initiating on-chain transfer for ${amountGama} GAMA...`);
+            const response = await fetch('/api/withdraw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userWallet: wallet.publicKey.toString(),
+                    amount: amountGama
+                })
+            });
+
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || "Withdrawal failed");
+
+            // Success
             setGameBalance(prev => prev - amountGama);
-            setTokenBalance(prev => prev + amountGama); // Move to "Wallet" (Simulation)
+            setTokenBalance(prev => prev + amountGama); // Update local cache
+            alert(`🎉 [SUCCESS] Withdrew ${amountGama.toLocaleString()} GAMA to your wallet!\n\nTx: ${result.signature.slice(0, 8)}...`);
+            console.log("[WITHDRAW] Tx Complete:", result.signature);
+
+        } catch (err: any) {
+            console.error("Withdrawal API Failed:", err);
+            alert(`Withdrawal Failed: ${err.message}`);
+        } finally {
             setLoading(false);
-            alert(`Withdrew ${amountGama.toLocaleString()} GAMA to Wallet!`);
-        }, 1500);
+        }
+    };
+
+    const equipItem = (type: 'DEVICE' | 'BG' | 'SHAPE', id: string) => {
+        if (type === 'DEVICE') setCurrentDevice(id);
+        if (type === 'BG') setCurrentBackground(id);
+        if (type === 'SHAPE') setCurrentShape(id as any);
+
+        // Auto-sync to "bake" the new skin/background to on-chain metadata
+        setTimeout(() => syncOnChainMetadata(), 500);
+    };
+
+    const syncOnChainMetadata = async () => {
+        if (!umi || !wallet || !monsterData || !monsterData.mintAddress) return;
+
+        console.log("Syncing baked metadata for:", monsterData.name);
+        setLoading(true);
+        try {
+            const asset = await fetchAssetV1(umi, monsterData.mintAddress as any);
+
+            // Construct Dynamic URI with current state baked in as query params
+            const baseUrl = window.location.origin;
+            const params = new URLSearchParams({
+                skin: currentDevice,
+                bg: currentBackground.toString(),
+                level: petState.level.toString(),
+                hp: petState.hp.toString(),
+                maxHp: petState.maxHp.toString(),
+                atk: petState.strength.toString(),
+                pwr: petState.power.toString(),
+                wgt: petState.weight.toString(),
+                type: (monsterData as any).type || 'NEUTRAL',
+                tier: (monsterData as any).tier || 'COMMON'
+            });
+
+            const uri = `${baseUrl}/api/metadata/${monsterData.id}?${params.toString()}`;
+            console.log("Baking Metadata URI:", uri);
+
+            await updateV1(umi, {
+                asset: asset.publicKey,
+                newUri: uri,
+            }).sendAndConfirm(umi);
+
+            console.log("On-chain metadata baked successfully!");
+        } catch (err) {
+            console.error("Failed to bake on-chain metadata:", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
 
 
 
-    const completeBattle = (win: boolean, xpGained: number) => {
+    const completeBattle = (win: boolean, xpGained: number, mode: 'CLAIM' | 'BURN' = 'CLAIM') => {
         if (!monsterData) return;
 
         const currentStats = monsterData.baseStats;
@@ -1060,13 +1043,31 @@ export const useNftagachi = () => {
 
             // Deduction for Loss (Optional "Smart Wallet" logic)
             setGameBalance(prev => Math.max(0, prev - 25));
-            alert("Battle Lost! Your monster took damage. (-25 GAMA)");
+            alert("Battle Lost! Your monster took damage. (-25 GAMA Burn)");
         } else {
             const { newLevel, newXp, didLevelUp } = calculateLevelUp(currentStats.level, currentStats.exp, xpGained);
             newStats = { ...newStats, level: newLevel, exp: newXp };
 
-            // Reward for Win
-            setGameBalance(prev => prev + 100);
+            // REWARD LOGIC
+            const battleReward = rewardSettings.battle;
+
+            if (mode === 'CLAIM') {
+                setGameBalance(prev => prev + battleReward);
+                setTreasuryStats(prev => ({ ...prev, balance: Math.max(0, prev.balance - battleReward), totalPaidOut: prev.totalPaidOut + battleReward }));
+                console.log(`[ECONOMY] ${battleReward} GAMA Claimed to Game Balance`);
+            } else {
+                // BURN FOR PRESTIGE: Permanent Stat Boost
+                const boostType = Math.random() > 0.5 ? 'hp' : 'atk';
+                if (boostType === 'hp') {
+                    newStats.maxHp += 2;
+                    newStats.hp += 2;
+                    alert(`🔥 PRESTIGE! ${battleReward} GAMA Burned. Permanent +2 MAX HP!`);
+                } else {
+                    newStats.atk += 1;
+                    alert(`🔥 PRESTIGE! ${battleReward} GAMA Burned. Permanent +1 ATK!`);
+                }
+                console.log(`[ECONOMY] ${battleReward} GAMA Burned for Prestige Boost`);
+            }
 
             if (didLevelUp) {
                 // Boost Stats by 10%
@@ -1076,9 +1077,9 @@ export const useNftagachi = () => {
                 newStats.def = Math.floor(newStats.def * 1.1);
                 newStats.spd = Math.floor(newStats.spd * 1.1);
 
-                alert(`VICTORY! +100 GAMA! LEVEL UP! You are now Level ${newLevel}! Stats increased!`);
+                alert(`VICTORY! +${battleReward} GAMA! LEVEL UP! You are now Level ${newLevel}! Stats increased!`);
             } else {
-                alert(`VICTORY! +100 GAMA! Gained ${xpGained} XP!`);
+                alert(`VICTORY! +${battleReward} GAMA! Gained ${xpGained} XP!`);
             }
         }
 
@@ -1105,6 +1106,8 @@ export const useNftagachi = () => {
         tokenBalance,
         gameBalance,
         solBalance,
+        treasuryStats,
+        rewardSettings,
         swapOpen,
         setSwapOpen,
 
@@ -1124,6 +1127,8 @@ export const useNftagachi = () => {
         ownedMonsters,
         switchMonster,
         isAuthenticating,
-        mintTestMonster
+        mintTestMonster,
+        isWhale,
+        holderHpMultiplier
     };
 };

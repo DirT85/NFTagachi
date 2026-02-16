@@ -14,7 +14,7 @@ interface ArenaProps {
     isChallenger?: boolean;
     currentBackground?: string | number;
     onClose: () => void;
-    onBattleEnd: (win: boolean, xp: number) => void;
+    onBattleEnd: (win: boolean, xp: number, rewardMode?: 'CLAIM' | 'BURN') => void;
 }
 
 export interface ArenaRef {
@@ -257,8 +257,8 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
         setBattle(prev => ({ ...prev, phase: 'DEFEAT', log: [...prev.log, "You forfeited the match."] }));
     };
 
-    const handleBattleEnd = () => {
-        onBattleEnd(battle.phase === 'VICTORY', battle.phase === 'VICTORY' ? XP_PER_WIN : 0);
+    const handleBattleEnd = (mode: 'CLAIM' | 'BURN' = 'CLAIM') => {
+        onBattleEnd(battle.phase === 'VICTORY', battle.phase === 'VICTORY' ? XP_PER_WIN : 0, mode);
         onClose();
     };
 
@@ -323,9 +323,31 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
                     )}
 
                     {(battle.phase === 'VICTORY' || battle.phase === 'DEFEAT') && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-50 bg-black flex flex-col items-center justify-center gap-6">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-50 bg-black flex flex-col items-center justify-center gap-6 text-center px-4">
                             <h2 className={`text-4xl italic ${battle.phase === 'VICTORY' ? 'text-yellow-400' : 'text-red-500'}`}>{battle.phase}</h2>
-                            <button onClick={handleBattleEnd} className="bg-white text-black text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-yellow-400 transition-colors">CONTINUE</button>
+
+                            {battle.phase === 'VICTORY' ? (
+                                <div className="space-y-4">
+                                    <div className="text-[10px] text-yellow-500/80 font-bold uppercase tracking-widest mb-2">CHOOSE YOUR DESTINY</div>
+                                    <div className="flex flex-col gap-3">
+                                        <button
+                                            onClick={() => handleBattleEnd('CLAIM')}
+                                            className="bg-white text-black text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-yellow-400 transition-colors w-64"
+                                        >
+                                            💰 CLAIM GAMA
+                                        </button>
+                                        <button
+                                            onClick={() => handleBattleEnd('BURN')}
+                                            className="bg-transparent border-2 border-yellow-400 text-yellow-400 text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-yellow-400/10 transition-colors w-64"
+                                        >
+                                            🔥 BURN FOR PRESTIGE
+                                        </button>
+                                    </div>
+                                    <p className="text-[8px] text-gray-500 italic max-w-xs">Burning rewards grants permanent +HP or +ATK boosts to your monster.</p>
+                                </div>
+                            ) : (
+                                <button onClick={() => handleBattleEnd()} className="bg-white text-black text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-gray-200 transition-colors">CONTINUE</button>
+                            )}
                         </motion.div>
                     )}
                 </AnimatePresence>

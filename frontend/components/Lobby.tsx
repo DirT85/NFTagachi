@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sprite } from './Sprite';
 import { MonsterData } from '../utils/GameLogic';
-import { MessageCircle, Swords, Users, X } from 'lucide-react';
+import { MessageCircle, Swords, Users, X, Crown } from 'lucide-react';
 import { Socket } from 'socket.io-client';
 
 interface LobbyProps {
@@ -16,6 +16,7 @@ interface LobbyProps {
     isAuthenticating?: boolean;
     socket?: Socket | null;
     onResetLobby?: () => void;
+    isWhale?: boolean;
 }
 
 interface Player {
@@ -31,9 +32,10 @@ interface Player {
     isOwned?: boolean;
     spriteSheet?: any;
     baseStats: any;
+    isWhale?: boolean;
 }
 
-export const Lobby = ({ userMonster, ownedMonsters = [], onSwitchMonster, onJoinArena, onClose, isAuthenticating, socket }: LobbyProps) => {
+export const Lobby = ({ userMonster, ownedMonsters = [], onSwitchMonster, onJoinArena, onClose, isAuthenticating, socket, isWhale }: LobbyProps) => {
     const [players, setPlayers] = useState<Player[]>([]);
     const [chatInput, setChatInput] = useState("");
     const containerRef = useRef<HTMLDivElement>(null);
@@ -66,7 +68,8 @@ export const Lobby = ({ userMonster, ownedMonsters = [], onSwitchMonster, onJoin
                 baseStats: userMonster.baseStats,
                 tier: userMonster.tier,
                 type: userMonster.type,
-                baseImageIndex: userMonster.baseImageIndex
+                baseImageIndex: userMonster.baseImageIndex,
+                isWhale: isWhale
             });
         };
 
@@ -470,13 +473,37 @@ export const Lobby = ({ userMonster, ownedMonsters = [], onSwitchMonster, onJoin
 
                                 {/* Sprite Wrapper */}
                                 <div className="relative hover:scale-110 transition-transform">
+                                    {/* Whale Aura */}
+                                    {p.isWhale && (
+                                        <motion.div
+                                            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+                                            transition={{ duration: 2, repeat: Infinity }}
+                                            className="absolute inset-0 -m-4 border-2 border-yellow-400 rounded-full blur-sm pointer-events-none"
+                                        />
+                                    )}
+
                                     <Sprite
                                         id={p.isUser ? userMonster.id : p.monsterId}
-                                        variant={p.isUser ? userMonster.variant : p.variant}
+                                        variant={p.variant as any}
                                         state={p.state}
-                                        spriteSheet={p.isUser ? userMonster.spriteSheet : p.spriteSheet}
+                                        spriteSheet={p.spriteSheet}
+                                        style={{ transform: p.isWhale ? 'scale(1.2)' : 'none' }}
                                         className="w-8 h-8"
                                     />
+
+                                    {/* Whale Badge */}
+                                    {p.isWhale && (
+                                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                                            <motion.div
+                                                animate={{ y: [0, -4, 0] }}
+                                                transition={{ duration: 1.5, repeat: Infinity }}
+                                                className="bg-yellow-400 text-black p-0.5 rounded-full shadow-[0_0_10px_rgba(250,204,21,0.5)]"
+                                            >
+                                                <Crown size={12} fill="currentColor" />
+                                            </motion.div>
+                                            <span className="text-[6px] font-black text-yellow-400 uppercase tracking-tighter bg-black/40 px-1 rounded">WHALE</span>
+                                        </div>
+                                    )}
                                 </div>
                             </motion.div>
                         ))}

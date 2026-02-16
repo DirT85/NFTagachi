@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Droplet, Flame, ArrowRight, ShieldCheck, Coins, Calculator, Sparkles, Activity } from 'lucide-react';
+import { Droplet, Flame, ArrowRight, ShieldCheck, Coins, Calculator, Sparkles, Activity, Shield, Heart } from 'lucide-react';
 import { usePumpFun } from '@/hooks/usePumpFun';
 
-export const TokenomicsMap = () => {
-    const [simSol, setSimSol] = useState(5); // Default 5 SOL
+interface TokenomicsMapProps {
+    treasuryStats?: { balance: number, totalPaidOut: number };
+    rewardSettings?: { battle: number, clean: number };
+}
+
+export const TokenomicsMap = ({ treasuryStats, rewardSettings }: TokenomicsMapProps) => {
+    const [simSol, setSimSol] = useState(10); // Default 10 SOL Strategy
     const [simBuy, setSimBuy] = useState(1); // Default 1 SOL Buy
 
-    // Pump.fun Live Data (Placeholder Mint for connection test)
-    const { isConnected, lastTrade } = usePumpFun("So11111111111111111111111111111111111111112"); // Monitor Wrapped SOL as a test? or a known pump token?
-    // Let's just use a dummy mint to test connection: "PUMP_DEMO" won't work on real socket probably.
-    // Better to not break it. I'll comment out the mint for now or make it optional.
+    // Pump.fun Live Data
+    const { isConnected, lastTrade } = usePumpFun("So11111111111111111111111111111111111111112");
 
     // Simulation Math (CPMM: x * y = k)
     const POOL_TOKENS = 600_000_000;
@@ -18,10 +21,10 @@ export const TokenomicsMap = () => {
 
     // After Buy
     const newPoolSol = simSol + simBuy;
-    const newPoolTokens = k / (newPoolSol || 1); // Avoid div/0
+    const newPoolTokens = k / (newPoolSol || 1);
     const tokensReceived = POOL_TOKENS - newPoolTokens;
 
-    // Price Calc (SOL per GAMA)
+    // Price Calc
     const initialPrice = simSol / POOL_TOKENS;
     const executionPrice = simBuy / (tokensReceived || 1);
     const priceImpact = initialPrice > 0 ? ((executionPrice - initialPrice) / initialPrice) * 100 : 0;
@@ -40,85 +43,121 @@ export const TokenomicsMap = () => {
             </div>
 
             <div className="relative z-10 grid grid-cols-1 gap-6 items-center border-b border-gray-700/50 pb-8 mb-8">
-
-                {/* LEFT: FAUCETS (Sources) */}
-                <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-3 bg-black/40 p-3 rounded-lg border border-green-500/30">
-                        <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
-                            <Droplet size={20} className="text-green-400" />
+                {/* FLOW SECTION */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    {/* LEFT: FAUCETS */}
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-3 bg-black/40 p-3 rounded-lg border border-green-500/30">
+                            <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+                                <Droplet size={20} className="text-green-400" />
+                            </div>
+                            <div>
+                                <div className="text-sm font-bold text-green-400">CLEANING</div>
+                                <div className="text-[10px] text-gray-400">Reward: +{rewardSettings?.clean || 5} G</div>
+                            </div>
                         </div>
-                        <div>
-                            <div className="text-sm font-bold text-green-400">CLEANING</div>
-                            <div className="text-[10px] text-gray-400">Daily care rewards (Low)</div>
-                        </div>
-                    </div>
 
-                    <div className="flex items-center gap-3 bg-black/40 p-3 rounded-lg border border-yellow-500/30">
-                        <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
-                            <ShieldCheck size={20} className="text-yellow-400" />
-                        </div>
-                        <div>
-                            <div className="text-sm font-bold text-yellow-400">BATTLES</div>
-                            <div className="text-[10px] text-gray-400">PvP Wins (Medium)</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* CENTER: SUPPLY & LP */}
-                <div className="flex flex-col items-center py-4">
-                    {/* Flow Arrows In */}
-                    <div className="flex flex-col items-center mb-2 animate-pulse text-green-400/50">
-                        <ArrowRight className="rotate-90" size={24} />
-                    </div>
-
-                    <div className="w-32 h-32 rounded-full border-4 border-yellow-500/50 bg-black/60 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(234,179,8,0.2)] relative group">
-                        <Coins size={32} className="text-yellow-400 mb-1" />
-                        <div className="text-xs font-bold text-white">GAMA</div>
-                        <div className="text-[9px] text-gray-400">Fixed Supply</div>
-
-                        {/* Tooltip for LP */}
-                        <div className="absolute -bottom-16 w-48 text-center bg-black/90 text-white text-[10px] p-2 rounded border border-gray-700 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
-                            60% Locked in Liquidity Pool<br />Fair Launch (No Pre-sale)
+                        <div className="flex items-center gap-3 bg-black/40 p-3 rounded-lg border border-yellow-500/30">
+                            <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
+                                <ShieldCheck size={20} className="text-yellow-400" />
+                            </div>
+                            <div>
+                                <div className="text-sm font-bold text-yellow-400">BATTLES</div>
+                                <div className="text-[10px] text-gray-400">Reward: +{rewardSettings?.battle || 100} G</div>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="mt-2 text-[10px] text-gray-500 font-mono bg-black/40 px-3 py-1 rounded-full border border-white/5">
-                        LP: 60% • Dev: 15% • Airdrop: 15%
+                    {/* CENTER: GAMA CORE */}
+                    <div className="flex flex-col items-center">
+                        <div className="w-32 h-32 rounded-full border-4 border-yellow-500/50 bg-black/60 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(234,179,8,0.2)]">
+                            <Coins size={32} className="text-yellow-400 mb-1" />
+                            <div className="text-xs font-bold text-white">GAMA</div>
+                            <div className="text-[9px] text-gray-400">Fixed Supply</div>
+                        </div>
+                        <div className="mt-4 text-[10px] text-gray-500 font-mono bg-black/40 px-3 py-1 rounded-full border border-white/5">
+                            LP: 80% • Rewards: 10% • Dev: 10%
+                        </div>
                     </div>
 
-                    {/* Flow Arrows Out */}
-                    <div className="flex flex-col items-center mt-2 animate-pulse text-red-400/50">
-                        <ArrowRight className="rotate-90" size={24} />
-                    </div>
-                </div>
-
-                {/* RIGHT: SINKS (Burn) */}
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-col items-end gap-3 bg-black/40 p-3 rounded-lg border border-red-500/30 text-right">
-                        <div className="flex items-center gap-3 flex-row-reverse">
+                    {/* RIGHT: SINKS */}
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-3 bg-black/40 p-3 rounded-lg border border-red-500/30">
                             <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center shrink-0">
                                 <Flame size={20} className="text-red-400" />
                             </div>
                             <div>
                                 <div className="text-sm font-bold text-red-400">MINT SHOP</div>
-                                <div className="text-[10px] text-gray-400">Backgrounds & Skins (High Burn)</div>
+                                <div className="text-[10px] text-gray-400">Skins & BGs (50% RECYCLE)</div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="flex flex-col items-end gap-3 bg-black/40 p-3 rounded-lg border border-purple-500/30 text-right">
-                        <div className="flex items-center gap-3 flex-row-reverse">
+                        <div className="flex items-center gap-3 bg-black/40 p-3 rounded-lg border border-purple-500/30">
                             <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0">
                                 <Sparkles size={20} className="text-purple-400" />
                             </div>
                             <div>
-                                <div className="text-sm font-bold text-purple-400">LEVEL UP</div>
-                                <div className="text-[10px] text-gray-400">Training & Stat Boosts</div>
+                                <div className="text-sm font-bold text-purple-400">PET CARE</div>
+                                <div className="text-[10px] text-gray-400">Feed & Train (50% RECYCLE)</div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            {/* TREASURY AUDIT */}
+            <div className="relative z-10 mb-8 p-4 bg-black/40 rounded-xl border border-white/5 space-y-4">
+                <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-black text-white/40 tracking-widest uppercase flex items-center gap-2">
+                        <Shield size={14} className="text-cyan-400" /> Treasury Auditor
+                    </h3>
+                    <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-[9px] text-green-400 font-bold uppercase">Public Audit Live</span>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                    <div className="space-y-1">
+                        <p className="text-[10px] text-gray-500 uppercase tracking-tighter font-mono">Reward Pool</p>
+                        <p className="text-lg font-black text-cyan-400 font-mono">
+                            {(treasuryStats?.balance || 99999999).toLocaleString()} <span className="text-[10px] font-normal opacity-50">G</span>
+                        </p>
+                    </div>
+                    <div className="space-y-1 border-x border-white/5 px-2">
+                        <p className="text-[10px] text-gray-500 uppercase tracking-tighter font-mono">Recycled Inflow</p>
+                        <p className="text-lg font-black text-green-400 font-mono">
+                            {((treasuryStats?.totalPaidOut || 0) * 0.4).toLocaleString()} <span className="text-[10px] font-normal opacity-50">G</span>
+                        </p>
+                    </div>
+                    <div className="space-y-1 text-right">
+                        <p className="text-[10px] text-gray-500 uppercase tracking-tighter font-mono">Total Paid Out</p>
+                        <p className="text-lg font-black text-yellow-400 font-mono">
+                            {(treasuryStats?.totalPaidOut || 1240500).toLocaleString()} <span className="text-[10px] font-normal opacity-50">G</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div className="p-3 bg-white/5 rounded-lg border border-white/5 space-y-2">
+                    <div className="flex items-center justify-between text-[9px] font-bold text-white/30 uppercase tracking-widest">
+                        <span>Live Payout Feed</span>
+                        <span>Recent</span>
+                    </div>
+                    <div className="space-y-1.5 text-[11px]">
+                        <div className="flex items-center justify-between">
+                            <span className="text-white/60 flex items-center gap-1"><Droplet size={10} className="text-cyan-400" /> Battle Victory</span>
+                            <span className="text-green-400 font-mono">+{rewardSettings?.battle || 100} G</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-white/60 flex items-center gap-1"><Flame size={10} className="text-red-400" /> Prestige Burn</span>
+                            <span className="text-red-400 font-mono">-{rewardSettings?.battle || 100} G</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-white/60 flex items-center gap-1"><Heart size={10} className="text-pink-400" /> Cleaning</span>
+                            <span className="text-green-400 font-mono">+{rewardSettings?.clean || 5} G</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* SIMULATOR SECTION */}
@@ -129,108 +168,57 @@ export const TokenomicsMap = () => {
                     </h3>
                     <div className="flex items-center gap-2">
                         {isConnected ? (
-                            <span className="text-[9px] text-green-400 bg-green-900/30 px-2 py-0.5 rounded border border-green-500/30 animate-pulse">
-                                ● LIVE FEED
-                            </span>
+                            <span className="text-[9px] text-green-400 bg-green-900/30 px-2 py-0.5 rounded border border-green-500/30 animate-pulse">● LIVE FEED</span>
                         ) : (
-                            <span className="text-[9px] text-gray-500 bg-gray-800 px-2 py-0.5 rounded border border-gray-700">
-                                ○ OFFLINE
-                            </span>
+                            <span className="text-[9px] text-gray-500 bg-gray-800 px-2 py-0.5 rounded border border-gray-700">○ OFFLINE</span>
                         )}
-                        <div className="text-[10px] text-gray-500 font-mono">CPMM (x*y=k)</div>
+                        <div className="text-[10px] text-gray-500 font-mono uppercase tracking-tighter">CPMM Model</div>
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-6">
-                    {/* INPUTS */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <div>
-                            <label className="text-xs text-gray-400 font-bold block mb-1">INITIAL LP SOL</label>
-                            <div className="flex items-center gap-2">
-                                <input
-                                    type="number"
-                                    value={simSol}
-                                    onChange={(e) => setSimSol(Math.max(0.1, parseFloat(e.target.value)))}
-                                    className="bg-black/50 border border-gray-600 rounded px-2 py-1 text-white text-sm w-full focus:border-blue-500 outline-none"
-                                />
-                            </div>
-                            <span className="text-[10px] text-gray-500">~${(simSol * 85).toLocaleString()}</span>
+                            <label className="text-[10px] text-gray-500 font-black uppercase block mb-1">Initial LP SOL</label>
+                            <input
+                                type="number"
+                                value={simSol}
+                                onChange={(e) => setSimSol(Math.max(0.1, parseFloat(e.target.value)))}
+                                className="bg-black/50 border border-gray-600 rounded px-2 py-1 text-white text-sm w-full focus:border-blue-500 outline-none"
+                            />
                         </div>
-
                         <div>
-                            <label className="text-xs text-gray-400 font-bold block mb-1">USER BUY (SOL)</label>
-                            <div className="flex items-center gap-2">
-                                <input
-                                    type="number"
-                                    value={simBuy}
-                                    step="0.1"
-                                    onChange={(e) => setSimBuy(Math.max(0, parseFloat(e.target.value)))}
-                                    className="bg-black/50 border border-gray-600 rounded px-2 py-1 text-white text-sm w-full focus:border-blue-500 outline-none"
-                                />
-                            </div>
+                            <label className="text-[10px] text-gray-500 font-black uppercase block mb-1">User Buy (SOL)</label>
+                            <input
+                                type="number"
+                                value={simBuy}
+                                step="0.1"
+                                onChange={(e) => setSimBuy(Math.max(0, parseFloat(e.target.value)))}
+                                className="bg-black/50 border border-gray-600 rounded px-2 py-1 text-white text-sm w-full focus:border-blue-500 outline-none"
+                            />
                         </div>
                     </div>
 
-                    {/* RESULTS */}
-                    <div className="bg-black/40 p-4 rounded-lg border border-blue-500/20 flex flex-col justify-center relative overflow-hidden">
-
-                        {isConnected && lastTrade ? (
-                            <>
-                                <div className="flex justify-between items-end mb-2 relative z-10">
-                                    <span className="text-xs text-gray-400">Live Price (SOL)</span>
-                                    <span className="text-xl font-bold text-green-400 font-mono">{lastTrade.price.toFixed(9)}</span>
-                                </div>
-                                <div className="flex justify-between items-end mb-2 relative z-10">
-                                    <span className="text-xs text-gray-400">Last Trade</span>
-                                    <span className={`text-sm font-bold ${lastTrade.isBuy ? 'text-green-400' : 'text-red-400'}`}>
-                                        {lastTrade.isBuy ? 'BUY' : 'SELL'} {Math.floor(lastTrade.tokenAmount).toLocaleString()}
-                                    </span>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className="flex justify-between items-end mb-2 relative z-10">
-                                    <span className="text-xs text-gray-400">You Get</span>
-                                    <span className="text-lg font-bold text-yellow-400">{Math.floor(tokensReceived).toLocaleString()}</span>
-                                </div>
-                                <div className="flex justify-between items-end mb-2 relative z-10">
-                                    <span className="text-xs text-gray-400">Impact</span>
-                                    <span className={`text-sm font-bold ${priceImpact > 10 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
-                                        +{priceImpact.toFixed(2)}%
-                                    </span>
-                                </div>
-                            </>
-                        )}
-
-                        {/* Impact Bar or Bonding Curve */}
-                        {isConnected ? (
-                            <div className="mt-3 relative z-10">
-                                <div className="flex justify-between text-[9px] text-gray-400 mb-1">
-                                    <span>Bonding Curve</span>
-                                    <span>12% / 100%</span>
-                                </div>
-                                <div className="h-2 w-full bg-gray-800 rounded-full overflow-hidden">
-                                    <div className="h-full bg-blue-500 w-[12%] animate-pulse"></div>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden mt-2 relative z-10">
-                                <motion.div
-                                    className={`h-full ${priceImpact > 20 ? 'bg-red-500' : 'bg-green-500'}`}
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${Math.min(100, priceImpact * 2)}%` }} // Visual scale
-                                />
-                            </div>
-                        )}
-
-                        {/* Background warning tint */}
-                        {priceImpact > 50 && <div className="absolute inset-0 bg-red-500/10 animate-pulse pointer-events-none" />}
+                    <div className="bg-black/40 p-4 rounded-lg border border-blue-500/20 flex flex-col justify-center">
+                        <div className="flex justify-between items-end mb-2">
+                            <span className="text-xs text-gray-400">Tokens Received</span>
+                            <span className="text-lg font-black text-yellow-400 font-mono">{Math.floor(tokensReceived).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-end mb-4">
+                            <span className="text-xs text-gray-400">Price Impact</span>
+                            <span className={`text-sm font-black font-mono ${priceImpact > 10 ? 'text-red-500' : 'text-green-400'}`}>
+                                +{priceImpact.toFixed(2)}%
+                            </span>
+                        </div>
+                        <div className="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden">
+                            <div
+                                className={`h-full transition-all duration-500 ${priceImpact > 20 ? 'bg-red-500' : 'bg-green-500'}`}
+                                style={{ width: `${Math.min(100, priceImpact * 2)}%` }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-
-            {/* Visual Flow Animation (Particles) */}
-            <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-green-500/20 via-yellow-500/20 to-red-500/20 -z-10 blur-sm"></div>
         </div>
     );
 };
