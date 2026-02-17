@@ -185,7 +185,7 @@ export const TokenomicsMap = ({ treasuryStats, rewardSettings, ecoLogs = [] }: T
                                     <tr>
                                         <th className="p-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Status / ID</th>
                                         <th className="p-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Action</th>
-                                        <th className="p-3 text-[9px] font-black text-gray-500 uppercase tracking-widest text-right">Burn Impact</th>
+                                        <th className="p-3 text-[9px] font-black text-gray-500 uppercase tracking-widest text-right">Economic Impact</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
@@ -193,7 +193,9 @@ export const TokenomicsMap = ({ treasuryStats, rewardSettings, ecoLogs = [] }: T
                                         <tr key={log.id} className="hover:bg-white/5 transition-colors">
                                             <td className="p-3">
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <div className="px-1.5 py-0.5 bg-green-500/20 text-green-500 rounded text-[7px] font-black uppercase">Verified</div>
+                                                    <div className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase ${log.type === 'WIN' ? 'bg-blue-500/20 text-blue-400' : 'bg-green-500/20 text-green-500'}`}>
+                                                        {log.type === 'WIN' ? 'Rewarded' : 'Verified'}
+                                                    </div>
                                                     <span className="text-[9px] font-mono text-cyan-400">{log.txId}</span>
                                                 </div>
                                                 <div className="text-[8px] text-gray-600 font-mono uppercase">{new Date(log.timestamp).toLocaleString()}</div>
@@ -203,8 +205,12 @@ export const TokenomicsMap = ({ treasuryStats, rewardSettings, ecoLogs = [] }: T
                                                 <div className="text-[8px] text-gray-500 uppercase">{log.message}</div>
                                             </td>
                                             <td className="p-3 text-right">
-                                                <div className="text-[10px] font-black font-mono text-red-400">-{(log.metadata?.original * 0.5) || (log.type === 'BURN' ? 5 : 0)} G</div>
-                                                <div className="text-[7px] text-gray-500 font-bold uppercase tracking-tighter">DEFLATION SINK</div>
+                                                <div className={`text-[10px] font-black font-mono ${log.type === 'WIN' ? 'text-green-400' : 'text-red-400'}`}>
+                                                    {log.type === 'WIN' ? '+' : '-'}{(log.metadata?.amount || log.metadata?.original * 0.5) || (log.type === 'BURN' ? 5 : 0)} G
+                                                </div>
+                                                <div className="text-[7px] text-gray-500 font-bold uppercase tracking-tighter">
+                                                    {log.type === 'WIN' ? 'TREASURY PAYOUT' : 'DEFLATION SINK'}
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

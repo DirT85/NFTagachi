@@ -174,6 +174,17 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
         setQteSweetSpot({ start: 50 - (width / 2), width });
     }, [battle.phase, playerMonster.baseStats]);
 
+    // Safety Win/Loss Check
+    useEffect(() => {
+        if (battle.phase === 'VICTORY' || battle.phase === 'DEFEAT' || battle.phase === 'LOBBY') return;
+
+        if (battle.playerHp <= 0) {
+            setBattle(prev => ({ ...prev, phase: 'DEFEAT', log: [...prev.log, "Critical Defeat!"] }));
+        } else if (battle.enemyHp <= 0) {
+            setBattle(prev => ({ ...prev, phase: 'VICTORY', log: [...prev.log, "Opponent Neutralized!"] }));
+        }
+    }, [battle.playerHp, battle.enemyHp, battle.phase]);
+
     const handleActionInternal = (move: 'ATTACK' | 'HEAL' | 'BLOCK' | 'SPECIAL') => {
         if (battle.phase !== 'SELECT') return;
         if (move === 'SPECIAL' && battle.specialMeter < 3) return;
@@ -197,14 +208,20 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
                 // AI RESOLUTION
                 const isBlocked = Math.random() > 0.7;
                 const result = calculateDamage(playerMonster.baseStats, enemyMonster.baseStats, move, success, playerMonster.type, enemyMonster.type, isBlocked);
+
+                const finalEnemyHp = Math.max(0, battle.enemyHp - result.damage);
+
                 setBattle(prev => ({
                     ...prev,
-                    enemyHp: Math.max(0, prev.enemyHp - result.damage),
+                    enemyHp: finalEnemyHp,
                     playerHp: Math.min(prev.playerMaxHp, prev.playerHp + result.heal),
-                    phase: 'RESOLVE',
+                    phase: finalEnemyHp <= 0 ? 'VICTORY' : 'RESOLVE',
                     log: [...prev.log, `${move}: ${result.message}`]
                 }));
-                setTimeout(() => setBattle(prev => ({ ...prev, turn: 'ENEMY' })), 1500);
+
+                if (finalEnemyHp > 0) {
+                    setTimeout(() => setBattle(prev => ({ ...prev, turn: 'ENEMY' })), 1500);
+                }
             } else {
                 setBattle(prev => ({ ...prev, phase: 'RESOLVE', log: [...prev.log, `Waiting for opponent...`] }));
             }
@@ -241,7 +258,7 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
                 return {
                     ...prev,
                     playerHp: newHp,
-                    phase: 'RESOLVE',
+                    phase: newHp <= 0 ? 'DEFEAT' : 'RESOLVE',
                     turn: 'PLAYER',
                     log: [...prev.log, `Defended! Took ${result.damage} DMG.`]
                 };

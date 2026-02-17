@@ -426,7 +426,7 @@ export const useNftagachi = () => {
         setLogs(prev => [newLog, ...prev].slice(0, 20));
 
         // If it's an economic event, add to the persistent audit ledger
-        if (type === 'BURN' || type === 'RECYCLE') {
+        if (type === 'BURN' || type === 'RECYCLE' || type === 'WIN') {
             setEcoLogs(prev => {
                 const next = [newLog, ...prev].slice(0, 50);
                 localStorage.setItem("nftagachi_eco_logs_v1", JSON.stringify(next));
@@ -1136,6 +1136,7 @@ export const useNftagachi = () => {
             if (mode === 'CLAIM') {
                 setGameBalance(prev => prev + battleReward);
                 setTreasuryStats(prev => ({ ...prev, balance: Math.max(0, prev.balance - battleReward), totalPaidOut: prev.totalPaidOut + battleReward }));
+                addLog('WIN', `Battle Reward: +${battleReward} GAMA Claimed`, { action: 'CLAIM', amount: battleReward });
                 console.log(`[ECONOMY] ${battleReward} GAMA Claimed to Game Balance`);
             } else {
                 // BURN FOR PRESTIGE: Permanent Stat Boost
