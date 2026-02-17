@@ -4,18 +4,19 @@ import { motion } from "framer-motion";
 import { Trophy, History as HistoryIcon, Coins, ArrowUpRight, ArrowDownLeft } from "lucide-react";
 import { useState } from "react";
 
+interface LogEntry {
+    id: string;
+    type: 'BURN' | 'RECYCLE' | 'WIN' | 'CLEAN' | 'SYSTEM';
+    message: string;
+    time: string;
+}
+
 interface ActivityPanelProps {
     balance: number;
+    logs?: LogEntry[];
 }
 
-interface LeaderboardEntry {
-    rank: number;
-    name: string;
-    balance: number;
-    wins: number;
-}
-
-export const ActivityPanel = ({ balance }: ActivityPanelProps) => {
+export const ActivityPanel = ({ balance, logs = [] }: ActivityPanelProps) => {
     const [activeTab, setActiveTab] = useState<"ACTIVITY" | "LEADERBOARD">("ACTIVITY");
 
     const leaderboard: LeaderboardEntry[] = [
@@ -26,10 +27,23 @@ export const ActivityPanel = ({ balance }: ActivityPanelProps) => {
         { rank: 5, name: "GAMA_FITT", balance: 4200, wins: 15 },
     ];
 
+    const getIcon = (type: LogEntry['type']) => {
+        switch (type) {
+            case 'BURN': return <Flame size={12} className="text-red-400" />;
+            case 'RECYCLE': return <RefreshCw size={12} className="text-cyan-400" />;
+            case 'WIN': return <Trophy size={12} className="text-yellow-400" />;
+            case 'CLEAN': return <Heart size={12} className="text-pink-400" />;
+            default: return <Zap size={12} className="text-blue-400" />;
+        }
+    };
+
     return (
-        <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden flex flex-col h-full shadow-2xl">
+        <div className="bg-black/80 backdrop-blur-3xl border border-white/10 rounded-2xl overflow-hidden flex flex-col h-full shadow-2xl relative">
+            {/* Background Glow */}
+            <div className="absolute top-0 inset-x-0 h-32 bg-cyan-500/5 blur-3xl pointer-events-none" />
+
             {/* Tabs */}
-            <div className="flex border-b border-white/5 bg-white/5">
+            <div className="flex border-b border-white/5 bg-white/5 relative z-10">
                 <button
                     onClick={() => setActiveTab("ACTIVITY")}
                     className={`flex-1 flex items-center justify-center gap-2 py-3 text-[10px] font-black transition-all ${activeTab === "ACTIVITY" ? "bg-cyan-500/20 text-cyan-400 border-b-2 border-cyan-500" : "text-white/40 hover:text-white"
@@ -44,33 +58,58 @@ export const ActivityPanel = ({ balance }: ActivityPanelProps) => {
                         }`}
                 >
                     <Trophy size={14} />
-                    TOP PLAYERS
+                    TOP HOLDERS
                 </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar relative z-10">
                 {activeTab === "ACTIVITY" ? (
-                    <div className="space-y-4">
-                        <div className="text-center py-10 opacity-30">
-                            <HistoryIcon size={32} className="mx-auto mb-2" />
-                            <p className="text-[10px] font-black uppercase tracking-widest">No System Logs Found</p>
-                        </div>
-                        <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 mb-4 animate-in slide-in-from-top-2 duration-500">
+                    <div className="space-y-3">
+                        {/* Default Info Card */}
+                        <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 mb-4">
                             <div className="flex justify-between items-center mb-1">
-                                <span className="text-[8px] font-black text-blue-400 uppercase">System Status</span>
-                                <span className="text-[8px] font-mono text-blue-400/60">OK</span>
+                                <span className="text-[8px] font-black text-blue-400 uppercase">OS_RELAY</span>
+                                <span className="text-[8px] font-mono text-blue-400/60 font-bold">ACTIVE</span>
                             </div>
-                            <p className="text-[8px] text-white/60 leading-relaxed uppercase">
-                                <span className="text-yellow-400 font-bold">[READY]</span> HUD Balance Linked: {balance.toLocaleString()} G (Active)
+                            <p className="text-[9px] text-white/60 leading-relaxed uppercase font-bold">
+                                Treasury Sync: <span className="text-green-400">ONLINE</span>
                                 <br />
-                                <span className="text-cyan-400 font-bold">[SYNC]</span> Metadata Baking: Dynamic URIs Enabled
+                                Deflationary Burn: <span className="text-red-400">ENABLED</span>
                             </p>
                         </div>
-                        <div className="p-4 rounded-xl bg-white/5 border border-white/5">
-                            <p className="text-[8px] text-white/40 leading-relaxed uppercase">
-                                <span className="text-cyan-400 font-bold">[!]</span> The Game Wallet (G) is used for in-game actions such as feeding, training, and cleaning. Winnings from the Arena are also deposited here.
-                            </p>
-                        </div>
+
+                        {logs.length === 0 ? (
+                            <div className="text-center py-10 opacity-20">
+                                <HistoryIcon size={32} className="mx-auto mb-2" />
+                                <p className="text-[10px] font-black uppercase tracking-widest font-mono">Standby for Pulse...</p>
+                            </div>
+                        ) : (
+                            <AnimatePresence mode="popLayout">
+                                {logs.map((log) => (
+                                    <motion.div
+                                        key={log.id}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5 group hover:border-white/10 transition-colors"
+                                    >
+                                        <div className="mt-0.5 shrink-0">
+                                            {getIcon(log.type)}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex justify-between items-center mb-0.5">
+                                                <span className={`text-[8px] font-black uppercase tracking-tighter ${log.type === 'BURN' ? 'text-red-400' : log.type === 'RECYCLE' ? 'text-cyan-400' : 'text-gray-500'}`}>
+                                                    {log.type}
+                                                </span>
+                                                <span className="text-[8px] font-mono text-white/20">{log.time}</span>
+                                            </div>
+                                            <p className="text-[10px] text-white/70 font-bold uppercase leading-tight truncate">
+                                                {log.message}
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                        )}
                     </div>
                 ) : (
                     <div className="space-y-3">
@@ -97,16 +136,20 @@ export const ActivityPanel = ({ balance }: ActivityPanelProps) => {
                 )}
             </div>
 
-            {/* Footer Info */}
-            <div className="p-3 bg-white/5 border-t border-white/5">
-                <div className="flex items-center justify-between opacity-60">
-                    <div className="flex items-center gap-1.5">
-                        <Coins size={12} className="text-yellow-500" />
-                        <span className="text-[8px] font-black text-white uppercase">Game Wallet</span>
+            {/* Footer Status */}
+            <div className="p-4 bg-white/5 border-t border-white/5 relative z-10 group">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-green-500 group-hover:animate-ping" />
+                        <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">Protocol Version 1.1</span>
                     </div>
-                    <span className="text-[10px] font-mono font-black text-white tracking-widest">{balance.toLocaleString()} G</span>
+                    <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1 rounded-full border border-white/5">
+                        <Coins size={10} className="text-yellow-500" />
+                        <span className="text-[10px] font-mono font-black text-white tracking-widest">{balance.toLocaleString()} G</span>
+                    </div>
                 </div>
             </div>
         </div >
     );
 };
+import { RefreshCw, Zap } from "lucide-react";

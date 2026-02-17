@@ -403,6 +403,17 @@ export const useNftagachi = () => {
     const [gameBalance, setGameBalance] = useState(0); // "Session" Balance
     const [treasuryStats, setTreasuryStats] = useState({ balance: 0, totalPaidOut: 0 });
     const [rewardSettings, setRewardSettings] = useState({ battle: 100, clean: 5 });
+    const [logs, setLogs] = useState<any[]>([]);
+
+    const addLog = (type: 'BURN' | 'RECYCLE' | 'WIN' | 'CLEAN' | 'SYSTEM', message: string) => {
+        const newLog = {
+            id: Math.random().toString(36).slice(2, 11),
+            type,
+            message,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+        setLogs(prev => [newLog, ...prev].slice(0, 20)); // Keep last 20
+    };
 
     const isWhale = (tokenBalance + gameBalance) >= 10_000_000;
     const holderHpMultiplier = isWhale ? 1.2 : 1.0; // 20% Health Boost for Whales
@@ -427,7 +438,7 @@ export const useNftagachi = () => {
 
             // Calculate "Paid Out" by comparing with a reference initial supply (e.g. 100M allocated to treasury)
             // This is a heuristic for the UI transparency.
-            const INITIAL_TREASURY_POOL = 100_000_000;
+            const INITIAL_TREASURY_POOL = 300_000_000;
             const paidOut = Math.max(0, INITIAL_TREASURY_POOL - balance);
 
             setTreasuryStats({ balance, totalPaidOut: paidOut });
@@ -695,6 +706,7 @@ export const useNftagachi = () => {
                     ...prev,
                     balance: prev.balance + 5 // Recycle 5 GAMA back to pool
                 }));
+                addLog('BURN', '10 G Spent: 5 Burned / 5 Recycled');
                 console.log("[ECONOMY] 10 GAMA spent: 5 Burned / 5 Recycled to Treasury");
 
                 newState.hunger = Math.max(0, newState.hunger - 20);
@@ -715,6 +727,7 @@ export const useNftagachi = () => {
                     ...prev,
                     balance: prev.balance + 7.5
                 }));
+                addLog('BURN', '15 G Spent: 7.5 Burned / 7.5 Recycled');
                 console.log("[ECONOMY] 15 GAMA spent: 7.5 Burned / 7.5 Recycled to Treasury");
 
                 const gain = Math.floor(5 * strengthMultiplier);
@@ -741,6 +754,7 @@ export const useNftagachi = () => {
                     newState.waste = 0;
                     const cleanReward = rewardSettings.clean;
                     setGameBalance(prev => prev + cleanReward);
+                    addLog('CLEAN', `Environment Cleaned! +${cleanReward} G Rewards`);
                     console.log(`[ECONOMY] Monster Cleaned! +${cleanReward} GAMA Minted (Sustainability Reward)`);
                     newState.happiness = Math.min(100, newState.happiness + 20);
                     setGameState("HAPPY");
@@ -748,6 +762,7 @@ export const useNftagachi = () => {
             } else if (action === 'revive') {
                 if (gameBalance < 50) { alert("Insufficient Game Balance (50 GAMA required)!"); setLoading(false); return; }
                 setGameBalance(prev => prev - 50);
+                addLog('BURN', 'Pet Revived: 50 G Burned/Recycled');
                 console.log("[ECONOMY] 50 GAMA Burned via Revival");
                 // State update handled by current revive logic block above this
             }

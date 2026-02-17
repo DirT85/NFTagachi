@@ -197,7 +197,7 @@ export default function Home() {
           >
             <div className="md:hidden fixed inset-0 bg-black/80 backdrop-blur-sm -z-10 pointer-events-auto" onClick={() => setActivityOpen(false)} />
             <div className="relative h-full pointer-events-auto">
-              <ActivityPanel balance={gameBalance} />
+              <ActivityPanel balance={gameBalance} logs={logs} />
               <button onClick={() => setActivityOpen(false)} className="md:hidden absolute top-4 right-4 text-gray-400 p-2 z-50 bg-black/50 rounded-full"><X size={20} /></button>
             </div>
           </motion.div>
@@ -318,9 +318,9 @@ export default function Home() {
                 B: { label: 'DEFEND', onClick: () => arenaRef.current?.handleAction('BLOCK'), highlight: true },
                 C: { label: 'SPECIAL', onClick: () => arenaRef.current?.handleAction('SPECIAL'), highlight: true }
               } : (petState && !petState.isFainted ? {
-                A: { label: 'FEED', onClick: () => performAction('feed'), disabled: loading || petState.hunger === 0, cost: '10G' },
-                B: { label: 'TRAIN', onClick: () => performAction('train'), disabled: loading || petState.energy < 20, cost: '15G' },
-                C: { label: 'CLEAN', onClick: () => performAction('clean'), disabled: loading || petState.waste === 0, cost: '+5G', highlight: petState.waste > 0 }
+                A: { label: 'FEED', onClick: () => performAction('feed'), disabled: loading || petState.hunger === 0, cost: '10G BURN' },
+                B: { label: 'TRAIN', onClick: () => performAction('train'), disabled: loading || petState.energy < 20, cost: '15G BURN' },
+                C: { label: 'CLEAN', onClick: () => performAction('clean'), disabled: loading || petState.waste === 0, cost: '+5G RECYCLE', highlight: petState.waste > 0 }
               } : undefined)
             }
           >
