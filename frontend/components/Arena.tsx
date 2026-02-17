@@ -5,6 +5,7 @@ import { BattleState, INITIAL_BATTLE_STATE, calculateDamage, getEnemyMove, getTu
 import { Socket } from 'socket.io-client';
 import { Sprite } from './Sprite';
 import { LcdBackground } from './LcdBackground';
+import { Flame, Shield, Trophy, Coins, Zap } from 'lucide-react';
 
 interface ArenaProps {
     playerMonster: MonsterData;
@@ -267,33 +268,61 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
             <div className="flex-1 relative rounded-xl border-2 border-black/80 overflow-hidden shadow-inner bg-[#9bbc0f] group">
                 <LcdBackground id="DUEL_ARENA" />
 
-                <div className="absolute inset-x-0 bottom-[10%] z-10 pointer-events-none flex items-end justify-center gap-2 pb-2">
-                    {/* Player */}
-                    <motion.div animate={animationPhase === 'STRIKE' ? { x: [0, 80, 0], scale: [1.2, 1.35, 1.2] } : { x: 0, scale: 1.2 }} transition={{ duration: 0.5 }} className="relative z-10 flex flex-col items-center">
-                        <div className="mb-2 flex flex-col items-center gap-1">
-                            <div className="flex items-center gap-1.5 bg-black/60 px-2 py-0.5 rounded-full backdrop-blur-sm">
-                                <span className="text-[9px] font-bold text-white uppercase tracking-wide">{playerMonster.name}</span>
-                                <span className="text-[10px] font-black text-cyan-300 tabular-nums">{Math.floor(battle.playerHp)}</span>
-                            </div>
-                            <div className="h-1 bg-black/10 rounded-full overflow-hidden border border-black/5 relative transition-all duration-500" style={{ width: `4rem` }}>
-                                <motion.div className="h-full bg-cyan-400" animate={{ width: `${(battle.playerHp / battle.playerMaxHp) * 100}%` }} />
+                {/* TOP LABELS (STREET FIGHTER STYLE) */}
+                <div className="absolute top-4 inset-x-4 z-50 flex justify-between items-start pointer-events-none">
+                    {/* Player HP */}
+                    <div className="flex flex-col gap-1 w-[42%]">
+                        <div className="flex justify-between items-end mb-1">
+                            <span className="text-[10px] font-black text-cyan-400 italic tracking-tighter">YOU</span>
+                            <span className="text-[8px] font-bold text-white/60 tracking-widest truncate max-w-[50px]">{playerMonster.name}</span>
+                        </div>
+                        <div className="h-4 bg-black/40 rounded-sm border border-white/10 p-0.5 relative overflow-hidden">
+                            <motion.div
+                                className="h-full bg-gradient-to-r from-cyan-600 to-cyan-400 shadow-[0_0_10px_cyan]"
+                                animate={{ width: `${(battle.playerHp / battle.playerMaxHp) * 100}%` }}
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-[8px] font-mono font-black text-white drop-shadow-md">
+                                    {Math.floor(battle.playerHp)} / {battle.playerMaxHp} HP
+                                </span>
                             </div>
                         </div>
-                        <Sprite id={playerMonster.id} variant={playerMonster.variant} state={playerState} spriteSheet={playerMonster.spriteSheet} className="w-16 h-16" />
+                    </div>
+
+                    {/* VS BADGE */}
+                    <div className="flex flex-col items-center mt-2">
+                        <div className="px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/40 rounded italic text-[10px] text-yellow-500">VS</div>
+                    </div>
+
+                    {/* Enemy HP */}
+                    <div className="flex flex-col gap-1 w-[42%] items-end text-right">
+                        <div className="flex justify-between items-end mb-1 w-full">
+                            <span className="text-[8px] font-bold text-white/60 tracking-widest truncate max-w-[50px]">{enemyMonster.name}</span>
+                            <span className="text-[10px] font-black text-red-500 italic tracking-tighter">ENEMY</span>
+                        </div>
+                        <div className="h-4 bg-black/40 rounded-sm border border-white/10 p-0.5 relative overflow-hidden w-full">
+                            <motion.div
+                                className="h-full bg-gradient-to-l from-red-600 to-red-400 shadow-[0_0_10px_red] ml-auto"
+                                animate={{ width: `${(battle.enemyHp / battle.enemyMaxHp) * 100}%` }}
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-[8px] font-mono font-black text-white drop-shadow-md">
+                                    {Math.floor(battle.enemyHp)} / {battle.enemyMaxHp} HP
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="absolute inset-x-0 bottom-[15%] z-10 pointer-events-none flex items-end justify-center gap-12">
+                    {/* Player Sprite */}
+                    <motion.div animate={animationPhase === 'STRIKE' ? { x: [0, 100, 0], scale: [1.3, 1.5, 1.3] } : { x: 0, scale: 1.3 }} transition={{ duration: 0.5 }} className="relative z-10 flex flex-col items-center">
+                        <Sprite id={playerMonster.id} variant={playerMonster.variant} state={playerState} spriteSheet={playerMonster.spriteSheet} className="w-24 h-24" />
                     </motion.div>
 
-                    {/* Opponent */}
-                    <motion.div className="relative z-10 -scale-x-100 flex flex-col items-center" animate={battle.turn === 'ENEMY' && animationPhase === 'STRIKE' ? { x: [0, -80, 0], scale: [1.2, 1.35, 1.2] } : { x: 0, scale: 1.2 }} style={{ imageRendering: 'pixelated' }}>
-                        <div className="mb-2 flex flex-col items-center gap-1 -scale-x-100">
-                            <div className="flex items-center gap-1.5 bg-black/60 px-2 py-0.5 rounded-full backdrop-blur-sm">
-                                <span className="text-[9px] font-bold text-white uppercase tracking-wide">{enemyMonster.name}</span>
-                                <span className="text-[10px] font-black text-red-300 tabular-nums">{Math.floor(battle.enemyHp)}</span>
-                            </div>
-                            <div className="w-16 h-1 bg-black/10 rounded-full overflow-hidden border border-black/5">
-                                <motion.div className="h-full bg-red-500" animate={{ width: `${(battle.enemyHp / battle.enemyMaxHp) * 100}%` }} />
-                            </div>
-                        </div>
-                        <Sprite id={enemyMonster.id} variant={enemyMonster.variant} state={enemyState} spriteSheet={enemyMonster.spriteSheet} className="w-16 h-16" />
+                    {/* Opponent Sprite */}
+                    <motion.div className="relative z-10 -scale-x-100 flex flex-col items-center" animate={battle.turn === 'ENEMY' && animationPhase === 'STRIKE' ? { x: [0, -100, 0], scale: [1.3, 1.5, 1.3] } : { x: 0, scale: 1.3 }} style={{ imageRendering: 'pixelated' }}>
+                        <Sprite id={enemyMonster.id} variant={enemyMonster.variant} state={enemyState} spriteSheet={enemyMonster.spriteSheet} className="w-24 h-24" />
                     </motion.div>
                 </div>
 
@@ -306,25 +335,58 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
                     </AnimatePresence>
                 </div>
 
-                {/* QTE Overlay */}
+                {/* INSTRUCTIONAL OVERLAYS */}
                 <AnimatePresence>
+                    {battle.phase === 'SELECT' && (
+                        <motion.div key="select-overlay" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.1 }} className="absolute inset-0 z-[60] flex flex-col items-center justify-center bg-black/20 backdrop-blur-[2px]">
+                            <div className="bg-black/80 border-2 border-cyan-500/30 p-8 rounded-[2rem] flex flex-col items-center gap-6 shadow-[0_0_40px_rgba(6,182,212,0.2)]">
+                                <motion.div animate={{ opacity: [1, 0.4, 1] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase">
+                                    Your Turn!
+                                </motion.div>
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={() => handleActionInternal('ATTACK')}
+                                        className="w-20 h-20 rounded-2xl bg-white/10 border-2 border-white/20 flex flex-col items-center justify-center gap-2 hover:bg-white hover:text-black transition-all group"
+                                    >
+                                        <div className="text-xl font-black">A</div>
+                                        <div className="text-[7px] font-bold uppercase tracking-widest">ATTACK</div>
+                                    </button>
+                                    <button
+                                        onClick={() => handleActionInternal('SPECIAL')}
+                                        disabled={battle.specialMeter < 3}
+                                        className={`w-20 h-20 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all border-2 ${battle.specialMeter >= 3 ? 'bg-cyan-500 shadow-[0_0_20px_cyan] text-white border-white animate-pulse' : 'bg-black/40 border-white/5 text-white/20'}`}
+                                    >
+                                        <div className="text-xl font-black italic">S</div>
+                                        <div className="text-[7px] font-bold uppercase tracking-widest">SPECIAL</div>
+                                    </button>
+                                </div>
+                                <p className="text-[6px] text-white/40 font-mono tracking-widest uppercase">Select Combat Module_</p>
+                            </div>
+                        </motion.div>
+                    )}
+
                     {(battle.phase === 'ATTACK_QTE' || battle.phase === 'DEFEND_QTE') && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-40 flex flex-col items-center justify-center p-8 gap-4">
-                            <div className="bg-black/60 backdrop-blur-sm p-4 rounded-xl border-2 border-white/20 flex flex-col items-center gap-3">
-                                <div className="text-[10px] font-black tracking-widest text-white uppercase">
-                                    {battle.phase === 'ATTACK_QTE' ? 'TIMING HIT!' : 'BLOCK NOW!'}
+                        <motion.div key="qte-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-[70] flex flex-col items-center justify-center p-8 gap-6 pointer-events-auto" onClick={handleQTEInput}>
+                            <div className="bg-black/60 backdrop-blur-md p-6 rounded-3xl border-2 border-white/10 flex flex-col items-center gap-6 shadow-2xl">
+                                <motion.div animate={{ scale: [1, 1.1, 1], opacity: [1, 0.8, 1] }} transition={{ repeat: Infinity, duration: 0.8 }} className="text-sm font-black tracking-tighter text-white uppercase italic flex items-center gap-3">
+                                    {battle.phase === 'ATTACK_QTE' ? (
+                                        <><Flame size={16} className="text-orange-500 animate-pulse" /> TAP TO STRIKE!</>
+                                    ) : (
+                                        <><Shield size={16} className="text-cyan-400 animate-pulse" /> TAP TO BLOCK!</>
+                                    )}
+                                </motion.div>
+                                <div className="w-56 h-6 bg-black/80 rounded-full relative overflow-hidden border-2 border-white/10 p-1">
+                                    <div className="absolute top-0 bottom-0 bg-white/30 rounded-sm" style={{ left: `${qteSweetSpot.start}%`, width: `${qteSweetSpot.width}%` }} />
+                                    <motion.div className="absolute top-0 bottom-0 w-2 bg-white shadow-[0_0_20px_white] rounded-full" style={{ left: `${qteValue}%` }} />
                                 </div>
-                                <div className="w-56 h-6 bg-black/80 rounded-full relative overflow-hidden border border-white/10">
-                                    <div className="absolute top-0 bottom-0 bg-white/20" style={{ left: `${qteSweetSpot.start}%`, width: `${qteSweetSpot.width}%` }} />
-                                    <motion.div className="absolute top-0 bottom-0 w-1.5 bg-white shadow-[0_0_10px_white]" style={{ left: `${qteValue}%` }} />
-                                </div>
+                                <div className="text-[8px] font-bold text-white/40 tracking-[0.3em] uppercase italic">Precision is Key_</div>
                             </div>
                         </motion.div>
                     )}
 
                     {(battle.phase === 'VICTORY' || battle.phase === 'DEFEAT') && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-50 bg-black flex flex-col items-center justify-center gap-6 text-center px-4">
-                            <h2 className={`text-4xl italic ${battle.phase === 'VICTORY' ? 'text-yellow-400' : 'text-red-500'}`}>{battle.phase}</h2>
+                        <motion.div key="end-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-[100] bg-black flex flex-col items-center justify-center gap-6 text-center px-4">
+                            <h2 className={`text-4xl italic font-black ${battle.phase === 'VICTORY' ? 'text-yellow-400' : 'text-red-500'}`}>{battle.phase}</h2>
 
                             {battle.phase === 'VICTORY' ? (
                                 <div className="space-y-4">
@@ -332,18 +394,18 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
                                     <div className="flex flex-col gap-3">
                                         <button
                                             onClick={() => handleBattleEnd('CLAIM')}
-                                            className="bg-white text-black text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-yellow-400 transition-colors w-64"
+                                            className="bg-white text-black text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-yellow-400 transition-colors w-64 flex items-center justify-center gap-2"
                                         >
-                                            💰 CLAIM GAMA
+                                            <Coins size={14} /> CLAIM GAMA
                                         </button>
                                         <button
                                             onClick={() => handleBattleEnd('BURN')}
-                                            className="bg-transparent border-2 border-yellow-400 text-yellow-400 text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-yellow-400/10 transition-colors w-64"
+                                            className="bg-transparent border-2 border-yellow-400 text-yellow-400 text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-yellow-400/10 transition-colors w-64 flex items-center justify-center gap-2"
                                         >
-                                            🔥 BURN FOR PRESTIGE
+                                            <Flame size={14} /> BURN FOR PRESTIGE
                                         </button>
                                     </div>
-                                    <p className="text-[8px] text-gray-500 italic max-w-xs">Burning rewards grants permanent +HP or +ATK boosts to your monster.</p>
+                                    <p className="text-[8px] text-gray-500 italic max-w-xs uppercase font-bold">Burning rewards grants permanent +HP or +ATK boosts.</p>
                                 </div>
                             ) : (
                                 <button onClick={() => handleBattleEnd()} className="bg-white text-black text-[10px] px-8 py-3 rounded-full font-black tracking-widest uppercase shadow-xl hover:bg-gray-200 transition-colors">CONTINUE</button>
@@ -351,26 +413,22 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
                         </motion.div>
                     )}
                 </AnimatePresence>
+
+                {(battle.phase === 'SELECT' || battle.phase === 'LOBBY') && (
+                    <button onClick={handleForfeit} className="absolute top-2 right-2 z-[110] bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white border border-red-500/50 px-3 py-1 rounded-full text-[8px] font-bold tracking-widest transition-all">FORFEIT</button>
+                )}
             </div>
 
-            {/* Controls / Info */}
-            {(battle.phase === 'SELECT' || battle.phase === 'LOBBY') && (
-                <button onClick={handleForfeit} className="absolute top-2 right-2 bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white border border-red-500/50 px-3 py-1 rounded-full text-[8px] font-bold tracking-widest transition-all">FORFEIT</button>
-            )}
-
-            <div className="h-10 flex items-center justify-between px-4">
-                <div className="flex gap-1">
-                    {[0, 1, 2].map(i => (
-                        <div key={i} className={`w-3 h-1.5 rounded-sm ${battle.specialMeter > i ? 'bg-cyan-400 shadow-[0_0_5px_cyan]' : 'bg-white/10'}`} />
-                    ))}
-                    <span className="text-[7px] text-white/50 ml-1">SPEC</span>
+            {/* Bottom Status Bar */}
+            <div className="h-4 flex items-center justify-center opacity-40 mt-1">
+                <div className="w-32 h-1 bg-white/5 rounded-full overflow-hidden">
+                    <motion.div
+                        className="h-full bg-cyan-400"
+                        animate={{ width: `${(battle.specialMeter / 3) * 100}%` }}
+                        transition={{ type: 'spring', damping: 10 }}
+                    />
                 </div>
-                {battle.phase === 'SELECT' && (
-                    <div className="flex gap-4">
-                        <span className="text-[8px] text-white/60 hover:text-white cursor-pointer" onClick={() => handleActionInternal('ATTACK')}>[A] ATTK</span>
-                        <span className={`text-[8px] ${battle.specialMeter >= 3 ? 'text-cyan-400' : 'text-white/20'}`} onClick={() => handleActionInternal('SPECIAL')}>[C] SPEC</span>
-                    </div>
-                )}
+                <span className="text-[6px] text-white ml-2 font-mono tracking-widest uppercase">Spec_Charged</span>
             </div>
         </div>
     );

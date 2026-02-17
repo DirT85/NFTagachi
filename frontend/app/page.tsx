@@ -19,7 +19,10 @@ import { useNftagachi } from "@/hooks/useNftagachi";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, ReactNode, useEffect, useRef } from "react";
-import { Drumstick, Dumbbell, Sparkles, Swords, Home as HomeIcon, Info, X, History as HistoryIcon, Wallet, TrendingUp } from "lucide-react";
+import {
+  Drumstick, Dumbbell, Sparkles, Swords, Home as HomeIcon, Info, X,
+  History as HistoryIcon, Wallet, TrendingUp, Activity, BarChart3, RefreshCw
+} from "lucide-react";
 import { io, Socket } from "socket.io-client";
 
 export default function Home() {
@@ -41,7 +44,9 @@ export default function Home() {
     mintTestMonster,
 
     isWhale,
-    wallet
+    wallet,
+    logs,
+    ecoLogs
   } = useNftagachi();
 
   const [view, setView] = useState<'HOME' | 'LOBBY' | 'ARENA'>('HOME');
@@ -197,7 +202,7 @@ export default function Home() {
           >
             <div className="md:hidden fixed inset-0 bg-black/80 backdrop-blur-sm -z-10 pointer-events-auto" onClick={() => setActivityOpen(false)} />
             <div className="relative h-full pointer-events-auto">
-              <ActivityPanel balance={gameBalance} logs={logs} />
+              <ActivityPanel balance={gameBalance} logs={logs} ecoLogs={ecoLogs} />
               <button onClick={() => setActivityOpen(false)} className="md:hidden absolute top-4 right-4 text-gray-400 p-2 z-50 bg-black/50 rounded-full"><X size={20} /></button>
             </div>
           </motion.div>
@@ -256,6 +261,7 @@ export default function Home() {
                   <TokenomicsMap
                     treasuryStats={treasuryStats}
                     rewardSettings={rewardSettings}
+                    ecoLogs={ecoLogs}
                   />
                 ) : (
                   <div className="p-6">

@@ -1,7 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Trophy, History as HistoryIcon, Coins, ArrowUpRight, ArrowDownLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+    Drumstick, Dumbbell, Sparkles, Swords, Home as HomeIcon, Info, X,
+    History as HistoryIcon, Wallet, TrendingUp, Activity, BarChart3,
+    RefreshCw, Shield, Zap, Search, History, Trophy, Coins, ArrowUpRight,
+    ArrowDownLeft, Flame, Heart, Droplet, ShieldCheck, PieChart, Lock, Users
+} from "lucide-react";
 import { useState } from "react";
 
 interface LogEntry {
@@ -9,14 +14,23 @@ interface LogEntry {
     type: 'BURN' | 'RECYCLE' | 'WIN' | 'CLEAN' | 'SYSTEM';
     message: string;
     time: string;
+    txId?: string;
+}
+
+interface LeaderboardEntry {
+    rank: number;
+    name: string;
+    balance: number;
+    wins: number;
 }
 
 interface ActivityPanelProps {
     balance: number;
     logs?: LogEntry[];
+    ecoLogs?: any[];
 }
 
-export const ActivityPanel = ({ balance, logs = [] }: ActivityPanelProps) => {
+export const ActivityPanel = ({ balance, logs = [], ecoLogs = [] }: ActivityPanelProps) => {
     const [activeTab, setActiveTab] = useState<"ACTIVITY" | "LEADERBOARD">("ACTIVITY");
 
     const leaderboard: LeaderboardEntry[] = [
@@ -97,9 +111,16 @@ export const ActivityPanel = ({ balance, logs = [] }: ActivityPanelProps) => {
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex justify-between items-center mb-0.5">
-                                                <span className={`text-[8px] font-black uppercase tracking-tighter ${log.type === 'BURN' ? 'text-red-400' : log.type === 'RECYCLE' ? 'text-cyan-400' : 'text-gray-500'}`}>
-                                                    {log.type}
-                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className={`text-[8px] font-black uppercase tracking-tighter ${log.type === 'BURN' ? 'text-red-400' : log.type === 'RECYCLE' ? 'text-cyan-400' : 'text-gray-500'}`}>
+                                                        {log.type}
+                                                    </span>
+                                                    {log.txId && (
+                                                        <span className="text-[7px] font-mono text-cyan-400/80 bg-cyan-400/10 px-1 rounded border border-cyan-400/20 uppercase">
+                                                            ID: {log.txId}
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 <span className="text-[8px] font-mono text-white/20">{log.time}</span>
                                             </div>
                                             <p className="text-[10px] text-white/70 font-bold uppercase leading-tight truncate">
@@ -149,7 +170,6 @@ export const ActivityPanel = ({ balance, logs = [] }: ActivityPanelProps) => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
-import { RefreshCw, Zap } from "lucide-react";

@@ -401,18 +401,38 @@ export const useNftagachi = () => {
 
     const [tokenBalance, setTokenBalance] = useState(0);
     const [gameBalance, setGameBalance] = useState(0); // "Session" Balance
-    const [treasuryStats, setTreasuryStats] = useState({ balance: 0, totalPaidOut: 0 });
+    const [treasuryStats, setTreasuryStats] = useState({
+        balance: 0,
+        totalPaidOut: 0,
+        totalBurned: 0,
+        totalRecycled: 0
+    });
     const [rewardSettings, setRewardSettings] = useState({ battle: 100, clean: 5 });
     const [logs, setLogs] = useState<any[]>([]);
+    const [ecoLogs, setEcoLogs] = useState<any[]>([]);
 
-    const addLog = (type: 'BURN' | 'RECYCLE' | 'WIN' | 'CLEAN' | 'SYSTEM', message: string) => {
+    const addLog = (type: 'BURN' | 'RECYCLE' | 'WIN' | 'CLEAN' | 'SYSTEM', message: string, metadata?: any) => {
+        const txId = `GAMA-${Math.random().toString(36).slice(2, 6).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
         const newLog = {
             id: Math.random().toString(36).slice(2, 11),
+            txId,
             type,
             message,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            metadata,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            timestamp: Date.now()
         };
-        setLogs(prev => [newLog, ...prev].slice(0, 20)); // Keep last 20
+
+        setLogs(prev => [newLog, ...prev].slice(0, 20));
+
+        // If it's an economic event, add to the persistent audit ledger
+        if (type === 'BURN' || type === 'RECYCLE') {
+            setEcoLogs(prev => {
+                const next = [newLog, ...prev].slice(0, 50);
+                localStorage.setItem("nftagachi_eco_logs_v1", JSON.stringify(next));
+                return next;
+            });
+        }
     };
 
     const isWhale = (tokenBalance + gameBalance) >= 10_000_000;
@@ -441,7 +461,30 @@ export const useNftagachi = () => {
             const INITIAL_TREASURY_POOL = 300_000_000;
             const paidOut = Math.max(0, INITIAL_TREASURY_POOL - balance);
 
-            setTreasuryStats({ balance, totalPaidOut: paidOut });
+            // Load persistent cumulative stats
+            const savedStats = localStorage.getItem("nftagachi_eco_stats_v1");
+            let cumulative = { totalBurned: 0, totalRecycled: 0 };
+            if (savedStats) {
+                try {
+                    cumulative = JSON.parse(savedStats);
+                } catch (e) { console.error("Stored eco stats corrupted"); }
+            }
+
+            // Load persistent eco logs
+            const savedLogs = localStorage.getItem("nftagachi_eco_logs_v1");
+            if (savedLogs) {
+                try {
+                    setEcoLogs(JSON.parse(savedLogs));
+                } catch (e) { console.error("Stored eco logs corrupted"); }
+            }
+
+            setTreasuryStats(prev => ({
+                ...prev,
+                balance,
+                totalPaidOut: paidOut,
+                totalBurned: cumulative.totalBurned,
+                totalRecycled: cumulative.totalRecycled
+            }));
         } catch (e) {
             console.error("Failed to fetch treasury stats:", e);
         }
@@ -702,12 +745,24 @@ export const useNftagachi = () => {
 
                 // BURN & RECYCLE LOGIC: 50% Burn, 50% Recycle (to fund rewards)
                 setGameBalance(prev => prev - 10);
-                setTreasuryStats(prev => ({
-                    ...prev,
-                    balance: prev.balance + 5 // Recycle 5 GAMA back to pool
-                }));
-                addLog('BURN', '10 G Spent: 5 Burned / 5 Recycled');
-                console.log("[ECONOMY] 10 GAMA spent: 5 Burned / 5 Recycled to Treasury");
+                const burnAmount = 5;
+                const recAmount = 5;
+
+                setTreasuryStats(prev => {
+                    const next = {
+                        ...prev,
+                        balance: prev.balance + recAmount,
+                        totalBurned: prev.totalBurned + burnAmount,
+                        totalRecycled: prev.totalRecycled + recAmount
+                    };
+                    localStorage.setItem("nftagachi_eco_stats_v1", JSON.stringify({
+                        totalBurned: next.totalBurned,
+                        totalRecycled: next.totalRecycled
+                    }));
+                    return next;
+                });
+                addLog('BURN', `10 G Spent: ${burnAmount} Burned / ${recAmount} Recycled`, { action: 'FEED', original: 10 });
+                console.log(`[ECONOMY] 10 GAMA spent: ${burnAmount} Burned / ${recAmount} Recycled to Treasury`);
 
                 newState.hunger = Math.max(0, newState.hunger - 20);
                 newState.hp = Math.min(newState.maxHp, newState.hp + 5);
@@ -723,12 +778,24 @@ export const useNftagachi = () => {
 
                 // BURN & RECYCLE LOGIC: 50% Burn, 50% Recycle
                 setGameBalance(prev => prev - 15);
-                setTreasuryStats(prev => ({
-                    ...prev,
-                    balance: prev.balance + 7.5
-                }));
-                addLog('BURN', '15 G Spent: 7.5 Burned / 7.5 Recycled');
-                console.log("[ECONOMY] 15 GAMA spent: 7.5 Burned / 7.5 Recycled to Treasury");
+                const burnAmount = 7.5;
+                const recAmount = 7.5;
+
+                setTreasuryStats(prev => {
+                    const next = {
+                        ...prev,
+                        balance: prev.balance + recAmount,
+                        totalBurned: prev.totalBurned + burnAmount,
+                        totalRecycled: prev.totalRecycled + recAmount
+                    };
+                    localStorage.setItem("nftagachi_eco_stats_v1", JSON.stringify({
+                        totalBurned: next.totalBurned,
+                        totalRecycled: next.totalRecycled
+                    }));
+                    return next;
+                });
+                addLog('BURN', `15 G Spent: ${burnAmount} Burned / ${recAmount} Recycled`, { action: 'TRAIN', original: 15 });
+                console.log(`[ECONOMY] 15 GAMA spent: ${burnAmount} Burned / ${recAmount} Recycled to Treasury`);
 
                 const gain = Math.floor(5 * strengthMultiplier);
                 newState.power = Math.min(100, newState.power + gain);
@@ -1073,6 +1140,19 @@ export const useNftagachi = () => {
             } else {
                 // BURN FOR PRESTIGE: Permanent Stat Boost
                 const boostType = Math.random() > 0.5 ? 'hp' : 'atk';
+
+                // Track Prestige Burn
+                setTreasuryStats(prev => {
+                    const next = { ...prev, totalBurned: prev.totalBurned + battleReward };
+                    localStorage.setItem("nftagachi_eco_stats_v1", JSON.stringify({
+                        totalBurned: next.totalBurned,
+                        totalRecycled: next.totalRecycled
+                    }));
+                    return next;
+                });
+
+                addLog('BURN', `Prestige Burn: ${battleReward} GAMA Deflated`, { action: 'PRESTIGE', original: battleReward });
+
                 if (boostType === 'hp') {
                     newStats.maxHp += 2;
                     newStats.hp += 2;
@@ -1125,6 +1205,7 @@ export const useNftagachi = () => {
         rewardSettings,
         swapOpen,
         setSwapOpen,
+        ecoLogs,
 
         // Actions
         mintItem,

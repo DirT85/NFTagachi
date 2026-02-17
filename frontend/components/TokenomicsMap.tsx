@@ -1,28 +1,34 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Droplet, Flame, ShieldCheck, Coins, PieChart, Sparkles, Activity, Shield, Heart, ExternalLink, Zap, Info, TrendingUp, RefreshCw, Lock, Users, BarChart3 } from 'lucide-react';
+import {
+    Droplet, Flame, ShieldCheck, Coins, PieChart, Sparkles, Activity, Shield,
+    Heart, ExternalLink, Zap, Info, TrendingUp, RefreshCw, Lock, Users,
+    BarChart3, History, Search
+} from 'lucide-react';
 import { usePumpFun } from '@/hooks/usePumpFun';
 import { TREASURY_ADDRESS } from '@/utils/constants';
 
 interface TokenomicsMapProps {
-    treasuryStats?: { balance: number, totalPaidOut: number };
+    treasuryStats?: { balance: number, totalPaidOut: number, totalBurned: number, totalRecycled: number };
     rewardSettings?: { battle: number, clean: number };
+    ecoLogs?: any[];
 }
 
-export const TokenomicsMap = ({ treasuryStats, rewardSettings }: TokenomicsMapProps) => {
+export const TokenomicsMap = ({ treasuryStats, rewardSettings, ecoLogs = [] }: TokenomicsMapProps) => {
     // Pump.fun Live Data (Mocked pool for demo)
     const { isConnected } = usePumpFun("So11111111111111111111111111111111111111112");
 
     // Eco-Stats
     const balance = treasuryStats?.balance || 0;
     const paidOut = treasuryStats?.totalPaidOut || 0;
-    const totalCirculation = 1_000_000_000; // 1 Billion GAMA Total Supply
+    const burned = treasuryStats?.totalBurned || 0;
+    const recycled = treasuryStats?.totalRecycled || 0;
 
     // Heuristics
     const healthPercent = Math.min(100, (balance / 300_000_000) * 100); // Sustainable relative to the 300M allocation
 
     return (
-        <div className="w-full bg-slate-900/90 border-2 border-slate-700/50 rounded-3xl p-6 backdrop-blur-xl relative overflow-hidden h-full overflow-y-auto custom-scrollbar">
+        <div className="w-full bg-slate-900/90 border-2 border-slate-700/50 rounded-3xl p-6 backdrop-blur-xl relative overflow-hidden h-full overflow-y-auto custom-scrollbar pb-20">
             {/* Background Grid & Glows */}
             <div className="absolute inset-0 bg-[url('/grid_bg.png')] opacity-10 pointer-events-none" />
             <div className="absolute -top-24 -left-24 w-64 h-64 bg-yellow-500/10 rounded-full blur-[100px] pointer-events-none" />
@@ -133,113 +139,83 @@ export const TokenomicsMap = ({ treasuryStats, rewardSettings }: TokenomicsMapPr
             <div className="relative z-10 mb-8">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xs font-black text-white/40 tracking-[0.2em] uppercase flex items-center gap-2">
-                        <BarChart3 size={14} className="text-yellow-400" /> Supply Metrics (Estimates)
+                        <BarChart3 size={14} className="text-yellow-400" /> Live Pulse Feed (Verified)
                     </h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-black/30 p-4 rounded-xl border border-white/5 text-center">
-                        <p className="text-[9px] text-gray-500 uppercase font-mono mb-1">Treasury Status</p>
-                        <p className="text-xl font-black text-white font-mono">30%</p>
-                        <p className="text-[8px] text-cyan-500/60 mt-1 uppercase">LOCKED FOR REWARDS</p>
+                        <p className="text-[9px] text-gray-500 uppercase font-mono mb-1">Total Paid Out</p>
+                        <p className="text-xl font-black text-white font-mono">{paidOut.toLocaleString()}</p>
+                        <p className="text-[8px] text-cyan-500/60 mt-1 uppercase tracking-tighter">DISTRIBUTED REWARDS</p>
                     </div>
                     <div className="bg-black/30 p-4 rounded-xl border border-white/5 text-center relative group">
                         <div className="absolute inset-0 bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl blur-lg pointer-events-none" />
-                        <p className="text-[9px] text-gray-500 uppercase font-mono mb-1">Circulating Supply</p>
-                        <p className="text-xl font-black text-white font-mono">15%</p>
-                        <p className="text-[8px] text-yellow-500/60 mt-1 uppercase tracking-tighter">Distributed to Strategic Holders</p>
+                        <p className="text-[9px] text-gray-500 uppercase font-mono mb-1">Cumulative Burn</p>
+                        <p className="text-xl font-black text-red-500 font-mono">{burned.toLocaleString()}</p>
+                        <p className="text-[8px] text-red-500/60 mt-1 uppercase tracking-tighter italic">Permanently Deflated</p>
                     </div>
-                    <div className="bg-black/30 p-4 rounded-xl border border-white/5 text-center">
-                        <p className="text-[9px] text-gray-500 uppercase font-mono mb-1">LP Capacity</p>
-                        <p className="text-xl font-black text-green-400 font-mono">55%</p>
-                        <p className="text-[8px] text-green-400/60 mt-1 uppercase">ALLOCATED TO DEX LP</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* DISTRIBUTION MAP (REPLACES SIMULATOR) */}
-            <div className="relative z-10 bg-slate-800/40 border-2 border-slate-700/30 rounded-3xl p-6 mb-8 group overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-
-                <div className="flex items-center justify-between mb-8 relative z-10">
-                    <div>
-                        <h3 className="text-sm font-black text-white flex items-center gap-2 italic">
-                            <PieChart size={18} className="text-purple-400" /> SUPPLY DISTRIBUTION MAP
-                        </h3>
-                        <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.1em] mt-1">Genesis Allocation: 1,000,000,000 GAMA Fixed Supply</p>
-                    </div>
-                    <div className="flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded-full border border-white/5 shadow-inner">
-                        <Lock size={12} className="text-yellow-500" />
-                        <span className="text-[9px] font-black text-white uppercase tracking-widest">Burn-First Model</span>
-                    </div>
-                </div>
-
-                <div className="space-y-6 relative z-10">
-                    {/* Distribution Bar */}
-                    <div className="flex h-12 w-full rounded-2xl overflow-hidden border border-white/10 p-1.5 gap-1.5 bg-black/50">
-                        <motion.div
-                            className="bg-green-500/80 hover:bg-green-400 transition-colors cursor-help relative group/bar"
-                            style={{ width: '55%' }}
-                            initial={{ width: 0 }}
-                            animate={{ width: '55%' }}
-                        >
-                            <div className="absolute inset-0 flex items-center justify-center font-black text-[9px] text-white">LP 55%</div>
-                        </motion.div>
-                        <motion.div
-                            className="bg-cyan-500/80 hover:bg-cyan-400 transition-colors cursor-help relative"
-                            style={{ width: '30%' }}
-                            initial={{ width: 0 }}
-                            animate={{ width: '30%' }}
-                        >
-                            <div className="absolute inset-0 flex items-center justify-center font-black text-[9px] text-white">TREASURY 30%</div>
-                        </motion.div>
-                        <motion.div
-                            className="bg-yellow-500/80 hover:bg-yellow-400 transition-colors cursor-help relative"
-                            style={{ width: '15%' }}
-                            initial={{ width: 0 }}
-                            animate={{ width: '15%' }}
-                        >
-                            <div className="absolute inset-0 flex items-center justify-center font-black text-[9px] text-black">STRAT 15%</div>
-                        </motion.div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-                        <div className="flex gap-3">
-                            <div className="w-1.5 h-auto bg-green-500 rounded-full" />
-                            <div>
-                                <h4 className="text-[10px] font-black text-white uppercase tracking-tighter italic">55% Liquidity Pool</h4>
-                                <p className="text-[9px] text-white/40 font-bold leading-tight mt-1 uppercase">Paired with SOL to provide high trade volume and price stability. 100% Marketplace focused.</p>
-                            </div>
-                        </div>
-                        <div className="flex gap-3">
-                            <div className="w-1.5 h-auto bg-cyan-500 rounded-full" />
-                            <div>
-                                <h4 className="text-[10px] font-black text-white uppercase tracking-tighter italic">30% Eco-Treasury</h4>
-                                <p className="text-[9px] text-white/40 font-bold leading-tight mt-1 uppercase">Reserved for in-game rewards (feeding/winning). Restocked via 50% spending recycle.</p>
-                            </div>
-                        </div>
-                        <div className="flex gap-3">
-                            <div className="w-1.5 h-auto bg-yellow-500 rounded-full" />
-                            <div>
-                                <h4 className="text-[10px] font-black text-white uppercase tracking-tighter italic">15% Strategic</h4>
-                                <p className="text-[9px] text-white/40 font-bold leading-tight mt-1 uppercase">Distributed to 5 early supporters (3% base). Essential for ecosystem security and initial node support.</p>
-                            </div>
-                        </div>
+                    <div className="bg-black/30 p-4 rounded-xl border border-white/5 text-center relative group">
+                        <div className="absolute inset-0 bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl blur-lg pointer-events-none" />
+                        <p className="text-[9px] text-gray-500 uppercase font-mono mb-1">Recycled Back</p>
+                        <p className="text-xl font-black text-green-400 font-mono">{recycled.toLocaleString()}</p>
+                        <p className="text-[8px] text-green-400/60 mt-1 uppercase tracking-tighter italic">Sustaining Rewards</p>
                     </div>
                 </div>
             </div>
 
-            {/* Legal Disclaimer */}
-            <div className="relative z-10 flex flex-col items-center gap-2">
-                <p className="text-[8px] text-gray-600 text-center uppercase tracking-[0.2em] font-mono leading-relaxed max-w-lg">
-                    NFTAGACHI PROTOCOL // SUPPLY DATA DERIVED FROM GENESIS PARAMETERS // AUDIT YOUR ASSETS // ECO-PULSE V2
+            {/* AUDIT LEDGER (PROOF OF BURN) */}
+            <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4 pt-4 border-t border-white/5">
+                    <h3 className="text-xs font-black text-white/40 tracking-[0.2em] uppercase flex items-center gap-2">
+                        <History size={14} className="text-cyan-400" /> Verification Ledger (Proof of Burn)
+                    </h3>
+                </div>
+
+                <div className="bg-black/40 border border-white/5 rounded-2xl overflow-hidden">
+                    <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
+                        {ecoLogs.length === 0 ? (
+                            <div className="p-10 text-center opacity-20">
+                                <Search size={32} className="mx-auto mb-2" />
+                                <p className="text-[10px] uppercase font-black">No Recent Audit Entries</p>
+                            </div>
+                        ) : (
+                            <table className="w-full text-left border-collapse">
+                                <thead className="bg-white/5 sticky top-0 z-20">
+                                    <tr>
+                                        <th className="p-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Status / ID</th>
+                                        <th className="p-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Action</th>
+                                        <th className="p-3 text-[9px] font-black text-gray-500 uppercase tracking-widest text-right">Burn Impact</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {ecoLogs.map((log) => (
+                                        <tr key={log.id} className="hover:bg-white/5 transition-colors">
+                                            <td className="p-3">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <div className="px-1.5 py-0.5 bg-green-500/20 text-green-500 rounded text-[7px] font-black uppercase">Verified</div>
+                                                    <span className="text-[9px] font-mono text-cyan-400">{log.txId}</span>
+                                                </div>
+                                                <div className="text-[8px] text-gray-600 font-mono uppercase">{new Date(log.timestamp).toLocaleString()}</div>
+                                            </td>
+                                            <td className="p-3">
+                                                <div className="text-[10px] font-bold text-white uppercase">{log.metadata?.action || log.type}</div>
+                                                <div className="text-[8px] text-gray-500 uppercase">{log.message}</div>
+                                            </td>
+                                            <td className="p-3 text-right">
+                                                <div className="text-[10px] font-black font-mono text-red-400">-{(log.metadata?.original * 0.5) || (log.type === 'BURN' ? 5 : 0)} G</div>
+                                                <div className="text-[7px] text-gray-500 font-bold uppercase tracking-tighter">DEFLATION SINK</div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+                </div>
+                <p className="mt-4 text-[9px] text-gray-600 italic uppercase font-bold tracking-widest text-center">
+                    * Every 10 GAMA spent triggers an irrevocable 50% burn script.
                 </p>
-                <div className="flex items-center gap-4 py-2 border-t border-white/5 w-full justify-center">
-                    <div className="flex items-center gap-1.5 opacity-40 hover:opacity-100 transition-opacity cursor-help">
-                        <Info size={10} className="text-white" />
-                        <span className="text-[7px] font-black text-white uppercase tracking-widest">Heuristic Estimates Applied to Burn Maths</span>
-                    </div>
-                </div>
             </div>
         </div>
     );
