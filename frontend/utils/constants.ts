@@ -8,10 +8,10 @@ import { PublicKey } from "@solana/web3.js";
 // 1. GAMA TOKEN MINT
 // Update this with your SPL Token Mint address created in the Devnet Admin Panel.
 // Example: "HgZ3fK1jsiG1G...YOUR_COLLECTION"
-export const GAMA_MINT_ADDRESS = "95VUqw2CHaNwERWbkXrQQVeMtn9Zui6YJawXNd81Ksxy";
+export const GAMA_MINT_ADDRESS = "95VUqw2CHaNwERWbkXrQQVeMtn9Zui6YJawXNd81Ksxy" as string;
 
 // 2. GAME TREASURY WALLET
-export const TREASURY_ADDRESS = "AdoB3NjE4QuPqDhjigYm5rmyoUCMpYLNvUcXJRTx57Tj";
+export const TREASURY_ADDRESS = "AdoB3NjE4QuPqDhjigYm5rmyoUCMpYLNvUcXJRTx57Tj" as string;
 
 // 3. ON-CHAIN COLLECTIONS (Metaplex Core)
 // Update these after creating your Master Collections in the Admin Panel
