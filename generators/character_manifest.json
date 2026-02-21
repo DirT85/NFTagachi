@@ -1,0 +1,74 @@
+{
+    "characters": [
+        {
+            "species": "Cyber Serpent",
+            "prompt_key": "cyber_serpent_front",
+            "asset_status": "pending",
+            "theme": "Neon/Tech",
+            "type": "MAGIC"
+        },
+        {
+            "species": "Magma Golem",
+            "prompt_key": "magma_golem_front",
+            "asset_status": "pending",
+            "theme": "Volcanic/Heavy",
+            "type": "FIRE"
+        },
+        {
+            "species": "Plasma Wisp",
+            "prompt_key": "plasma_wisp_front",
+            "asset_status": "pending",
+            "theme": "Electric/Energy",
+            "type": "ELECTRIC"
+        },
+        {
+            "species": "Shadow Knight",
+            "prompt_key": "shadow_knight_front",
+            "asset_status": "pending",
+            "theme": "Dark/Armor",
+            "type": "DARK"
+        },
+        {
+            "species": "Ice Valkyrie",
+            "prompt_key": "ice_valkyrie_front",
+            "asset_status": "pending",
+            "theme": "Frost/Ethereal",
+            "type": "ICE"
+        },
+        {
+            "species": "Toxic Slime",
+            "prompt_key": "toxic_slime_front",
+            "asset_status": "pending",
+            "theme": "Corrosive/Toxic",
+            "type": "POISON"
+        },
+        {
+            "species": "Clockwork Owl",
+            "prompt_key": "clockwork_owl_front",
+            "asset_status": "pending",
+            "theme": "Mechanical/Brass",
+            "type": "LIGHT"
+        },
+        {
+            "species": "Solar Flare",
+            "prompt_key": "solar_flare_front",
+            "asset_status": "pending",
+            "theme": "Bright/Sun",
+            "type": "LIGHT"
+        },
+        {
+            "species": "Abyssal Lurker",
+            "prompt_key": "abyssal_lurker_front",
+            "asset_status": "pending",
+            "theme": "Deep Sea/Terror",
+            "type": "VOID"
+        },
+        {
+            "species": "Ethereal Spirit",
+            "prompt_key": "ethereal_spirit_front",
+            "asset_status": "pending",
+            "theme": "Ghostly/White",
+            "type": "LIGHT"
+        }
+    ]
+}

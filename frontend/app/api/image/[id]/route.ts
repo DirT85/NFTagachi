@@ -22,9 +22,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         'BACKYARD': '#87CEEB',
         'ARENA': '#9bbc0f',
         'MINECRAFT_WORLD': '#87CEEB',
-        'CYBER_CITY': '#000033'
+        'CYBER_CITY': '#000033',
+        'DEFAULT': '#9ea792'
     };
-    const bgColor = bgColors[bg] || '#9ea792';
+    const bgColor = bgColors[bg] || bgColors['DEFAULT'];
 
     // 3. Map Skin Colors (Simplified for NFT)
     const skinColors: Record<string, string> = {
@@ -32,9 +33,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         'ELECTRIC_BLUE': '#1d4ed8',
         'GOLD_PLATED': '#fbbf24',
         'CARBON_FIBER': '#171717',
-        'CLEAR_PURPLE': '#7e22ce'
+        'CLEAR_PURPLE': '#7e22ce',
+        'DEFAULT': '#ffffff'
     };
-    const skinColor = skinColors[skin] || '#d1d5db';
+    const skinColor = skinColors[skin] || skinColors['DEFAULT'];
 
     // 4. Composite SVG
     // 256x256 image

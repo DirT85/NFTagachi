@@ -32,8 +32,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             { trait_type: "Level", value: parseInt(level) },
             { trait_type: "HP", value: parseInt(hp) },
             { trait_type: "Attack", value: parseInt(atk) },
-            { trait_type: "Device Skin", value: skin },
-            { trait_type: "Background", value: bg },
+            { trait_type: "Device Skin", value: skin === 'DEFAULT' ? 'Default White' : skin },
+            { trait_type: "Background", value: bg === '0' || bg === 'DEFAULT' ? 'Classic LCD' : bg },
             { trait_type: "Generation", value: "Gen 0" }
         ]
     };

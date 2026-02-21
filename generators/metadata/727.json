@@ -1,0 +1,42 @@
+{
+  "name": "NPC #727",
+  "description": "A unique human pregnant.",
+  "image": "/nft_heroes/727.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Human"
+    },
+    {
+      "trait_type": "Body Type",
+      "value": "Pregnant"
+    }
+  ],
+  "spriteSheet": {
+    "src": "/ai_base_chars/npc_727.png",
+    "frameSize": 128,
+    "framesPerRow": 13,
+    "rows": {
+      "IDLE": {
+        "row": 0,
+        "frames": 1
+      },
+      "WALK": {
+        "row": 1,
+        "frames": 9
+      },
+      "FEED": {
+        "row": 2,
+        "frames": 8
+      },
+      "TRAIN": {
+        "row": 3,
+        "frames": 6
+      },
+      "ATTACK": {
+        "row": 4,
+        "frames": 7
+      }
+    }
+  }
+}

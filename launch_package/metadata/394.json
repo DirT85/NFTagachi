@@ -1,0 +1,75 @@
+{
+  "name": "Spectral Ranged Stalker",
+  "symbol": "TAGA",
+  "description": "Unique adult any zombie ranged NPC.",
+  "seller_fee_basis_points": 500,
+  "image": "394.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Zombie"
+    },
+    {
+      "trait_type": "Weapon",
+      "value": "Ranged"
+    },
+    {
+      "trait_type": "STR",
+      "value": 18
+    },
+    {
+      "trait_type": "DEX",
+      "value": 32
+    },
+    {
+      "trait_type": "INT",
+      "value": 50
+    },
+    {
+      "trait_type": "LUK",
+      "value": 9
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "394.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_ADDRESS",
+        "share": 100
+      }
+    ]
+  },
+  "spriteSheet": {
+    "src": "/ai_base_chars/npc_394.png",
+    "frameSize": 128,
+    "framesPerRow": 13,
+    "rows": {
+      "IDLE": {
+        "row": 0,
+        "frames": 1
+      },
+      "WALK": {
+        "row": 1,
+        "frames": 9
+      },
+      "FEED": {
+        "row": 2,
+        "frames": 8
+      },
+      "TRAIN": {
+        "row": 3,
+        "frames": 6
+      },
+      "ATTACK": {
+        "row": 4,
+        "frames": 7
+      }
+    }
+  }
+}

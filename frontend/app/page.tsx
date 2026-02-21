@@ -184,11 +184,10 @@ export default function Home() {
 
 
       {mounted && (
-        <div className="fixed top-20 right-4 z-[100] flex flex-col gap-2 items-end">
-          <WalletMultiButton className="!bg-cyan-500/20 !border !border-cyan-500/50 !rounded-lg !text-cyan-400 hover:!bg-cyan-500/40 !transition-colors !shadow-[0_0_15px_rgba(6,182,212,0.2)] !text-[10px] !font-bold !h-auto !py-1.5 !px-3 !font-mono" />
+        <div className="fixed top-24 right-4 z-[100] flex flex-col gap-2 items-end md:top-20 md:right-4">
+          <WalletMultiButton className="!bg-cyan-500/20 !border !border-cyan-500/50 !rounded-lg !text-cyan-400 hover:!bg-cyan-500/40 !transition-colors !shadow-[0_0_15px_rgba(6,182,212,0.2)] !text-[10px] !font-bold !h-auto !py-1.5 !px-3 !font-mono scale-90 md:scale-100 origin-top-right" />
         </div>
-      )
-      }
+      )}
 
       {/* Activity Panel (Left Sidebar) */}
       <AnimatePresence>

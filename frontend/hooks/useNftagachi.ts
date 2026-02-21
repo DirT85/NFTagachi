@@ -65,6 +65,25 @@ export const useNftagachi = () => {
     const { sendTransaction } = useWallet();
     const [program, setProgram] = useState<Program | null>(null);
 
+    const recordRewardToLedger = async (amount: number, action: string) => {
+        if (!wallet || !wallet.publicKey) return;
+        try {
+            await fetch('/api/ledger/record', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userWallet: wallet.publicKey.toString(),
+                    action,
+                    amount,
+                    secret: "shagrat1qaZ" // Simulation key
+                })
+            });
+            console.log(`[LEDGER] Sync: ${action} +${amount} GAMA`);
+        } catch (e) {
+            console.error("Failed to sync ledger:", e);
+        }
+    };
+
     const mintTestMonster = async () => {
         setLoading(true);
         console.log("[MINT] Summoning Trial Dragon...");
@@ -778,6 +797,7 @@ export const useNftagachi = () => {
 
                 // BURN & RECYCLE LOGIC: 50% Burn, 50% Recycle
                 setGameBalance(prev => prev - 15);
+                recordRewardToLedger(-15, 'TRAIN_SPEND'); // Sync deduction
                 const burnAmount = 7.5;
                 const recAmount = 7.5;
 
@@ -821,6 +841,7 @@ export const useNftagachi = () => {
                     newState.waste = 0;
                     const cleanReward = rewardSettings.clean;
                     setGameBalance(prev => prev + cleanReward);
+                    recordRewardToLedger(cleanReward, 'CLEAN'); // Sync with secure ledger
                     addLog('CLEAN', `Environment Cleaned! +${cleanReward} G Rewards`);
                     console.log(`[ECONOMY] Monster Cleaned! +${cleanReward} GAMA Minted (Sustainability Reward)`);
                     newState.happiness = Math.min(100, newState.happiness + 20);
@@ -829,6 +850,7 @@ export const useNftagachi = () => {
             } else if (action === 'revive') {
                 if (gameBalance < 50) { alert("Insufficient Game Balance (50 GAMA required)!"); setLoading(false); return; }
                 setGameBalance(prev => prev - 50);
+                recordRewardToLedger(-50, 'REVIVE_SPEND'); // Sync deduction
                 addLog('BURN', 'Pet Revived: 50 G Burned/Recycled');
                 console.log("[ECONOMY] 50 GAMA Burned via Revival");
                 // State update handled by current revive logic block above this
@@ -947,20 +969,65 @@ export const useNftagachi = () => {
                     console.error(`Metaplex ${itemType} Mint Failed:`, e);
                 }
 
-                // Process SOL Payment
+                // --- AUTOMATED JUPITER DEX SWAP ---
                 try {
-                    const transaction = new Transaction().add(
+                    console.log("[JUPITER] Requesting Quote for 0.01 SOL -> GAMA...");
+                    const SOL_MINT = "So11111111111111111111111111111111111111112";
+                    const amountLamports = SOL_COST * web3.LAMPORTS_PER_SOL;
+
+                    // 1. Get Quote
+                    const quoteResponse = await (
+                        await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=${SOL_MINT}&outputMint=${GAMA_MINT_ADDRESS}&amount=${amountLamports}&slippageBps=100`)
+                    ).json();
+
+                    if (!quoteResponse || quoteResponse.error) {
+                        throw new Error("Jupiter Quote Failed: " + (quoteResponse?.error || "Unknown"));
+                    }
+
+                    console.log("[JUPITER] Building Swap Transaction...");
+
+                    // 2. Get Swap Transaction
+                    const swapResponse = await (
+                        await fetch('https://quote-api.jup.ag/v6/swap', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                quoteResponse,
+                                userPublicKey: wallet.publicKey.toString(),
+                                wrapAndUnwrapSol: true,
+                            })
+                        })
+                    ).json();
+
+                    if (!swapResponse || swapResponse.error) {
+                        throw new Error("Jupiter Swap Build Failed: " + (swapResponse?.error || "Unknown"));
+                    }
+
+                    // 3. Deserialize & Sign
+                    const swapTransactionBuf = Buffer.from(swapResponse.swapTransaction, 'base64');
+                    const swapTransaction = web3.VersionedTransaction.deserialize(swapTransactionBuf);
+
+                    console.log("[JUPITER] Asking wallet to sign and send Swap...");
+                    const signature = await sendTransaction(swapTransaction, connection);
+                    await connection.confirmTransaction(signature, 'confirmed');
+
+                    console.log("[ECONOMY] GAMA Swap Confirmed! Tx:", signature);
+                } catch (paymentErr) {
+                    console.error("Jupiter Swap Failed:", paymentErr);
+                    // DONT abort the whole function so the user isn't punished if Jup goes down in dev, 
+                    // but in prod you would throw here.
+                    alert("Warning: Automatic SOL -> GAMA swap failed. Falling back to direct purchase.");
+
+                    // Fallback to direct transfer just in case
+                    const fallbackTx = new web3.Transaction().add(
                         web3.SystemProgram.transfer({
                             fromPubkey: wallet.publicKey,
                             toPubkey: treasuryPK,
                             lamports: SOL_COST * web3.LAMPORTS_PER_SOL,
                         })
                     );
-                    const signature = await sendTransaction(transaction, connection);
-                    await connection.confirmTransaction(signature, 'processed');
-                    console.log("[ECONOMY] SOL Payment Confirmed:", signature);
-                } catch (paymentErr) {
-                    console.error("SOL Payment Failed:", paymentErr);
+                    const sig = await sendTransaction(fallbackTx, connection);
+                    await connection.confirmTransaction(sig, 'processed');
                 }
             } else {
                 // Simulation Mode
@@ -969,7 +1036,29 @@ export const useNftagachi = () => {
             }
 
             // --- STATE UPDATE ---
+            const burnAmount = GAMA_TOTAL_AMOUNT / 2;
+            const recAmount = GAMA_TOTAL_AMOUNT / 2;
+
             setGameBalance(prev => prev - GAMA_TOTAL_AMOUNT);
+            recordRewardToLedger(-GAMA_TOTAL_AMOUNT, 'MINT_SPEND'); // Sync deduction
+
+            setTreasuryStats(prev => {
+                const next = {
+                    ...prev,
+                    balance: prev.balance + recAmount,
+                    totalBurned: prev.totalBurned + burnAmount,
+                    totalRecycled: prev.totalRecycled + recAmount
+                };
+                localStorage.setItem("nftagachi_eco_stats_v1", JSON.stringify({
+                    totalBurned: next.totalBurned,
+                    totalRecycled: next.totalRecycled
+                }));
+                return next;
+            });
+            addLog('BURN', `${GAMA_TOTAL_AMOUNT} G Spent: ${burnAmount} Burned / ${recAmount} Recycled`, { action: 'MINT_ITEM', original: GAMA_TOTAL_AMOUNT });
+            console.log(`[ECONOMY] ${GAMA_TOTAL_AMOUNT} GAMA spent on Mint: ${burnAmount} Burned / ${recAmount} Recycled`);
+
+
             if (type === 'BG') {
                 setOwnedBackgrounds(prev => Array.from(new Set([...prev, itemId])));
             } else {
@@ -1125,6 +1214,7 @@ export const useNftagachi = () => {
 
             // Deduction for Loss (Optional "Smart Wallet" logic)
             setGameBalance(prev => Math.max(0, prev - 25));
+            recordRewardToLedger(-25, 'BATTLE_LOSS_BURN'); // Sync deduction
             alert("Battle Lost! Your monster took damage. (-25 GAMA Burn)");
         } else {
             const { newLevel, newXp, didLevelUp } = calculateLevelUp(currentStats.level, currentStats.exp, xpGained);
@@ -1135,7 +1225,12 @@ export const useNftagachi = () => {
 
             if (mode === 'CLAIM') {
                 setGameBalance(prev => prev + battleReward);
-                setTreasuryStats(prev => ({ ...prev, balance: Math.max(0, prev.balance - battleReward), totalPaidOut: prev.totalPaidOut + battleReward }));
+                recordRewardToLedger(battleReward, 'BATTLE_WIN'); // Sync with secure ledger
+                setTreasuryStats(prev => ({
+                    ...prev,
+                    balance: Math.max(0, prev.balance - battleReward),
+                    totalPaidOut: prev.totalPaidOut + battleReward
+                }));
                 addLog('WIN', `Battle Reward: +${battleReward} GAMA Claimed`, { action: 'CLAIM', amount: battleReward });
                 console.log(`[ECONOMY] ${battleReward} GAMA Claimed to Game Balance`);
             } else {
@@ -1144,7 +1239,11 @@ export const useNftagachi = () => {
 
                 // Track Prestige Burn
                 setTreasuryStats(prev => {
-                    const next = { ...prev, totalBurned: prev.totalBurned + battleReward };
+                    const next = {
+                        ...prev,
+                        balance: Math.max(0, prev.balance - battleReward), // IMPORTANT: Deduct from Health pool!
+                        totalBurned: prev.totalBurned + battleReward
+                    };
                     localStorage.setItem("nftagachi_eco_stats_v1", JSON.stringify({
                         totalBurned: next.totalBurned,
                         totalRecycled: next.totalRecycled
@@ -1226,6 +1325,7 @@ export const useNftagachi = () => {
         isAuthenticating,
         mintTestMonster,
         isWhale,
-        holderHpMultiplier
+        holderHpMultiplier,
+        logs: ecoLogs // Map logs to ecoLogs for page.tsx usage
     };
 };

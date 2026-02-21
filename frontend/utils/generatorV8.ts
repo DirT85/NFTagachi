@@ -189,6 +189,10 @@ export function generateMonsterSprite(id: number, options?: GeneratorOptions): {
         if (matches.length === 0 && q.includes('axe')) {
             matches = allWeaponFiles.filter(f => f.toLowerCase().includes('waraxe') || f.toLowerCase().includes('great_axe'));
         }
+        // Warhammer Fix (Map 'warhammer' to 'mace' since no warhammer sprite exists in LPC)
+        if (matches.length === 0 && q.includes('warhammer')) {
+            matches = allWeaponFiles.filter(f => f.toLowerCase().includes('mace'));
+        }
 
         if (matches.length > 0) {
             weaponFiles = matches;

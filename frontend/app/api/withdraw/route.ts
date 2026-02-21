@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Connection, Keypair, PublicKey, Transaction, sendAndConfirmTransaction } from '@solana/web3.js';
 import { getAssociatedTokenAddress, createTransferInstruction, createAssociatedTokenAccountInstruction, getAccount } from '@solana/spl-token';
 import { GAMA_MINT_ADDRESS, TREASURY_ADDRESS } from '@/utils/constants';
+import fs from 'fs';
+import path from 'path';
+
 
 const ENDPOINT = 'https://api.devnet.solana.com';
 
@@ -31,7 +34,21 @@ export async function POST(req: NextRequest) {
         const userPubkey = new PublicKey(userWallet);
         const treasuryPubkey = treasuryKeypair.publicKey;
 
-        // 2. Resolve ATAs
+        // 2. LEDGER VALIDATION
+        const LEDGER_PATH = path.join(process.cwd(), 'data', 'ledger.json');
+        let ledger: Record<string, number> = {};
+        if (fs.existsSync(LEDGER_PATH)) {
+            ledger = JSON.parse(fs.readFileSync(LEDGER_PATH, 'utf8'));
+        }
+
+        const userEarnedBalance = ledger[userWallet] || 0;
+        if (userEarnedBalance < parseFloat(amount)) {
+            return NextResponse.json({
+                error: `Insufficient Ledger Balance. You have earned ${userEarnedBalance} GAMA total.`
+            }, { status: 403 });
+        }
+
+        // 3. Resolve ATAs
         const sourceATA = await getAssociatedTokenAddress(mintPubkey, treasuryPubkey);
         const destATA = await getAssociatedTokenAddress(mintPubkey, userPubkey);
 
@@ -65,9 +82,14 @@ export async function POST(req: NextRequest) {
         // 5. Sign and Send
         const signature = await sendAndConfirmTransaction(connection, transaction, [treasuryKeypair]);
 
-        return NextResponse.json({ success: true, signature });
+        // 6. ATOMIC DEDUCTION
+        ledger[userWallet] -= parseFloat(amount);
+        fs.writeFileSync(LEDGER_PATH, JSON.stringify(ledger, null, 2));
+
+        return NextResponse.json({ success: true, signature, remainingLedger: ledger[userWallet] });
 
     } catch (error: any) {
+
         console.error("Withdrawal Error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

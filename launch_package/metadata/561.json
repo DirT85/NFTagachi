@@ -1,0 +1,75 @@
+{
+  "name": "Mystic Sword Slayer",
+  "symbol": "TAGA",
+  "description": "Unique adult any skeleton sword NPC.",
+  "seller_fee_basis_points": 500,
+  "image": "561.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Skeleton"
+    },
+    {
+      "trait_type": "Weapon",
+      "value": "Sword"
+    },
+    {
+      "trait_type": "STR",
+      "value": 30
+    },
+    {
+      "trait_type": "DEX",
+      "value": 40
+    },
+    {
+      "trait_type": "INT",
+      "value": 25
+    },
+    {
+      "trait_type": "LUK",
+      "value": 73
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "561.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_ADDRESS",
+        "share": 100
+      }
+    ]
+  },
+  "spriteSheet": {
+    "src": "/ai_base_chars/npc_561.png",
+    "frameSize": 128,
+    "framesPerRow": 13,
+    "rows": {
+      "IDLE": {
+        "row": 0,
+        "frames": 1
+      },
+      "WALK": {
+        "row": 1,
+        "frames": 9
+      },
+      "FEED": {
+        "row": 2,
+        "frames": 8
+      },
+      "TRAIN": {
+        "row": 3,
+        "frames": 6
+      },
+      "ATTACK": {
+        "row": 4,
+        "frames": 7
+      }
+    }
+  }
+}

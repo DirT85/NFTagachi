@@ -16,5 +16,13 @@ export const BACKGROUND_URIS: Record<string, string> = {
     "RETRO": "https://gateway.irys.xyz/A76GtyGygSdhtwLvGC3suX9CM6rzYj512VRu64wwqags",
     "MINECRAFT_WORLD": "https://gateway.irys.xyz/HijnbPs2BkD1ggAQVuh9wiJKbsifJvLPKngmB4AYFy3m",
     "CYBER_CITY": "https://gateway.irys.xyz/HoBUiTkRGKZGSzmGnKi5s4wyDn8inM1xE6jVWjqM6Tmq",
-    "DESERT_DUNES": "https://gateway.irys.xyz/EUrtdo46iQcWgx5igGPZcYVWxGRqSPF1gxY6B4xW7s1Y"
+    "DESERT_DUNES": "https://gateway.irys.xyz/EUrtdo46iQcWgx5igGPZcYVWxGRqSPF1gxY6B4xW7s1Y",
+    "UNDERWATER": "https://gateway.irys.xyz/PLACEHOLDER_BG_UNDERWATER",
+    "CANDY_LAND": "https://gateway.irys.xyz/PLACEHOLDER_BG_CANDY",
+    "VOLCANO": "https://gateway.irys.xyz/PLACEHOLDER_BG_VOLCANO",
+    "SNOW_PEAK": "https://gateway.irys.xyz/PLACEHOLDER_BG_SNOW",
+    "RAINY_WINDOW": "https://gateway.irys.xyz/PLACEHOLDER_BG_RAINY",
+    "SUNSET_BLVD": "https://gateway.irys.xyz/PLACEHOLDER_BG_SUNSET",
+    "TOXIC_WASTE": "https://gateway.irys.xyz/PLACEHOLDER_BG_TOXIC",
+    "BLUE_SCREEN": "https://gateway.irys.xyz/PLACEHOLDER_BG_BLUE",
 };

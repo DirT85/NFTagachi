@@ -23,7 +23,7 @@ export const MintShop = ({ onMint, onBuyGama, balance, ownedDevices = [], ownedB
         }
 
         setIsMinting(true);
-        setMessage("Burning GAMA...");
+        setMessage("Routing DEX Swap...");
 
         setTimeout(() => {
             // setGamaBalance(prev => prev - cost); // Parent handles this via state update hopefully? 

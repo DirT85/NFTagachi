@@ -1,0 +1,3830 @@
+{
+  "good1_000.png": {
+    "name": "Mystic Shroom Stalker",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_000.png"
+  },
+  "good1_001.png": {
+    "name": "Mystic Shroom Sentinel",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_001.png"
+  },
+  "good1_002.png": {
+    "name": "Mystic Shroom Reaper",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_002.png"
+  },
+  "good1_003.png": {
+    "name": "Mystic Shroom Guardian",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_003.png"
+  },
+  "good1_004.png": {
+    "name": "Mystic Shroom Wanderer",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_004.png"
+  },
+  "good1_005.png": {
+    "name": "Mystic Shroom Lord",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_005.png"
+  },
+  "good1_006.png": {
+    "name": "Mystic Shroom Herald",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_006.png"
+  },
+  "good1_007.png": {
+    "name": "Mystic Shroom Slayer",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_007.png"
+  },
+  "good1_008.png": {
+    "name": "Mystic Shroom Ancient",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_008.png"
+  },
+  "good1_009.png": {
+    "name": "Mystic Shroom Wraith",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_009.png"
+  },
+  "good1_010.png": {
+    "name": "Mystic Shroom Stalker",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_010.png"
+  },
+  "good1_011.png": {
+    "name": "Mystic Shroom Sentinel",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_011.png"
+  },
+  "good1_012.png": {
+    "name": "Mystic Shroom Reaper",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_012.png"
+  },
+  "good1_013.png": {
+    "name": "Mystic Shroom Guardian",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_013.png"
+  },
+  "good1_014.png": {
+    "name": "Mystic Shroom Wanderer",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_014.png"
+  },
+  "good1_015.png": {
+    "name": "Mystic Shroom Lord",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_015.png"
+  },
+  "good1_016.png": {
+    "name": "Mystic Shroom Herald",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_016.png"
+  },
+  "good1_017.png": {
+    "name": "Mystic Shroom Slayer",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_017.png"
+  },
+  "good1_018.png": {
+    "name": "Mystic Shroom Ancient",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_018.png"
+  },
+  "good1_019.png": {
+    "name": "Mystic Shroom Wraith",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_019.png"
+  },
+  "good1_020.png": {
+    "name": "Mystic Shroom Stalker",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_020.png"
+  },
+  "good1_021.png": {
+    "name": "Mystic Shroom Sentinel",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_021.png"
+  },
+  "good1_022.png": {
+    "name": "Mystic Shroom Reaper",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_022.png"
+  },
+  "good1_023.png": {
+    "name": "Mystic Shroom Guardian",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_023.png"
+  },
+  "good1_024.png": {
+    "name": "Mystic Shroom Wanderer",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_024.png"
+  },
+  "good1_025.png": {
+    "name": "Mystic Shroom Lord",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_025.png"
+  },
+  "good1_026.png": {
+    "name": "Mystic Shroom Herald",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_026.png"
+  },
+  "good1_027.png": {
+    "name": "Mystic Shroom Slayer",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_027.png"
+  },
+  "good1_028.png": {
+    "name": "Mystic Shroom Ancient",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_028.png"
+  },
+  "good1_029.png": {
+    "name": "Mystic Shroom Wraith",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_029.png"
+  },
+  "good1_030.png": {
+    "name": "Mystic Shroom Stalker",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_030.png"
+  },
+  "good1_031.png": {
+    "name": "Mystic Shroom Sentinel",
+    "type": "SHROOM",
+    "prefix": "Mystic",
+    "asset": "good1_031.png"
+  },
+  "good1_032.png": {
+    "name": "Draconic Dragon Reaper",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_032.png"
+  },
+  "good1_033.png": {
+    "name": "Draconic Dragon Guardian",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_033.png"
+  },
+  "good1_034.png": {
+    "name": "Draconic Dragon Wanderer",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_034.png"
+  },
+  "good1_035.png": {
+    "name": "Draconic Dragon Lord",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_035.png"
+  },
+  "good1_036.png": {
+    "name": "Draconic Dragon Herald",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_036.png"
+  },
+  "good1_037.png": {
+    "name": "Draconic Dragon Slayer",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_037.png"
+  },
+  "good1_038.png": {
+    "name": "Draconic Dragon Ancient",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_038.png"
+  },
+  "good1_039.png": {
+    "name": "Draconic Dragon Wraith",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_039.png"
+  },
+  "good1_040.png": {
+    "name": "Draconic Dragon Stalker",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_040.png"
+  },
+  "good1_041.png": {
+    "name": "Draconic Dragon Sentinel",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_041.png"
+  },
+  "good1_042.png": {
+    "name": "Draconic Dragon Reaper",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_042.png"
+  },
+  "good1_043.png": {
+    "name": "Draconic Dragon Guardian",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_043.png"
+  },
+  "good1_044.png": {
+    "name": "Draconic Dragon Wanderer",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_044.png"
+  },
+  "good1_045.png": {
+    "name": "Draconic Dragon Lord",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_045.png"
+  },
+  "good1_046.png": {
+    "name": "Draconic Dragon Herald",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_046.png"
+  },
+  "good1_047.png": {
+    "name": "Draconic Dragon Slayer",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_047.png"
+  },
+  "good1_048.png": {
+    "name": "Draconic Dragon Ancient",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_048.png"
+  },
+  "good1_049.png": {
+    "name": "Draconic Dragon Wraith",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_049.png"
+  },
+  "good1_050.png": {
+    "name": "Draconic Dragon Stalker",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_050.png"
+  },
+  "good1_051.png": {
+    "name": "Draconic Dragon Sentinel",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_051.png"
+  },
+  "good1_052.png": {
+    "name": "Draconic Dragon Reaper",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_052.png"
+  },
+  "good1_053.png": {
+    "name": "Draconic Dragon Guardian",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_053.png"
+  },
+  "good1_054.png": {
+    "name": "Draconic Dragon Wanderer",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_054.png"
+  },
+  "good1_055.png": {
+    "name": "Draconic Dragon Lord",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_055.png"
+  },
+  "good1_056.png": {
+    "name": "Draconic Dragon Herald",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_056.png"
+  },
+  "good1_057.png": {
+    "name": "Draconic Dragon Slayer",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_057.png"
+  },
+  "good1_058.png": {
+    "name": "Draconic Dragon Ancient",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_058.png"
+  },
+  "good1_059.png": {
+    "name": "Draconic Dragon Wraith",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_059.png"
+  },
+  "good1_060.png": {
+    "name": "Draconic Dragon Stalker",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_060.png"
+  },
+  "good1_061.png": {
+    "name": "Draconic Dragon Sentinel",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_061.png"
+  },
+  "good1_062.png": {
+    "name": "Draconic Dragon Reaper",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_062.png"
+  },
+  "good1_063.png": {
+    "name": "Draconic Dragon Guardian",
+    "type": "DRAGON",
+    "prefix": "Draconic",
+    "asset": "good1_063.png"
+  },
+  "good1_064.png": {
+    "name": "Spectral Ghost Wanderer",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_064.png"
+  },
+  "good1_065.png": {
+    "name": "Spectral Ghost Lord",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_065.png"
+  },
+  "good1_066.png": {
+    "name": "Spectral Ghost Herald",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_066.png"
+  },
+  "good1_067.png": {
+    "name": "Spectral Ghost Slayer",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_067.png"
+  },
+  "good1_068.png": {
+    "name": "Spectral Ghost Ancient",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_068.png"
+  },
+  "good1_069.png": {
+    "name": "Spectral Ghost Wraith",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_069.png"
+  },
+  "good1_070.png": {
+    "name": "Spectral Ghost Stalker",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_070.png"
+  },
+  "good1_071.png": {
+    "name": "Spectral Ghost Sentinel",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_071.png"
+  },
+  "good1_072.png": {
+    "name": "Spectral Ghost Reaper",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_072.png"
+  },
+  "good1_073.png": {
+    "name": "Spectral Ghost Guardian",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_073.png"
+  },
+  "good1_074.png": {
+    "name": "Spectral Ghost Wanderer",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_074.png"
+  },
+  "good1_075.png": {
+    "name": "Spectral Ghost Lord",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_075.png"
+  },
+  "good1_076.png": {
+    "name": "Spectral Ghost Herald",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_076.png"
+  },
+  "good1_077.png": {
+    "name": "Spectral Ghost Slayer",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_077.png"
+  },
+  "good1_078.png": {
+    "name": "Spectral Ghost Ancient",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_078.png"
+  },
+  "good1_079.png": {
+    "name": "Spectral Ghost Wraith",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_079.png"
+  },
+  "good1_080.png": {
+    "name": "Spectral Ghost Stalker",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_080.png"
+  },
+  "good1_081.png": {
+    "name": "Spectral Ghost Sentinel",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_081.png"
+  },
+  "good1_082.png": {
+    "name": "Spectral Ghost Reaper",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_082.png"
+  },
+  "good1_083.png": {
+    "name": "Spectral Ghost Guardian",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_083.png"
+  },
+  "good1_084.png": {
+    "name": "Spectral Ghost Wanderer",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_084.png"
+  },
+  "good1_085.png": {
+    "name": "Spectral Ghost Lord",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_085.png"
+  },
+  "good1_086.png": {
+    "name": "Spectral Ghost Herald",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_086.png"
+  },
+  "good1_087.png": {
+    "name": "Spectral Ghost Slayer",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_087.png"
+  },
+  "good1_088.png": {
+    "name": "Spectral Ghost Ancient",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_088.png"
+  },
+  "good1_089.png": {
+    "name": "Spectral Ghost Wraith",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_089.png"
+  },
+  "good1_090.png": {
+    "name": "Spectral Ghost Stalker",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_090.png"
+  },
+  "good1_091.png": {
+    "name": "Spectral Ghost Sentinel",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_091.png"
+  },
+  "good1_092.png": {
+    "name": "Spectral Ghost Reaper",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_092.png"
+  },
+  "good1_093.png": {
+    "name": "Spectral Ghost Guardian",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_093.png"
+  },
+  "good1_094.png": {
+    "name": "Spectral Ghost Wanderer",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_094.png"
+  },
+  "good1_095.png": {
+    "name": "Spectral Ghost Lord",
+    "type": "GHOST",
+    "prefix": "Spectral",
+    "asset": "good1_095.png"
+  },
+  "good1_096.png": {
+    "name": "Feral Goblin Herald",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_096.png"
+  },
+  "good1_097.png": {
+    "name": "Feral Goblin Slayer",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_097.png"
+  },
+  "good1_098.png": {
+    "name": "Feral Goblin Ancient",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_098.png"
+  },
+  "good1_099.png": {
+    "name": "Feral Goblin Wraith",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_099.png"
+  },
+  "good1_100.png": {
+    "name": "Feral Goblin Stalker",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_100.png"
+  },
+  "good1_101.png": {
+    "name": "Feral Goblin Sentinel",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_101.png"
+  },
+  "good1_102.png": {
+    "name": "Feral Goblin Reaper",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_102.png"
+  },
+  "good1_103.png": {
+    "name": "Feral Goblin Guardian",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_103.png"
+  },
+  "good1_104.png": {
+    "name": "Feral Goblin Wanderer",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_104.png"
+  },
+  "good1_105.png": {
+    "name": "Feral Goblin Lord",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_105.png"
+  },
+  "good1_106.png": {
+    "name": "Feral Goblin Herald",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_106.png"
+  },
+  "good1_107.png": {
+    "name": "Feral Goblin Slayer",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_107.png"
+  },
+  "good1_108.png": {
+    "name": "Feral Goblin Ancient",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_108.png"
+  },
+  "good1_109.png": {
+    "name": "Feral Goblin Wraith",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_109.png"
+  },
+  "good1_110.png": {
+    "name": "Feral Goblin Stalker",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_110.png"
+  },
+  "good1_111.png": {
+    "name": "Feral Goblin Sentinel",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_111.png"
+  },
+  "good1_112.png": {
+    "name": "Feral Goblin Reaper",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_112.png"
+  },
+  "good1_113.png": {
+    "name": "Feral Goblin Guardian",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_113.png"
+  },
+  "good1_114.png": {
+    "name": "Feral Goblin Wanderer",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_114.png"
+  },
+  "good1_115.png": {
+    "name": "Feral Goblin Lord",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_115.png"
+  },
+  "good1_116.png": {
+    "name": "Feral Goblin Herald",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_116.png"
+  },
+  "good1_117.png": {
+    "name": "Feral Goblin Slayer",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_117.png"
+  },
+  "good1_118.png": {
+    "name": "Feral Goblin Ancient",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_118.png"
+  },
+  "good1_119.png": {
+    "name": "Feral Goblin Wraith",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_119.png"
+  },
+  "good1_120.png": {
+    "name": "Feral Goblin Stalker",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_120.png"
+  },
+  "good1_121.png": {
+    "name": "Feral Goblin Sentinel",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_121.png"
+  },
+  "good1_122.png": {
+    "name": "Feral Goblin Reaper",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_122.png"
+  },
+  "good1_123.png": {
+    "name": "Feral Goblin Guardian",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_123.png"
+  },
+  "good1_124.png": {
+    "name": "Feral Goblin Wanderer",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_124.png"
+  },
+  "good1_125.png": {
+    "name": "Feral Goblin Lord",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_125.png"
+  },
+  "good1_126.png": {
+    "name": "Feral Goblin Herald",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_126.png"
+  },
+  "good1_127.png": {
+    "name": "Feral Goblin Slayer",
+    "type": "GOBLIN",
+    "prefix": "Feral",
+    "asset": "good1_127.png"
+  },
+  "good1_128.png": {
+    "name": "Clockwork Golem Ancient",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_128.png"
+  },
+  "good1_129.png": {
+    "name": "Clockwork Golem Wraith",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_129.png"
+  },
+  "good1_130.png": {
+    "name": "Clockwork Golem Stalker",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_130.png"
+  },
+  "good1_131.png": {
+    "name": "Clockwork Golem Sentinel",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_131.png"
+  },
+  "good1_132.png": {
+    "name": "Clockwork Golem Reaper",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_132.png"
+  },
+  "good1_133.png": {
+    "name": "Clockwork Golem Guardian",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_133.png"
+  },
+  "good1_134.png": {
+    "name": "Clockwork Golem Wanderer",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_134.png"
+  },
+  "good1_135.png": {
+    "name": "Clockwork Golem Lord",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_135.png"
+  },
+  "good1_136.png": {
+    "name": "Clockwork Golem Herald",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_136.png"
+  },
+  "good1_137.png": {
+    "name": "Clockwork Golem Slayer",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_137.png"
+  },
+  "good1_138.png": {
+    "name": "Clockwork Golem Ancient",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_138.png"
+  },
+  "good1_139.png": {
+    "name": "Clockwork Golem Wraith",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_139.png"
+  },
+  "good1_140.png": {
+    "name": "Clockwork Golem Stalker",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_140.png"
+  },
+  "good1_141.png": {
+    "name": "Clockwork Golem Sentinel",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_141.png"
+  },
+  "good1_142.png": {
+    "name": "Clockwork Golem Reaper",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_142.png"
+  },
+  "good1_143.png": {
+    "name": "Clockwork Golem Guardian",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_143.png"
+  },
+  "good1_144.png": {
+    "name": "Clockwork Golem Wanderer",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_144.png"
+  },
+  "good1_145.png": {
+    "name": "Clockwork Golem Lord",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_145.png"
+  },
+  "good1_146.png": {
+    "name": "Clockwork Golem Herald",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_146.png"
+  },
+  "good1_147.png": {
+    "name": "Clockwork Golem Slayer",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_147.png"
+  },
+  "good1_148.png": {
+    "name": "Clockwork Golem Ancient",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_148.png"
+  },
+  "good1_149.png": {
+    "name": "Clockwork Golem Wraith",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_149.png"
+  },
+  "good1_150.png": {
+    "name": "Clockwork Golem Stalker",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_150.png"
+  },
+  "good1_151.png": {
+    "name": "Clockwork Golem Sentinel",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_151.png"
+  },
+  "good1_152.png": {
+    "name": "Clockwork Golem Reaper",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_152.png"
+  },
+  "good1_153.png": {
+    "name": "Clockwork Golem Guardian",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_153.png"
+  },
+  "good1_154.png": {
+    "name": "Clockwork Golem Wanderer",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_154.png"
+  },
+  "good1_155.png": {
+    "name": "Clockwork Golem Lord",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_155.png"
+  },
+  "good1_156.png": {
+    "name": "Clockwork Golem Herald",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_156.png"
+  },
+  "good1_157.png": {
+    "name": "Clockwork Golem Slayer",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_157.png"
+  },
+  "good1_158.png": {
+    "name": "Clockwork Golem Ancient",
+    "type": "GOLEM",
+    "prefix": "Clockwork",
+    "asset": "good1_158.png"
+  },
+  "good2_000.png": {
+    "name": "Cursed Skeleton Wraith",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_000.png"
+  },
+  "good2_001.png": {
+    "name": "Cursed Skeleton Stalker",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_001.png"
+  },
+  "good2_002.png": {
+    "name": "Cursed Skeleton Sentinel",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_002.png"
+  },
+  "good2_003.png": {
+    "name": "Cursed Skeleton Reaper",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_003.png"
+  },
+  "good2_004.png": {
+    "name": "Cursed Skeleton Guardian",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_004.png"
+  },
+  "good2_005.png": {
+    "name": "Cursed Skeleton Wanderer",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_005.png"
+  },
+  "good2_006.png": {
+    "name": "Cursed Skeleton Lord",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_006.png"
+  },
+  "good2_007.png": {
+    "name": "Cursed Skeleton Herald",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_007.png"
+  },
+  "good2_008.png": {
+    "name": "Cursed Skeleton Slayer",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_008.png"
+  },
+  "good2_009.png": {
+    "name": "Cursed Skeleton Ancient",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_009.png"
+  },
+  "good2_010.png": {
+    "name": "Cursed Skeleton Wraith",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_010.png"
+  },
+  "good2_011.png": {
+    "name": "Cursed Skeleton Stalker",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_011.png"
+  },
+  "good2_012.png": {
+    "name": "Cursed Skeleton Sentinel",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_012.png"
+  },
+  "good2_013.png": {
+    "name": "Cursed Skeleton Reaper",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_013.png"
+  },
+  "good2_014.png": {
+    "name": "Cursed Skeleton Guardian",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_014.png"
+  },
+  "good2_015.png": {
+    "name": "Cursed Skeleton Wanderer",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_015.png"
+  },
+  "good2_016.png": {
+    "name": "Cursed Skeleton Lord",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_016.png"
+  },
+  "good2_017.png": {
+    "name": "Cursed Skeleton Herald",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_017.png"
+  },
+  "good2_018.png": {
+    "name": "Cursed Skeleton Slayer",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_018.png"
+  },
+  "good2_019.png": {
+    "name": "Cursed Skeleton Ancient",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_019.png"
+  },
+  "good2_020.png": {
+    "name": "Cursed Skeleton Wraith",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_020.png"
+  },
+  "good2_021.png": {
+    "name": "Cursed Skeleton Stalker",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_021.png"
+  },
+  "good2_022.png": {
+    "name": "Cursed Skeleton Sentinel",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_022.png"
+  },
+  "good2_023.png": {
+    "name": "Cursed Skeleton Reaper",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_023.png"
+  },
+  "good2_024.png": {
+    "name": "Cursed Skeleton Guardian",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_024.png"
+  },
+  "good2_025.png": {
+    "name": "Cursed Skeleton Wanderer",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_025.png"
+  },
+  "good2_026.png": {
+    "name": "Cursed Skeleton Lord",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_026.png"
+  },
+  "good2_027.png": {
+    "name": "Cursed Skeleton Herald",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_027.png"
+  },
+  "good2_028.png": {
+    "name": "Cursed Skeleton Slayer",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_028.png"
+  },
+  "good2_029.png": {
+    "name": "Cursed Skeleton Ancient",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_029.png"
+  },
+  "good2_030.png": {
+    "name": "Cursed Skeleton Wraith",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_030.png"
+  },
+  "good2_031.png": {
+    "name": "Cursed Skeleton Stalker",
+    "type": "SKELETON",
+    "prefix": "Cursed",
+    "asset": "good2_031.png"
+  },
+  "good2_032.png": {
+    "name": "Infernal Demon Sentinel",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_032.png"
+  },
+  "good2_033.png": {
+    "name": "Infernal Demon Reaper",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_033.png"
+  },
+  "good2_034.png": {
+    "name": "Infernal Demon Guardian",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_034.png"
+  },
+  "good2_035.png": {
+    "name": "Infernal Demon Wanderer",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_035.png"
+  },
+  "good2_036.png": {
+    "name": "Infernal Demon Lord",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_036.png"
+  },
+  "good2_037.png": {
+    "name": "Infernal Demon Herald",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_037.png"
+  },
+  "good2_038.png": {
+    "name": "Infernal Demon Slayer",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_038.png"
+  },
+  "good2_039.png": {
+    "name": "Infernal Demon Ancient",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_039.png"
+  },
+  "good2_040.png": {
+    "name": "Infernal Demon Wraith",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_040.png"
+  },
+  "good2_041.png": {
+    "name": "Infernal Demon Stalker",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_041.png"
+  },
+  "good2_042.png": {
+    "name": "Infernal Demon Sentinel",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_042.png"
+  },
+  "good2_043.png": {
+    "name": "Infernal Demon Reaper",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_043.png"
+  },
+  "good2_044.png": {
+    "name": "Infernal Demon Guardian",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_044.png"
+  },
+  "good2_045.png": {
+    "name": "Infernal Demon Wanderer",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_045.png"
+  },
+  "good2_046.png": {
+    "name": "Infernal Demon Lord",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_046.png"
+  },
+  "good2_047.png": {
+    "name": "Infernal Demon Herald",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_047.png"
+  },
+  "good2_048.png": {
+    "name": "Infernal Demon Slayer",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_048.png"
+  },
+  "good2_049.png": {
+    "name": "Infernal Demon Ancient",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_049.png"
+  },
+  "good2_050.png": {
+    "name": "Infernal Demon Wraith",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_050.png"
+  },
+  "good2_051.png": {
+    "name": "Infernal Demon Stalker",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_051.png"
+  },
+  "good2_052.png": {
+    "name": "Infernal Demon Sentinel",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_052.png"
+  },
+  "good2_053.png": {
+    "name": "Infernal Demon Reaper",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_053.png"
+  },
+  "good2_054.png": {
+    "name": "Infernal Demon Guardian",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_054.png"
+  },
+  "good2_055.png": {
+    "name": "Infernal Demon Wanderer",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_055.png"
+  },
+  "good2_056.png": {
+    "name": "Infernal Demon Lord",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_056.png"
+  },
+  "good2_057.png": {
+    "name": "Infernal Demon Herald",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_057.png"
+  },
+  "good2_058.png": {
+    "name": "Infernal Demon Slayer",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_058.png"
+  },
+  "good2_059.png": {
+    "name": "Infernal Demon Ancient",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_059.png"
+  },
+  "good2_060.png": {
+    "name": "Infernal Demon Wraith",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_060.png"
+  },
+  "good2_061.png": {
+    "name": "Infernal Demon Stalker",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_061.png"
+  },
+  "good2_062.png": {
+    "name": "Infernal Demon Sentinel",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_062.png"
+  },
+  "good2_063.png": {
+    "name": "Infernal Demon Reaper",
+    "type": "DEMON",
+    "prefix": "Infernal",
+    "asset": "good2_063.png"
+  },
+  "good2_064.png": {
+    "name": "Venomous Insect Guardian",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_064.png"
+  },
+  "good2_065.png": {
+    "name": "Venomous Insect Wanderer",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_065.png"
+  },
+  "good2_066.png": {
+    "name": "Venomous Insect Lord",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_066.png"
+  },
+  "good2_067.png": {
+    "name": "Venomous Insect Herald",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_067.png"
+  },
+  "good2_068.png": {
+    "name": "Venomous Insect Slayer",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_068.png"
+  },
+  "good2_069.png": {
+    "name": "Venomous Insect Ancient",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_069.png"
+  },
+  "good2_070.png": {
+    "name": "Venomous Insect Wraith",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_070.png"
+  },
+  "good2_071.png": {
+    "name": "Venomous Insect Stalker",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_071.png"
+  },
+  "good2_072.png": {
+    "name": "Venomous Insect Sentinel",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_072.png"
+  },
+  "good2_073.png": {
+    "name": "Venomous Insect Reaper",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_073.png"
+  },
+  "good2_074.png": {
+    "name": "Venomous Insect Guardian",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_074.png"
+  },
+  "good2_075.png": {
+    "name": "Venomous Insect Wanderer",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_075.png"
+  },
+  "good2_076.png": {
+    "name": "Venomous Insect Lord",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_076.png"
+  },
+  "good2_077.png": {
+    "name": "Venomous Insect Herald",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_077.png"
+  },
+  "good2_078.png": {
+    "name": "Venomous Insect Slayer",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_078.png"
+  },
+  "good2_079.png": {
+    "name": "Venomous Insect Ancient",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_079.png"
+  },
+  "good2_080.png": {
+    "name": "Venomous Insect Wraith",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_080.png"
+  },
+  "good2_081.png": {
+    "name": "Venomous Insect Stalker",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_081.png"
+  },
+  "good2_082.png": {
+    "name": "Venomous Insect Sentinel",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_082.png"
+  },
+  "good2_083.png": {
+    "name": "Venomous Insect Reaper",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_083.png"
+  },
+  "good2_084.png": {
+    "name": "Venomous Insect Guardian",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_084.png"
+  },
+  "good2_085.png": {
+    "name": "Venomous Insect Wanderer",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_085.png"
+  },
+  "good2_086.png": {
+    "name": "Venomous Insect Lord",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_086.png"
+  },
+  "good2_087.png": {
+    "name": "Venomous Insect Herald",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_087.png"
+  },
+  "good2_088.png": {
+    "name": "Venomous Insect Slayer",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_088.png"
+  },
+  "good2_089.png": {
+    "name": "Venomous Insect Ancient",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_089.png"
+  },
+  "good2_090.png": {
+    "name": "Venomous Insect Wraith",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_090.png"
+  },
+  "good2_091.png": {
+    "name": "Venomous Insect Stalker",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_091.png"
+  },
+  "good2_092.png": {
+    "name": "Venomous Insect Sentinel",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_092.png"
+  },
+  "good2_093.png": {
+    "name": "Venomous Insect Reaper",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_093.png"
+  },
+  "good2_094.png": {
+    "name": "Venomous Insect Guardian",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_094.png"
+  },
+  "good2_095.png": {
+    "name": "Venomous Insect Wanderer",
+    "type": "INSECT",
+    "prefix": "Venomous",
+    "asset": "good2_095.png"
+  },
+  "good2_096.png": {
+    "name": "Heroic Knight Lord",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_096.png"
+  },
+  "good2_097.png": {
+    "name": "Heroic Knight Herald",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_097.png"
+  },
+  "good2_098.png": {
+    "name": "Heroic Knight Slayer",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_098.png"
+  },
+  "good2_099.png": {
+    "name": "Heroic Knight Ancient",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_099.png"
+  },
+  "good2_100.png": {
+    "name": "Heroic Knight Wraith",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_100.png"
+  },
+  "good2_101.png": {
+    "name": "Heroic Knight Stalker",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_101.png"
+  },
+  "good2_102.png": {
+    "name": "Heroic Knight Sentinel",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_102.png"
+  },
+  "good2_103.png": {
+    "name": "Heroic Knight Reaper",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_103.png"
+  },
+  "good2_104.png": {
+    "name": "Heroic Knight Guardian",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_104.png"
+  },
+  "good2_105.png": {
+    "name": "Heroic Knight Wanderer",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_105.png"
+  },
+  "good2_106.png": {
+    "name": "Heroic Knight Lord",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_106.png"
+  },
+  "good2_107.png": {
+    "name": "Heroic Knight Herald",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_107.png"
+  },
+  "good2_108.png": {
+    "name": "Heroic Knight Slayer",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_108.png"
+  },
+  "good2_109.png": {
+    "name": "Heroic Knight Ancient",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_109.png"
+  },
+  "good2_110.png": {
+    "name": "Heroic Knight Wraith",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_110.png"
+  },
+  "good2_111.png": {
+    "name": "Heroic Knight Stalker",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_111.png"
+  },
+  "good2_112.png": {
+    "name": "Heroic Knight Sentinel",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_112.png"
+  },
+  "good2_113.png": {
+    "name": "Heroic Knight Reaper",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_113.png"
+  },
+  "good2_114.png": {
+    "name": "Heroic Knight Guardian",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_114.png"
+  },
+  "good2_115.png": {
+    "name": "Heroic Knight Wanderer",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_115.png"
+  },
+  "good2_116.png": {
+    "name": "Heroic Knight Lord",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_116.png"
+  },
+  "good2_117.png": {
+    "name": "Heroic Knight Herald",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_117.png"
+  },
+  "good2_118.png": {
+    "name": "Heroic Knight Slayer",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_118.png"
+  },
+  "good2_119.png": {
+    "name": "Heroic Knight Ancient",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_119.png"
+  },
+  "good2_120.png": {
+    "name": "Heroic Knight Wraith",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_120.png"
+  },
+  "good2_121.png": {
+    "name": "Heroic Knight Stalker",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_121.png"
+  },
+  "good2_122.png": {
+    "name": "Heroic Knight Sentinel",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_122.png"
+  },
+  "good2_123.png": {
+    "name": "Heroic Knight Reaper",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_123.png"
+  },
+  "good2_124.png": {
+    "name": "Heroic Knight Guardian",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_124.png"
+  },
+  "good2_125.png": {
+    "name": "Heroic Knight Wanderer",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_125.png"
+  },
+  "good2_126.png": {
+    "name": "Heroic Knight Lord",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_126.png"
+  },
+  "good2_127.png": {
+    "name": "Heroic Knight Herald",
+    "type": "KNIGHT",
+    "prefix": "Heroic",
+    "asset": "good2_127.png"
+  },
+  "good2_128.png": {
+    "name": "Corrosive Mutant Slayer",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_128.png"
+  },
+  "good2_129.png": {
+    "name": "Corrosive Mutant Ancient",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_129.png"
+  },
+  "good2_130.png": {
+    "name": "Corrosive Mutant Wraith",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_130.png"
+  },
+  "good2_131.png": {
+    "name": "Corrosive Mutant Stalker",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_131.png"
+  },
+  "good2_132.png": {
+    "name": "Corrosive Mutant Sentinel",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_132.png"
+  },
+  "good2_133.png": {
+    "name": "Corrosive Mutant Reaper",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_133.png"
+  },
+  "good2_134.png": {
+    "name": "Corrosive Mutant Guardian",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_134.png"
+  },
+  "good2_135.png": {
+    "name": "Corrosive Mutant Wanderer",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_135.png"
+  },
+  "good2_136.png": {
+    "name": "Corrosive Mutant Lord",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_136.png"
+  },
+  "good2_137.png": {
+    "name": "Corrosive Mutant Herald",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_137.png"
+  },
+  "good2_138.png": {
+    "name": "Corrosive Mutant Slayer",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_138.png"
+  },
+  "good2_139.png": {
+    "name": "Corrosive Mutant Ancient",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_139.png"
+  },
+  "good2_140.png": {
+    "name": "Corrosive Mutant Wraith",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_140.png"
+  },
+  "good2_141.png": {
+    "name": "Corrosive Mutant Stalker",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_141.png"
+  },
+  "good2_142.png": {
+    "name": "Corrosive Mutant Sentinel",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_142.png"
+  },
+  "good2_143.png": {
+    "name": "Corrosive Mutant Reaper",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_143.png"
+  },
+  "good2_144.png": {
+    "name": "Corrosive Mutant Guardian",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_144.png"
+  },
+  "good2_145.png": {
+    "name": "Corrosive Mutant Wanderer",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_145.png"
+  },
+  "good2_146.png": {
+    "name": "Corrosive Mutant Lord",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_146.png"
+  },
+  "good2_147.png": {
+    "name": "Corrosive Mutant Herald",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_147.png"
+  },
+  "good2_148.png": {
+    "name": "Corrosive Mutant Slayer",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_148.png"
+  },
+  "good2_149.png": {
+    "name": "Corrosive Mutant Ancient",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_149.png"
+  },
+  "good2_150.png": {
+    "name": "Corrosive Mutant Wraith",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_150.png"
+  },
+  "good2_151.png": {
+    "name": "Corrosive Mutant Stalker",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_151.png"
+  },
+  "good2_152.png": {
+    "name": "Corrosive Mutant Sentinel",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_152.png"
+  },
+  "good2_153.png": {
+    "name": "Corrosive Mutant Reaper",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_153.png"
+  },
+  "good2_154.png": {
+    "name": "Corrosive Mutant Guardian",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_154.png"
+  },
+  "good2_155.png": {
+    "name": "Corrosive Mutant Wanderer",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_155.png"
+  },
+  "good2_156.png": {
+    "name": "Corrosive Mutant Lord",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_156.png"
+  },
+  "good2_157.png": {
+    "name": "Corrosive Mutant Herald",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_157.png"
+  },
+  "good2_158.png": {
+    "name": "Corrosive Mutant Slayer",
+    "type": "MUTANT",
+    "prefix": "Corrosive",
+    "asset": "good2_158.png"
+  },
+  "grid_000.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_000.png"
+  },
+  "grid_001.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_001.png"
+  },
+  "grid_002.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_002.png"
+  },
+  "grid_003.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_003.png"
+  },
+  "grid_004.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_004.png"
+  },
+  "grid_005.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_005.png"
+  },
+  "grid_006.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_006.png"
+  },
+  "grid_007.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_007.png"
+  },
+  "grid_008.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_008.png"
+  },
+  "grid_009.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_009.png"
+  },
+  "grid_010.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_010.png"
+  },
+  "grid_011.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_011.png"
+  },
+  "grid_012.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_012.png"
+  },
+  "grid_013.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_013.png"
+  },
+  "grid_014.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_014.png"
+  },
+  "grid_015.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_015.png"
+  },
+  "grid_016.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_016.png"
+  },
+  "grid_017.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_017.png"
+  },
+  "grid_018.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_018.png"
+  },
+  "grid_019.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_019.png"
+  },
+  "grid_020.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_020.png"
+  },
+  "grid_021.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_021.png"
+  },
+  "grid_022.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_022.png"
+  },
+  "grid_023.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_023.png"
+  },
+  "grid_024.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_024.png"
+  },
+  "grid_025.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_025.png"
+  },
+  "grid_026.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_026.png"
+  },
+  "grid_027.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_027.png"
+  },
+  "grid_028.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_028.png"
+  },
+  "grid_029.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_029.png"
+  },
+  "grid_030.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_030.png"
+  },
+  "grid_031.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_031.png"
+  },
+  "grid_032.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_032.png"
+  },
+  "grid_033.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_033.png"
+  },
+  "grid_034.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_034.png"
+  },
+  "grid_035.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_035.png"
+  },
+  "grid_036.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_036.png"
+  },
+  "grid_037.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_037.png"
+  },
+  "grid_038.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_038.png"
+  },
+  "grid_039.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_039.png"
+  },
+  "grid_040.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_040.png"
+  },
+  "grid_041.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_041.png"
+  },
+  "grid_042.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_042.png"
+  },
+  "grid_043.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_043.png"
+  },
+  "grid_044.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_044.png"
+  },
+  "grid_045.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_045.png"
+  },
+  "grid_046.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_046.png"
+  },
+  "grid_047.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_047.png"
+  },
+  "grid_048.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_048.png"
+  },
+  "grid_049.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_049.png"
+  },
+  "grid_050.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_050.png"
+  },
+  "grid_051.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_051.png"
+  },
+  "grid_052.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_052.png"
+  },
+  "grid_053.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_053.png"
+  },
+  "grid_054.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_054.png"
+  },
+  "grid_055.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_055.png"
+  },
+  "grid_056.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_056.png"
+  },
+  "grid_057.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_057.png"
+  },
+  "grid_058.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_058.png"
+  },
+  "grid_059.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_059.png"
+  },
+  "grid_060.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_060.png"
+  },
+  "grid_061.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_061.png"
+  },
+  "grid_062.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_062.png"
+  },
+  "grid_063.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_063.png"
+  },
+  "grid_064.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_064.png"
+  },
+  "grid_065.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_065.png"
+  },
+  "grid_066.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_066.png"
+  },
+  "grid_067.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_067.png"
+  },
+  "grid_068.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_068.png"
+  },
+  "grid_069.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_069.png"
+  },
+  "grid_070.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_070.png"
+  },
+  "grid_071.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_071.png"
+  },
+  "grid_072.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_072.png"
+  },
+  "grid_073.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_073.png"
+  },
+  "grid_074.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_074.png"
+  },
+  "grid_075.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_075.png"
+  },
+  "grid_076.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_076.png"
+  },
+  "grid_077.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_077.png"
+  },
+  "grid_078.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_078.png"
+  },
+  "grid_079.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_079.png"
+  },
+  "grid_080.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_080.png"
+  },
+  "grid_081.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_081.png"
+  },
+  "grid_082.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_082.png"
+  },
+  "grid_083.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_083.png"
+  },
+  "grid_084.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_084.png"
+  },
+  "grid_085.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_085.png"
+  },
+  "grid_086.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_086.png"
+  },
+  "grid_087.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_087.png"
+  },
+  "grid_088.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_088.png"
+  },
+  "grid_089.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_089.png"
+  },
+  "grid_090.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_090.png"
+  },
+  "grid_091.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_091.png"
+  },
+  "grid_092.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_092.png"
+  },
+  "grid_093.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_093.png"
+  },
+  "grid_094.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_094.png"
+  },
+  "grid_095.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_095.png"
+  },
+  "grid_096.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_096.png"
+  },
+  "grid_097.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_097.png"
+  },
+  "grid_098.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_098.png"
+  },
+  "grid_099.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_099.png"
+  },
+  "grid_100.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_100.png"
+  },
+  "grid_101.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_101.png"
+  },
+  "grid_102.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_102.png"
+  },
+  "grid_103.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_103.png"
+  },
+  "grid_104.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_104.png"
+  },
+  "grid_105.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_105.png"
+  },
+  "grid_106.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_106.png"
+  },
+  "grid_107.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_107.png"
+  },
+  "grid_108.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_108.png"
+  },
+  "grid_109.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_109.png"
+  },
+  "grid_110.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_110.png"
+  },
+  "grid_111.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_111.png"
+  },
+  "grid_112.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_112.png"
+  },
+  "grid_113.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_113.png"
+  },
+  "grid_114.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_114.png"
+  },
+  "grid_115.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_115.png"
+  },
+  "grid_116.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_116.png"
+  },
+  "grid_117.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_117.png"
+  },
+  "grid_118.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_118.png"
+  },
+  "grid_119.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_119.png"
+  },
+  "grid_120.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_120.png"
+  },
+  "grid_121.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_121.png"
+  },
+  "grid_122.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_122.png"
+  },
+  "grid_123.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_123.png"
+  },
+  "grid_124.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_124.png"
+  },
+  "grid_125.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_125.png"
+  },
+  "grid_126.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_126.png"
+  },
+  "grid_127.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_127.png"
+  },
+  "grid_128.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_128.png"
+  },
+  "grid_129.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_129.png"
+  },
+  "grid_130.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_130.png"
+  },
+  "grid_131.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_131.png"
+  },
+  "grid_2_000.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_000.png"
+  },
+  "grid_2_001.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_001.png"
+  },
+  "grid_2_002.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_002.png"
+  },
+  "grid_2_003.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_003.png"
+  },
+  "grid_2_004.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_004.png"
+  },
+  "grid_2_005.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_005.png"
+  },
+  "grid_2_006.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_006.png"
+  },
+  "grid_2_007.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_007.png"
+  },
+  "grid_2_008.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_008.png"
+  },
+  "grid_2_009.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_009.png"
+  },
+  "grid_2_010.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_010.png"
+  },
+  "grid_2_011.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_011.png"
+  },
+  "grid_2_012.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_012.png"
+  },
+  "grid_2_013.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_013.png"
+  },
+  "grid_2_014.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_014.png"
+  },
+  "grid_2_015.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_015.png"
+  },
+  "grid_2_016.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_016.png"
+  },
+  "grid_2_017.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_017.png"
+  },
+  "grid_2_018.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_018.png"
+  },
+  "grid_2_019.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_019.png"
+  },
+  "grid_2_020.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_020.png"
+  },
+  "grid_2_021.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_021.png"
+  },
+  "grid_2_022.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_022.png"
+  },
+  "grid_2_023.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_023.png"
+  },
+  "grid_2_024.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_024.png"
+  },
+  "grid_2_025.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_025.png"
+  },
+  "grid_2_026.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_026.png"
+  },
+  "grid_2_027.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_027.png"
+  },
+  "grid_2_028.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_028.png"
+  },
+  "grid_2_029.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_029.png"
+  },
+  "grid_2_030.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_030.png"
+  },
+  "grid_2_031.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_031.png"
+  },
+  "grid_2_032.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_032.png"
+  },
+  "grid_2_033.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_033.png"
+  },
+  "grid_2_034.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_034.png"
+  },
+  "grid_2_035.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_035.png"
+  },
+  "grid_2_036.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_036.png"
+  },
+  "grid_2_037.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_037.png"
+  },
+  "grid_2_038.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_038.png"
+  },
+  "grid_2_039.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_039.png"
+  },
+  "grid_2_040.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_040.png"
+  },
+  "grid_2_041.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_041.png"
+  },
+  "grid_2_042.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_042.png"
+  },
+  "grid_2_043.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_043.png"
+  },
+  "grid_2_044.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_044.png"
+  },
+  "grid_2_045.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_045.png"
+  },
+  "grid_2_046.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_046.png"
+  },
+  "grid_2_047.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_047.png"
+  },
+  "grid_2_048.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_048.png"
+  },
+  "grid_2_049.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_049.png"
+  },
+  "grid_2_050.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_050.png"
+  },
+  "grid_2_051.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_051.png"
+  },
+  "grid_2_052.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_052.png"
+  },
+  "grid_2_053.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_053.png"
+  },
+  "grid_2_054.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_054.png"
+  },
+  "grid_2_055.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_2_055.png"
+  },
+  "grid_3_000.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_000.png"
+  },
+  "grid_3_001.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_001.png"
+  },
+  "grid_3_002.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_002.png"
+  },
+  "grid_3_003.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_003.png"
+  },
+  "grid_3_004.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_004.png"
+  },
+  "grid_3_005.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_005.png"
+  },
+  "grid_3_006.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_006.png"
+  },
+  "grid_3_007.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_007.png"
+  },
+  "grid_3_008.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_008.png"
+  },
+  "grid_3_009.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_009.png"
+  },
+  "grid_3_010.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_010.png"
+  },
+  "grid_3_011.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_011.png"
+  },
+  "grid_3_012.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_012.png"
+  },
+  "grid_3_013.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_013.png"
+  },
+  "grid_3_014.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_014.png"
+  },
+  "grid_3_015.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_015.png"
+  },
+  "grid_3_016.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_016.png"
+  },
+  "grid_3_017.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_017.png"
+  },
+  "grid_3_018.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_018.png"
+  },
+  "grid_3_019.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_019.png"
+  },
+  "grid_3_020.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_020.png"
+  },
+  "grid_3_021.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_021.png"
+  },
+  "grid_3_022.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_022.png"
+  },
+  "grid_3_023.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_023.png"
+  },
+  "grid_3_024.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_024.png"
+  },
+  "grid_3_025.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_025.png"
+  },
+  "grid_3_026.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_026.png"
+  },
+  "grid_3_027.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_027.png"
+  },
+  "grid_3_028.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_028.png"
+  },
+  "grid_3_029.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_029.png"
+  },
+  "grid_3_030.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_030.png"
+  },
+  "grid_3_031.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_031.png"
+  },
+  "grid_3_032.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_032.png"
+  },
+  "grid_3_033.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_033.png"
+  },
+  "grid_3_034.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_034.png"
+  },
+  "grid_3_035.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_035.png"
+  },
+  "grid_3_036.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_036.png"
+  },
+  "grid_3_037.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_037.png"
+  },
+  "grid_3_038.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_038.png"
+  },
+  "grid_3_039.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_039.png"
+  },
+  "grid_3_040.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_040.png"
+  },
+  "grid_3_041.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_041.png"
+  },
+  "grid_3_042.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_042.png"
+  },
+  "grid_3_043.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_043.png"
+  },
+  "grid_3_044.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_044.png"
+  },
+  "grid_3_045.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_045.png"
+  },
+  "grid_3_046.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_046.png"
+  },
+  "grid_3_047.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_047.png"
+  },
+  "grid_3_048.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_048.png"
+  },
+  "grid_3_049.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_049.png"
+  },
+  "grid_3_050.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_050.png"
+  },
+  "grid_3_051.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_051.png"
+  },
+  "grid_3_052.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_052.png"
+  },
+  "grid_3_053.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_053.png"
+  },
+  "grid_3_054.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_054.png"
+  },
+  "grid_3_055.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_3_055.png"
+  },
+  "grid_4_000.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_000.png"
+  },
+  "grid_4_001.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_001.png"
+  },
+  "grid_4_002.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_002.png"
+  },
+  "grid_4_003.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_003.png"
+  },
+  "grid_4_004.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_004.png"
+  },
+  "grid_4_005.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_005.png"
+  },
+  "grid_4_006.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_006.png"
+  },
+  "grid_4_007.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_007.png"
+  },
+  "grid_4_008.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_008.png"
+  },
+  "grid_4_009.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_009.png"
+  },
+  "grid_4_010.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_010.png"
+  },
+  "grid_4_011.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_011.png"
+  },
+  "grid_4_012.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_012.png"
+  },
+  "grid_4_013.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_013.png"
+  },
+  "grid_4_014.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_014.png"
+  },
+  "grid_4_015.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_015.png"
+  },
+  "grid_4_016.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_016.png"
+  },
+  "grid_4_017.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_017.png"
+  },
+  "grid_4_018.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_018.png"
+  },
+  "grid_4_019.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_019.png"
+  },
+  "grid_4_020.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_020.png"
+  },
+  "grid_4_021.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_021.png"
+  },
+  "grid_4_022.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_022.png"
+  },
+  "grid_4_023.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_023.png"
+  },
+  "grid_4_024.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_024.png"
+  },
+  "grid_4_025.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_025.png"
+  },
+  "grid_4_026.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_026.png"
+  },
+  "grid_4_027.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_027.png"
+  },
+  "grid_4_028.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_028.png"
+  },
+  "grid_4_029.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_4_029.png"
+  },
+  "grid_5_000.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_000.png"
+  },
+  "grid_5_001.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_001.png"
+  },
+  "grid_5_002.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_002.png"
+  },
+  "grid_5_003.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_003.png"
+  },
+  "grid_5_004.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_004.png"
+  },
+  "grid_5_005.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_005.png"
+  },
+  "grid_5_006.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_006.png"
+  },
+  "grid_5_007.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_007.png"
+  },
+  "grid_5_008.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_008.png"
+  },
+  "grid_5_009.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_009.png"
+  },
+  "grid_5_010.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_010.png"
+  },
+  "grid_5_011.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_011.png"
+  },
+  "grid_5_012.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_012.png"
+  },
+  "grid_5_013.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_013.png"
+  },
+  "grid_5_014.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_014.png"
+  },
+  "grid_5_015.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_015.png"
+  },
+  "grid_5_016.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_016.png"
+  },
+  "grid_5_017.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_017.png"
+  },
+  "grid_5_018.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_018.png"
+  },
+  "grid_5_019.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_019.png"
+  },
+  "grid_5_020.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_020.png"
+  },
+  "grid_5_021.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_021.png"
+  },
+  "grid_5_022.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_022.png"
+  },
+  "grid_5_023.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_023.png"
+  },
+  "grid_5_024.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_024.png"
+  },
+  "grid_5_025.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_025.png"
+  },
+  "grid_5_026.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_026.png"
+  },
+  "grid_5_027.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_027.png"
+  },
+  "grid_5_028.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_028.png"
+  },
+  "grid_5_029.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_029.png"
+  },
+  "grid_5_030.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_030.png"
+  },
+  "grid_5_031.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_031.png"
+  },
+  "grid_5_032.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_032.png"
+  },
+  "grid_5_033.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_033.png"
+  },
+  "grid_5_034.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_034.png"
+  },
+  "grid_5_035.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_035.png"
+  },
+  "grid_5_036.png": {
+    "name": "Primitive Beast Ancient",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_036.png"
+  },
+  "grid_5_037.png": {
+    "name": "Primitive Beast Wraith",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_037.png"
+  },
+  "grid_5_038.png": {
+    "name": "Primitive Beast Stalker",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_038.png"
+  },
+  "grid_5_039.png": {
+    "name": "Primitive Beast Sentinel",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_039.png"
+  },
+  "grid_5_040.png": {
+    "name": "Primitive Beast Reaper",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_040.png"
+  },
+  "grid_5_041.png": {
+    "name": "Primitive Beast Guardian",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_041.png"
+  },
+  "grid_5_042.png": {
+    "name": "Primitive Beast Wanderer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_042.png"
+  },
+  "grid_5_043.png": {
+    "name": "Primitive Beast Lord",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_043.png"
+  },
+  "grid_5_044.png": {
+    "name": "Primitive Beast Herald",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_044.png"
+  },
+  "grid_5_045.png": {
+    "name": "Primitive Beast Slayer",
+    "type": "BEAST",
+    "prefix": "Primitive",
+    "asset": "grid_5_045.png"
+  }
+}

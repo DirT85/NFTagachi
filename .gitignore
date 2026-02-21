@@ -31,3 +31,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# LPC assets (large spritesheet library, ~300K files)
+generators/lpc_clone/
+generators/lpc_assets/spritesheets/

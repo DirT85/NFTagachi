@@ -1,0 +1,75 @@
+{
+  "name": "Ancient Polearm Warrior",
+  "symbol": "TAGA",
+  "description": "Unique adult female female polearm NPC.",
+  "seller_fee_basis_points": 500,
+  "image": "734.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Female"
+    },
+    {
+      "trait_type": "Weapon",
+      "value": "Polearm"
+    },
+    {
+      "trait_type": "STR",
+      "value": 23
+    },
+    {
+      "trait_type": "DEX",
+      "value": 27
+    },
+    {
+      "trait_type": "INT",
+      "value": 34
+    },
+    {
+      "trait_type": "LUK",
+      "value": 95
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "734.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_ADDRESS",
+        "share": 100
+      }
+    ]
+  },
+  "spriteSheet": {
+    "src": "/ai_base_chars/npc_734.png",
+    "frameSize": 128,
+    "framesPerRow": 13,
+    "rows": {
+      "IDLE": {
+        "row": 0,
+        "frames": 1
+      },
+      "WALK": {
+        "row": 1,
+        "frames": 9
+      },
+      "FEED": {
+        "row": 2,
+        "frames": 8
+      },
+      "TRAIN": {
+        "row": 3,
+        "frames": 6
+      },
+      "ATTACK": {
+        "row": 4,
+        "frames": 7
+      }
+    }
+  }
+}

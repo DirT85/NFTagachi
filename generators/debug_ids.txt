@@ -1,0 +1,4 @@
+d:\NFTagachi\generators\lpc_assets\spritesheets\head\heads\human\elderly_small
+d:\NFTagachi\generators\lpc_assets\spritesheets\head\heads\human\female
+d:\NFTagachi\generators\lpc_assets\spritesheets\head\heads\human\female_elderly
+d:\NFTagachi\generators\lpc_assets\spritesheets\head\heads\human\female_small

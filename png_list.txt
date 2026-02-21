@@ -1,0 +1,2 @@
+D:\NFTagachi\frontend\public\fallback_bg.png
+D:\NFTagachi\frontend\public\fallback_device.png

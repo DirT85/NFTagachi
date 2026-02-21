@@ -1,0 +1,42 @@
+{
+  "name": "NPC #511",
+  "description": "A unique human teen.",
+  "image": "/nft_heroes/511.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Human"
+    },
+    {
+      "trait_type": "Body Type",
+      "value": "Teen"
+    }
+  ],
+  "spriteSheet": {
+    "src": "/ai_base_chars/npc_511.png",
+    "frameSize": 128,
+    "framesPerRow": 13,
+    "rows": {
+      "IDLE": {
+        "row": 0,
+        "frames": 1
+      },
+      "WALK": {
+        "row": 1,
+        "frames": 9
+      },
+      "FEED": {
+        "row": 2,
+        "frames": 8
+      },
+      "TRAIN": {
+        "row": 3,
+        "frames": 6
+      },
+      "ATTACK": {
+        "row": 4,
+        "frames": 7
+      }
+    }
+  }
+}

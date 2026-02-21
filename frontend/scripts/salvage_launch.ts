@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { PNG } from 'pngjs';
-import { generateMonsterSprite } from '../utils/generatorV8';
+import { generateMonsterSprite } from '../utils/generatorV9';
 
 const INPUT_DIR = path.join(__dirname, '../assets/nft-launch');
 const OUTPUT_DIR = path.join(__dirname, '../assets/nft-launch-final');
@@ -39,11 +39,13 @@ async function salvage() {
 
                 console.log(`[${index + 1}/${files.length}] Generating ${metadata.name} (Weapon: ${weapon})...`);
 
-                // 1. Generate Full High-Quality Sheet (V8 Engine)
+                // 1. Generate Full High-Quality Sheet (V9 Engine — Custom Procedural)
                 const speciesAttr = metadata.attributes.find((a: any) => a.trait_type === 'Species');
-                const species = speciesAttr ? speciesAttr.value : 'Unknown';
+                const typeAttr = metadata.attributes.find((a: any) => a.trait_type === 'Type');
+                const species = speciesAttr ? speciesAttr.value : 'Void Walker';
+                const elType = typeAttr ? typeAttr.value : 'MAGIC';
                 const { buffer } = generateMonsterSprite(id, {
-                    bodyType: 'human',
+                    bodyType: elType,
                     theme: species.toLowerCase(),
                     weapon: weapon
                 });
@@ -60,8 +62,15 @@ async function salvage() {
                 fs.writeFileSync(heroPath, PNG.sync.write(hero));
                 fs.writeFileSync(sheetPath, buffer);
 
-                // 4. Update Metadata
+                // 4. Update Metadata (add Weapon attribute)
                 metadata.image = `${id}.png`;
+
+                // Add Weapon attribute if not present
+                const existingWeapon = metadata.attributes.find((a: any) => a.trait_type === 'Weapon');
+                if (!existingWeapon) {
+                    metadata.attributes.push({ trait_type: 'Weapon', value: weapon.charAt(0).toUpperCase() + weapon.slice(1) });
+                }
+
                 if (!metadata.properties) metadata.properties = {};
                 metadata.properties.files = [
                     { uri: `${id}.png`, type: "image/png", description: "Hero Shot" },

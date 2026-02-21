@@ -1,0 +1,75 @@
+{
+  "name": "Iron Magic Champion",
+  "symbol": "TAGA",
+  "description": "Unique adult male muscular magic NPC.",
+  "seller_fee_basis_points": 500,
+  "image": "696.png",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Muscular"
+    },
+    {
+      "trait_type": "Weapon",
+      "value": "Magic"
+    },
+    {
+      "trait_type": "STR",
+      "value": 25
+    },
+    {
+      "trait_type": "DEX",
+      "value": 44
+    },
+    {
+      "trait_type": "INT",
+      "value": 19
+    },
+    {
+      "trait_type": "LUK",
+      "value": 98
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "696.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_SOLANA_WALLET_ADDRESS",
+        "share": 100
+      }
+    ]
+  },
+  "spriteSheet": {
+    "src": "/ai_base_chars/npc_696.png",
+    "frameSize": 128,
+    "framesPerRow": 13,
+    "rows": {
+      "IDLE": {
+        "row": 0,
+        "frames": 1
+      },
+      "WALK": {
+        "row": 1,
+        "frames": 9
+      },
+      "FEED": {
+        "row": 2,
+        "frames": 8
+      },
+      "TRAIN": {
+        "row": 3,
+        "frames": 6
+      },
+      "ATTACK": {
+        "row": 4,
+        "frames": 7
+      }
+    }
+  }
+}

@@ -24,8 +24,10 @@ export const TokenomicsMap = ({ treasuryStats, rewardSettings, ecoLogs = [] }: T
     const burned = treasuryStats?.totalBurned || 0;
     const recycled = treasuryStats?.totalRecycled || 0;
 
-    // Heuristics
-    const healthPercent = Math.min(100, (balance / 300_000_000) * 100); // Sustainable relative to the 300M allocation
+    // NET HEALTH: On-chain balance adjusted by virtual burns
+    // This provides a more accurate picture of "Available" rewards if burns are virtual.
+    const netAvailable = Math.max(0, balance - burned);
+    const healthPercent = Math.min(100, (netAvailable / 300_000_000) * 100);
 
     return (
         <div className="w-full bg-slate-900/90 border-2 border-slate-700/50 rounded-3xl p-6 backdrop-blur-xl relative overflow-hidden h-full overflow-y-auto custom-scrollbar pb-20">
