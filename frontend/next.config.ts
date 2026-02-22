@@ -12,18 +12,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    // Throttle compilation to prevent OOM errors on Render Free Tier
-    workerThreads: false,
-    cpus: 1,
-    optimizeCss: false,
-    gzipSize: false,
-    memoryBasedWorkersCount: true,
-  },
-  webpack: (config) => {
-    config.cache = false; // Disable webpack cache to prevent RAM ballooning
-    return config;
-  },
 };
 
 export default nextConfig;
