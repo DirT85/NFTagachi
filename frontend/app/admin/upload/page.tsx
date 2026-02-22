@@ -38,7 +38,13 @@ export default function AdminUploadPage() {
         setMounted(true);
     }, []);
 
-    const log = (msg: string) => setLogs(p => [msg, ...p]);
+    const log = (msg: string) => setLogs(p => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...p].slice(0, 50));
+
+    const forceReset = () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.reload();
+    };
 
     useEffect(() => {
         const handleError = (e: ErrorEvent) => log(`🚨 ERROR: ${e.message}`);
@@ -179,6 +185,12 @@ export default function AdminUploadPage() {
 
                     <div className="flex items-center gap-4">
                         <WalletMultiButton />
+                        <button
+                            onClick={forceReset}
+                            className="px-4 py-2 bg-red-900/40 text-red-200 border border-red-500/50 rounded text-xs font-bold hover:bg-red-800 transition-all"
+                        >
+                            FORCE RESET WALLET
+                        </button>
                         {wallet.connected ? (
                             <button
                                 onClick={uploadAllDevices}
