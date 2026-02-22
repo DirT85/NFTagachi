@@ -167,7 +167,7 @@ export default function Home() {
         </button>
 
         {
-          mounted && !wallet && typeof window !== 'undefined' && window.innerWidth < 768 && (
+          mounted && typeof window !== 'undefined' && window.innerWidth < 768 && !wallet && (
             <>
               <div className="w-[1px] h-4 bg-white/10 mx-1" />
               <button
@@ -180,14 +180,22 @@ export default function Home() {
             </>
           )
         }
+        {
+          mounted && window.innerWidth >= 768 && (
+            <>
+              <div className="w-[1px] h-4 bg-white/10 mx-1" />
+              <div className="scale-90 origin-right flex items-center justify-center">
+                <WalletMultiButton className="!bg-purple-600/20 !border !border-purple-500/50 !rounded-full !text-purple-300 hover:!bg-purple-500/40 !transition-colors !text-[10px] !font-bold !h-auto !py-2 !px-4 !font-mono !m-0" />
+              </div>
+            </>
+          )
+        }
       </div >
 
+      <div className="w-[1px] h-4 bg-white/10 mx-1" />
 
-      {mounted && (
-        <div className="fixed top-24 right-4 z-[100] flex flex-col gap-2 items-end md:top-20 md:right-4">
-          <WalletMultiButton className="!bg-cyan-500/20 !border !border-cyan-500/50 !rounded-lg !text-cyan-400 hover:!bg-cyan-500/40 !transition-colors !shadow-[0_0_15px_rgba(6,182,212,0.2)] !text-[10px] !font-bold !h-auto !py-1.5 !px-3 !font-mono scale-90 md:scale-100 origin-top-right" />
-        </div>
-      )}
+
+      {/* The floating WalletMultiButton has been removed. We now handle everything in the top header. */}
 
       {/* Activity Panel (Left Sidebar) */}
       <AnimatePresence>
