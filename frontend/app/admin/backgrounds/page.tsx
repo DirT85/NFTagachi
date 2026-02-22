@@ -27,7 +27,23 @@ export default function AdminBackgroundUploadPage() {
 
     useEffect(() => {
         setMounted(true);
+        // Load persisted URIs
+        const savedUris = localStorage.getItem('nftagachi_bg_upload_uris');
+        if (savedUris) {
+            try {
+                setUris(JSON.parse(savedUris));
+            } catch (e) {
+                console.error("Failed to parse saved background URIs", e);
+            }
+        }
     }, []);
+
+    // Persist URIs on change
+    useEffect(() => {
+        if (Object.keys(uris).length > 0) {
+            localStorage.setItem('nftagachi_bg_upload_uris', JSON.stringify(uris));
+        }
+    }, [uris]);
 
     const log = (msg: string) => setLogs(p => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...p]);
 

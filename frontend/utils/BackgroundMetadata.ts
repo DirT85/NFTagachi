@@ -26,3 +26,12 @@ export const BACKGROUND_URIS: Record<string, string> = {
     "TOXIC_WASTE": "https://gateway.irys.xyz/PLACEHOLDER_BG_TOXIC",
     "BLUE_SCREEN": "https://gateway.irys.xyz/PLACEHOLDER_BG_BLUE",
 };
+
+export const isDarkBackground = (id: string | number) => {
+    const darks = [
+        'SPACE', 'CYBER_CITY', 'VOLCANO', 'RAINY_WINDOW',
+        'SUNSET_BLVD', 'TOXIC_WASTE', 'BLUE_SCREEN',
+        'STARRY_NIGHT', 'CIRCUIT_BOARD'
+    ];
+    return darks.includes(String(id));
+};

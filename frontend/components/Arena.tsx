@@ -5,6 +5,7 @@ import { BattleState, INITIAL_BATTLE_STATE, calculateDamage, getEnemyMove, getTu
 import { Socket } from 'socket.io-client';
 import { Sprite } from './Sprite';
 import { LcdBackground } from './LcdBackground';
+import { isDarkBackground } from '../utils/BackgroundMetadata';
 import { Flame, Shield, Trophy, Coins, Zap } from 'lucide-react';
 
 interface ArenaProps {
@@ -282,8 +283,8 @@ export const Arena = forwardRef<ArenaRef, ArenaProps>(({
 
     return (
         <div className="w-full h-full bg-[#0a0a0a] flex flex-col p-2 font-black">
-            <div className="flex-1 relative rounded-xl border-2 border-black/80 overflow-hidden shadow-inner bg-[#9bbc0f] group">
-                <LcdBackground id="DUEL_ARENA" />
+            <div className={`flex-1 relative rounded-xl border-2 border-black/80 overflow-hidden shadow-inner group ${isDarkBackground(currentBackground || 'DUEL_ARENA') ? 'bg-[#1a1a1a]' : 'bg-[#9bbc0f]'}`}>
+                <LcdBackground id={currentBackground || "DUEL_ARENA"} />
 
                 {/* TOP LABELS (STREET FIGHTER STYLE) */}
                 <div className="absolute top-4 inset-x-4 z-50 flex justify-between items-start pointer-events-none">

@@ -140,7 +140,141 @@ export const Device = ({
       sheen: 'bg-gradient-to-b from-white/5 to-transparent' // Matte varnish
     };
 
-    // Carbon Fiber kept as is...
+    // 5. TEXTURED & ATMOSPHERIC SERIES (Advanced Textures)
+    if (device === 'LAVA_FLOW' || device === 'MAGMA') return {
+      bg: 'bg-[#1a0505]',
+      border: 'border-[#4a1010] ring-2 ring-orange-600/50',
+      shadow: 'shadow-[0_0_30px_rgba(234,88,12,0.4)]',
+      overlay: (
+        <>
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/rocky-wall.png')] opacity-60 mix-blend-overlay"></div>
+          {!isCapturing && (
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-t from-orange-600/40 via-red-900/10 to-transparent animate-pulse" />
+              {/* Cracks effect using a radial gradient pattern */}
+              <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(255,100,0,0.2)_100%)]"
+                style={{ backgroundSize: '20px 20px' }} />
+            </div>
+          )}
+        </>
+      ),
+      screenBorder: 'border-red-950 shadow-[inset_0_0_20px_black] bg-black/40',
+      text: 'text-orange-500 font-black tracking-widest drop-shadow-[0_0_8px_#ea580c] uppercase',
+      sheen: 'bg-gradient-to-tr from-transparent via-orange-500/10 to-transparent'
+    };
+
+    if (device === 'ICE_CRYSTAL') return {
+      bg: 'bg-gradient-to-br from-cyan-100 via-blue-200 to-cyan-300',
+      border: 'border-white/80 ring-2 ring-cyan-100',
+      shadow: 'shadow-[0_10px_40px_rgba(103,232,249,0.3),inset_0_0_15px_rgba(255,255,255,0.8)]',
+      overlay: (
+        <>
+          <div className="absolute inset-0 backdrop-blur-[2px] opacity-30"></div>
+          {!isCapturing && <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/ice-age.png')] opacity-40 mix-blend-overlay scale-150"></div>}
+        </>
+      ),
+      screenBorder: 'border-white/40 shadow-[inset_0_2px_10px_rgba(0,0,0,0.1)] bg-white/20',
+      text: 'text-blue-600 font-bold tracking-widest text-shadow-sm',
+      sheen: 'bg-gradient-to-tr from-transparent via-white/70 to-transparent'
+    };
+
+    if (device === 'CHROME_PLATED') return {
+      bg: 'bg-gradient-to-br from-[#ffffff] via-[#a0a0a0] to-[#707070]',
+      border: 'border-white/90 ring-1 ring-black/10',
+      shadow: 'shadow-[0_20px_40px_rgba(0,0,0,0.5),inset_0_1px_3px_rgba(255,255,255,0.9)]',
+      overlay: (
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-black/20 mix-blend-overlay" />
+      ),
+      screenBorder: 'border-[#505050] shadow-[inset_0_0_15px_black] bg-black/10',
+      text: 'text-gray-100 font-black tracking-widest italic drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]',
+      sheen: 'bg-gradient-to-tr from-transparent via-white/80 to-transparent scale-150 rotate-12'
+    };
+
+    if (device === 'BRUSHED_STEEL') return {
+      bg: 'bg-[#8d8d8d]',
+      border: 'border-[#5a5a5a] ring-1 ring-black/20',
+      shadow: 'shadow-[0_15px_30px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)]',
+      overlay: (
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')] opacity-100 mix-blend-multiply" />
+      ),
+      screenBorder: 'border-[#424242] shadow-[inset_0_2px_5px_rgba(0,0,0,0.5)] bg-gray-900/10',
+      text: 'text-gray-300 font-bold tracking-widest drop-shadow-sm',
+      sheen: 'bg-gradient-to-b from-white/10 to-transparent'
+    };
+
+    if (device === 'COPPER_PLATE') return {
+      bg: 'bg-gradient-to-br from-[#b87333] via-[#8b4513] to-[#5d2e0a]',
+      border: 'border-[#5d2e0a] ring-1 ring-[#b87333]/40',
+      shadow: 'shadow-[0_15px_30px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.3)]',
+      overlay: (
+        <>
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')] opacity-40 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-900/20 via-transparent to-transparent opacity-40" title="Patina Effect" />
+        </>
+      ),
+      screenBorder: 'border-[#3e1f07] shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] bg-orange-950/20',
+      text: 'text-[#ffcc80] font-serif font-black tracking-widest',
+      sheen: 'bg-gradient-to-tr from-transparent via-orange-200/20 to-transparent'
+    };
+
+    if (device === 'MARBLE_WHITE') return {
+      bg: 'bg-white',
+      border: 'border-gray-200 ring-2 ring-gray-100',
+      shadow: 'shadow-[0_20px_50px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(0,0,0,0.05)]',
+      overlay: (
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/white-diamond.png')] opacity-100 mix-blend-multiply" />
+      ),
+      screenBorder: 'border-gray-100 shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] bg-gray-50',
+      text: 'text-gray-400 font-serif font-black tracking-[0.2em]',
+      sheen: 'bg-gradient-to-b from-white/20 to-transparent'
+    };
+
+    if (device === 'VINTAGE_PLASTIC') return {
+      bg: 'bg-[#e3dcd2]',
+      border: 'border-[#c5bcb0] ring-1 ring-[#f5efe6]',
+      shadow: 'shadow-[0_10px_20px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.5)]',
+      overlay: (
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dust.png')] opacity-20 mix-blend-multiply" />
+      ),
+      screenBorder: 'border-[#a59c8e] shadow-[inset_0_4px_10px_rgba(0,0,0,0.3)] bg-gray-900/20',
+      text: 'text-[#857c6e] font-mono font-black tracking-tighter uppercase',
+      sheen: ''
+    };
+
+    if (device === 'CAMO_URBAN') return {
+      bg: 'bg-[#404040]',
+      border: 'border-black ring-1 ring-gray-600',
+      shadow: 'shadow-2xl shadow-black/40',
+      overlay: (
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dimension.png')] opacity-100 mix-blend-multiply" />
+      ),
+      screenBorder: 'border-black shadow-[inset_0_2px_5px_black] bg-black/20',
+      text: 'text-gray-400 font-bold tracking-widest',
+      sheen: ''
+    };
+
+    if (device === 'MATRIX_CORE') return {
+      bg: 'bg-black',
+      border: 'border-green-900 ring-1 ring-green-500/50',
+      shadow: 'shadow-[0_0_20px_rgba(34,197,94,0.3)]',
+      overlay: (
+        <>
+          {!isCapturing && (
+            <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/micro-carbon.png')]"></div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 via-transparent to-green-500/5"></div>
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="w-full h-full opacity-10 font-mono text-[6px] text-green-500 leading-none whitespace-pre overflow-hidden">
+              {Array(20).fill("01011010011000101011\n").join("")}
+            </div>
+          </div>
+        </>
+      ),
+      screenBorder: 'border-green-900 shadow-[inset_0_0_10px_black] ring-1 ring-green-500/20',
+      text: 'text-green-500 font-mono tracking-widest drop-shadow-[0_0_3px_#22c55e]',
+      sheen: 'bg-gradient-to-b from-green-500/5 via-transparent to-transparent'
+    };
+
     if (device === 'CARBON_FIBER') return {
       bg: 'bg-[#1a1a1a]',
       border: 'border-gray-800 ring-1 ring-black',
@@ -209,14 +343,15 @@ export const Device = ({
     }
 
     // 8. SPECIAL EDITIONS (Galaxy, Gold, Warning)
-    if (device === 'GALAXY_SWIRL') return {
-      bg: 'bg-gradient-to-br from-[#1a0b2e] via-[#431c5d] to-[#1a0b2e]',
+    if (device === 'GALAXY_SWIRL' || device === 'COSMIC_DUST') return {
+      bg: device === 'COSMIC_DUST' ? 'bg-[#000]' : 'bg-gradient-to-br from-[#1a0b2e] via-[#431c5d] to-[#1a0b2e]',
       border: 'border-purple-900 ring-2 ring-purple-500/50',
       shadow: 'shadow-[0_0_30px_rgba(107,33,168,0.5)]',
       overlay: (
         <>
-          {!isCapturing && <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-60 mix-blend-screen animate-pulse"></div>}
+          {!isCapturing && <div className={`absolute inset-0 ${device === 'COSMIC_DUST' ? "bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" : "bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"} opacity-60 mix-blend-screen animate-pulse`}></div>}
           <div className={`absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-transparent to-pink-500/20 ${isCapturing ? '' : 'mix-blend-overlay'}`}></div>
+          {device === 'COSMIC_DUST' && <div className="absolute inset-0 bg-radial-gradient(circle_at_50%_50%,rgba(100,50,255,0.2)_0%,transparent_100%)" />}
         </>
       ),
       screenBorder: 'border-purple-800 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)]',
@@ -224,14 +359,94 @@ export const Device = ({
       sheen: 'bg-gradient-to-t from-transparent via-white/10 to-transparent'
     };
 
-    if (device === 'GOLD_PLATED') return {
-      bg: 'bg-gradient-to-br from-[#FDD835] via-[#FBC02D] to-[#F57F17]', // Richer Gold
-      border: 'border-[#F9A825] ring-1 ring-yellow-200',
-      shadow: 'shadow-[0_20px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.8)]',
-      overlay: isCapturing ? null : <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-20 mix-blend-overlay"></div>,
+    if (device === 'VOID_WALKER') return {
+      bg: 'bg-black shadow-[inset_0_0_50px_rgba(100,0,255,0.2)]',
+      border: 'border-gray-900 ring-1 ring-purple-950',
+      shadow: 'shadow-[0_0_50px_black,0_0_20px_rgba(139,92,246,0.1)]',
+      overlay: (
+        <>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(0,0,0,1)_100%)]" />
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20" />
+        </>
+      ),
+      screenBorder: 'border-gray-900 shadow-[inset_0_0_30px_black] bg-black',
+      text: 'text-gray-500 font-mono uppercase tracking-[0.5em] animate-pulse',
+      sheen: ''
+    };
+
+    if (device === 'HOLO_GRAPHIC') return {
+      bg: 'bg-[#e5e7eb]',
+      border: 'border-white/60 ring-1 ring-white/20',
+      shadow: 'shadow-2xl shadow-purple-500/10',
+      overlay: (
+        <div className={`absolute inset-0 bg-gradient-to-tr from-cyan-400/30 via-purple-400/30 to-yellow-400/30 ${isCapturing ? '' : 'animate-pulse'}`} style={{ mixBlendMode: 'color-dodge' }} />
+      ),
+      screenBorder: 'border-white/30 shadow-inner bg-white/10 backdrop-blur-sm',
+      text: 'text-gray-600 font-bold tracking-widest drop-shadow-[0_1px_2px_rgba(255,255,255,1)]',
+      sheen: 'bg-gradient-to-r from-transparent via-white/50 to-transparent rotate-45 scale-150'
+    };
+
+    if (device === 'GLITCH_ART') return {
+      bg: 'bg-[#121212]',
+      border: 'border-red-500/50 ring-2 ring-blue-500/50',
+      shadow: 'shadow-[4px_4px_0_rgba(255,0,0,0.5),-4px_-4px_0_rgba(0,0,255,0.5)]',
+      overlay: (
+        <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.05)_0px,rgba(255,255,255,0.05)_1px,transparent_1px,transparent_2px)] pointer-events-none" />
+      ),
+      screenBorder: 'border-gray-800 shadow-[inset_0_0_10px_red,inset_0_0_20px_blue] bg-black/40',
+      text: 'text-white font-mono uppercase italic tracking-tighter drop-shadow-[2px_0_0_#ff0000]',
+      sheen: ''
+    };
+
+    if (device === 'PEARL_GLOSS' || device === 'STARDUST') return {
+      bg: device === 'STARDUST' ? 'bg-[#0f172a]' : 'bg-[#fff] shadow-[inset_0_0_20px_rgba(255,255,255,1)]',
+      border: 'border-white/40 ring-1 ring-gray-200',
+      shadow: 'shadow-xl',
+      overlay: (
+        <div className={`absolute inset-0 ${device === 'STARDUST' ? "bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-100" : "bg-gradient-to-tr from-pink-100/30 via-transparent to-blue-100/30 opacity-60"}`} />
+      ),
+      screenBorder: 'border-gray-200 shadow-[inset_0_2px_8px_rgba(0,0,0,0.05)] bg-white/40',
+      text: 'text-gray-400 font-bold tracking-widest',
+      sheen: 'bg-gradient-to-tr from-transparent via-white/80 to-transparent'
+    };
+
+    if (device === 'NEON_STREAK') return {
+      bg: 'bg-[#0a0a0k]',
+      border: 'border-pink-500 shadow-[0_0_10px_#ec4899] ring-1 ring-cyan-400',
+      shadow: 'shadow-[0_0_20px_rgba(236,72,153,0.3)]',
+      overlay: (
+        <div className="absolute inset-x-0 top-0 h-full bg-[linear-gradient(90deg,transparent_0%,rgba(6,182,212,0.1)_50%,transparent_100%)] rotate-12" />
+      ),
+      screenBorder: 'border-cyan-900 shadow-[0_0_15px_rgba(6,182,212,0.5)] bg-black/40',
+      text: 'text-pink-400 font-black tracking-widest drop-shadow-[0_0_5px_#ec4899]',
+      sheen: ''
+    };
+
+    if (device === 'GOLD_PLATED' || device === 'AURA_GOLD') return {
+      bg: device === 'AURA_GOLD' ? 'bg-[#FFD700]' : 'bg-gradient-to-br from-[#FDD835] via-[#FBC02D] to-[#F57F17]',
+      border: device === 'AURA_GOLD' ? 'border-[#FFD700] ring-4 ring-yellow-400/50' : 'border-[#F9A825] ring-1 ring-yellow-200',
+      shadow: device === 'AURA_GOLD' ? 'shadow-[0_0_50px_rgba(255,215,0,0.5)]' : 'shadow-[0_20px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.8)]',
+      overlay: (
+        <>
+          {device === 'AURA_GOLD' && <div className="absolute inset-0 bg-gradient-to-t from-yellow-500/20 via-transparent to-white/20 animate-pulse" />}
+          {!isCapturing && <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-20 mix-blend-overlay"></div>}
+        </>
+      ),
       screenBorder: 'border-[#FBC02D] shadow-[inset_0_2px_5px_rgba(0,0,0,0.3)]',
       text: 'text-yellow-900 font-serif font-bold tracking-widest',
-      sheen: 'bg-gradient-to-tr from-transparent via-white/60 to-transparent' // High Gloss Shine
+      sheen: 'bg-gradient-to-tr from-transparent via-white/60 to-transparent'
+    };
+
+    if (device === 'DIAMOND_CUT') return {
+      bg: 'bg-white/80',
+      border: 'border-white ring-4 ring-white/50',
+      shadow: 'shadow-[0_0_30px_rgba(255,255,255,0.5)]',
+      overlay: (
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/triangles.png')] opacity-40 mix-blend-screen scale-150 rotate-45" />
+      ),
+      screenBorder: 'border-white/60 shadow-inner bg-white/20 backdrop-blur-md',
+      text: 'text-gray-500 font-serif font-black tracking-widest italic',
+      sheen: 'bg-gradient-to-tr from-transparent via-white/90 to-transparent'
     };
 
     if (device === 'WARNING_STRIPE') return {
@@ -248,6 +463,33 @@ export const Device = ({
       text: 'text-black bg-yellow-400 px-1 font-black uppercase tracking-tighter border border-black',
       sheen: '' // Matte
     };
+
+    // 9. GEMSTONE SERIES (Translucent, faceted look)
+    if (['RUBY_RED', 'SAPPHIRE_BLUE', 'EMERALD_GREEN', 'OBSIDIAN'].includes(device || '')) {
+      const stones: Record<string, any> = {
+        'RUBY_RED': { bg: 'bg-red-600/70', border: 'border-red-400/50', glow: 'shadow-[0_0_30px_rgba(220,38,38,0.5)]', text: 'text-red-100' },
+        'SAPPHIRE_BLUE': { bg: 'bg-blue-700/70', border: 'border-blue-400/50', glow: 'shadow-[0_0_30px_rgba(29,78,216,0.5)]', text: 'text-blue-100' },
+        'EMERALD_GREEN': { bg: 'bg-emerald-600/70', border: 'border-emerald-400/50', glow: 'shadow-[0_0_30px_rgba(5,150,105,0.5)]', text: 'text-emerald-100' },
+        'OBSIDIAN': { bg: 'bg-black/90', border: 'border-purple-900/50', glow: 'shadow-[0_0_30px_rgba(88,28,135,0.4)]', text: 'text-purple-200' }
+      };
+      const s = stones[device || 'RUBY_RED'];
+
+      return {
+        bg: `backdrop-blur-xl ${s.bg}`,
+        border: `border-2 ${s.border} ring-1 ring-white/30`,
+        shadow: `${s.glow} shadow-2xl`,
+        overlay: (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/20 via-transparent to-black/20" />
+            {!isCapturing && <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-30 mix-blend-overlay"></div>}
+            <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(255,255,255,0.1)]" />
+          </>
+        ),
+        screenBorder: 'border-white/10 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] bg-black/20',
+        text: `${s.text} font-serif font-black tracking-widest drop-shadow-md`,
+        sheen: 'bg-gradient-to-br from-white/40 via-transparent to-transparent'
+      };
+    }
 
     // Default
     return {
@@ -388,6 +630,30 @@ const DeviceButton = ({ label, device, action, isCapturing }: { label: string, d
   if (device === 'GOLD_PLATED') btnStyle = 'bg-gradient-to-br from-[#FFF59D] via-[#FBC02D] to-[#F57F17] border-[#F57F17] text-yellow-900 shadow-[0_3px_5px_rgba(0,0,0,0.3)] ring-1 ring-white/40 hover:brightness-110';
   if (device === 'WARNING_STRIPE') btnStyle = 'bg-black border-yellow-500 text-yellow-400 shadow-[0_4px_0_black] font-black hover:bg-gray-900';
   if (device === 'CYBER') btnStyle = 'bg-black border-cyan-500/50 text-cyan-400 shadow-[0_0_10px_cyan] hover:shadow-[0_0_20px_cyan] font-mono';
+
+  // Atmospheric / Material Series
+  if (device === 'LAVA_FLOW' || device === 'MAGMA') btnStyle = 'bg-orange-600 border-orange-800 text-white shadow-[0_4px_0_#9a3412] hover:bg-orange-500 hover:shadow-[0_0_15px_#f97316]';
+  if (device === 'ICE_CRYSTAL') btnStyle = 'bg-white/40 border-cyan-200 text-blue-600 shadow-[0_0_10px_rgba(255,255,255,0.5)] backdrop-blur-md hover:bg-white/60';
+  if (device === 'MATRIX_CORE') btnStyle = 'bg-black border-green-900 text-green-500 shadow-[0_0_5px_#22c55e] font-mono hover:shadow-[0_0_15px_#22c55e]';
+  if (device === 'CHROME_PLATED' || device === 'METAL_SILVER' || device === 'BRUSHED_STEEL') btnStyle = 'bg-gradient-to-br from-gray-100 to-gray-400 border-gray-500 text-gray-800 shadow-[0_3px_0_#4a4a4a] hover:brightness-110';
+  if (device === 'COPPER_PLATE') btnStyle = 'bg-[#b87333] border-[#5d2e0a] text-orange-950 shadow-[0_3px_0_#3e1f07] hover:brightness-110';
+  if (device === 'MARBLE_WHITE') btnStyle = 'bg-white border-gray-300 text-gray-400 shadow-[0_3px_0_#d1d5db] font-serif';
+  if (device === 'VINTAGE_PLASTIC') btnStyle = 'bg-[#d3ccc2] border-[#a59c8e] text-[#655c4e] shadow-[0_3px_0_#857c6e] hover:bg-[#c3bcaf]';
+  if (device === 'CAMO_URBAN') btnStyle = 'bg-[#333] border-black text-gray-400 shadow-[0_3px_0_#000] hover:bg-[#444]';
+
+  // Gemstones
+  if (device === 'RUBY_RED') btnStyle = 'bg-red-600/50 border-red-400 text-white shadow-[0_0_10px_#dc2626] backdrop-blur-md';
+  if (device === 'SAPPHIRE_BLUE') btnStyle = 'bg-blue-600/50 border-blue-400 text-white shadow-[0_0_10px_#2563eb] backdrop-blur-md';
+  if (device === 'EMERALD_GREEN') btnStyle = 'bg-emerald-600/50 border-emerald-400 text-white shadow-[0_0_10px_#059669] backdrop-blur-md';
+  if (device === 'OBSIDIAN') btnStyle = 'bg-black/60 border-purple-900 text-purple-300 shadow-[0_0_10px_#581c87] backdrop-blur-md';
+
+  // Styles & Specials
+  if (device === 'HOLO_GRAPHIC') btnStyle = 'bg-white/30 border-white text-gray-600 shadow-lg backdrop-blur-md hover:bg-white/50';
+  if (device === 'GLITCH_ART') btnStyle = 'bg-black border-red-500 text-white shadow-[3px_3px_0_#000,0_0_8px_#ff0000] italic font-black';
+  if (device === 'PEARL_GLOSS' || device === 'STARDUST') btnStyle = `${device === 'STARDUST' ? 'bg-slate-900' : 'bg-white'} border-gray-200 text-gray-400 shadow-md hover:brightness-110`;
+  if (device === 'NEON_STREAK') btnStyle = 'bg-black border-pink-500 text-pink-400 shadow-[0_0_10px_#ec4899] font-black hover:text-cyan-400 hover:border-cyan-400 shadow-[0_0_10px_cyan]';
+  if (device === 'VOID_WALKER') btnStyle = 'bg-black border-gray-800 text-gray-600 shadow-[inset_0_0_5px_rgba(255,255,255,0.1)]';
+  if (device === 'DIAMOND_CUT') btnStyle = 'bg-white/50 border-white text-gray-700 shadow-[0_0_10px_white] backdrop-blur-lg';
 
   return (
     <div className="flex flex-col items-center gap-1.5 relative group">

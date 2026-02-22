@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sprite } from './Sprite';
 import { MonsterData } from '../utils/GameLogic';
+import { isDarkBackground } from '../utils/BackgroundMetadata';
 import { MessageCircle, Swords, Users, X, Crown } from 'lucide-react';
 import { Socket } from 'socket.io-client';
 
@@ -386,8 +387,10 @@ export const Lobby = ({ userMonster, ownedMonsters = [], onSwitchMonster, onJoin
 
     const zoomLevel = calculateZoom();
 
+    const isDark = isDarkBackground('DEFAULT'); // Lobby currently defaults to greenish LCD, but we'll prepare it.
+
     return (
-        <div className="absolute inset-0 z-50 bg-[#9bbc0f] flex flex-col font-black">
+        <div className={`absolute inset-0 z-50 flex flex-col font-black ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#9bbc0f]'}`}>
             {/* Challenge Notification */}
             <AnimatePresence>
                 {incomingChallenge && (

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { LcdBackground } from "./LcdBackground";
 import { Sprite } from "./Sprite";
+import { isDarkBackground } from "../utils/BackgroundMetadata";
 
 interface ScreenProps {
     state: "IDLE" | "SLEEP" | "EATING" | "TRAINING" | "HAPPY" | "CLEANING" | "SAD" | "FAINTED" | "BORN";
@@ -29,12 +30,12 @@ interface ScreenProps {
     onAnimationComplete?: () => void; // New
 }
 
-const HUDStat = ({ label, value, icon }: { label: string, value: string | number, icon: string }) => (
+const HUDStat = ({ label, value, icon, isDark }: { label: string, value: string | number, icon: string, isDark?: boolean }) => (
     <div className="flex items-center gap-1.5 h-3">
         <span className="text-[7.5px] opacity-50 filter grayscale">{icon}</span>
         <div className="flex items-baseline gap-0.5">
-            <span className="text-[7px] font-black text-black/30 tracking-tighter uppercase">{label}</span>
-            <span className="text-[8.5px] font-black text-black/80 tabular-nums leading-none tracking-tight">{value}</span>
+            <span className={`text-[7px] font-black tracking-tighter uppercase ${isDark ? 'text-white/40' : 'text-black/30'}`}>{label}</span>
+            <span className={`text-[8.5px] font-black tabular-nums leading-none tracking-tight ${isDark ? 'text-white' : 'text-black/80'}`}>{value}</span>
         </div>
     </div>
 );
@@ -65,41 +66,45 @@ export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, acti
         setHueRotate(hue + (Math.random() * 20 - 10));
     }, [monsterData]);
 
+    const isDark = isDarkBackground(backgroundId);
+    const textColor = isDark ? 'text-white' : 'text-black';
+    const subtextColor = isDark ? 'text-white/60' : 'text-black/40';
+
     return (
         <div className="relative w-full h-full flex flex-col items-center justify-end pb-4 bg-transparent overflow-hidden rounded-inner shadow-inner isolate font-sans">
             {/* LCD Background Layer - Z-Index 0 */}
             <LcdBackground id={backgroundId} active={state === 'TRAINING'} />
 
             {/* Stats Overlay - Z-Index 20 */}
-            <div className="absolute inset-x-0 top-0 p-1.5 pointer-events-none z-20 flex flex-col gap-0.5 select-none bg-gradient-to-b from-black/20 to-transparent">
+            <div className={`absolute inset-x-0 top-0 p-1.5 pointer-events-none z-20 flex flex-col gap-0.5 select-none ${isDark ? 'bg-gradient-to-b from-black/60 to-transparent' : 'bg-gradient-to-b from-black/20 to-transparent'}`}>
                 <div className="flex justify-between items-center opacity-90">
                     {/* SOL Balance (Top Left) */}
-                    <div className="flex items-center gap-1 bg-black/5 px-1.5 rounded-full">
-                        <span className="text-[6px] font-black text-black/40 uppercase">SOL</span>
-                        <span className="text-[8px] font-black text-blue-900/90 tabular-nums leading-none">
+                    <div className={`flex items-center gap-1 px-1.5 rounded-full ${isDark ? 'bg-white/10 shadow-[0_0_10px_rgba(255,255,255,0.05)]' : 'bg-black/5 shadow-none'}`}>
+                        <span className={`text-[6px] font-black uppercase ${subtextColor}`}>SOL</span>
+                        <span className={`text-[8px] font-black tabular-nums leading-none ${isDark ? 'text-blue-300' : 'text-blue-900/90'}`}>
                             {(solBalance || 0).toFixed(3)}
                         </span>
                     </div>
 
                     {/* GAMA Balance (Top Right) */}
-                    <div className="flex items-center gap-1 bg-black/5 px-1.5 rounded-full">
-                        <span className="text-[6px] font-black text-black/40 uppercase">BANK</span>
-                        <span className="text-[8px] font-black text-yellow-900/90 tabular-nums leading-none">
+                    <div className={`flex items-center gap-1 px-1.5 rounded-full ${isDark ? 'bg-white/10 shadow-[0_0_10px_rgba(255,255,255,0.05)]' : 'bg-black/5 shadow-none'}`}>
+                        <span className={`text-[6px] font-black uppercase ${subtextColor}`}>BANK</span>
+                        <span className={`text-[8px] font-black tabular-nums leading-none ${isDark ? 'text-yellow-400' : 'text-yellow-900/90'}`}>
                             {(tokenBalance === 150000 ? 0 : (tokenBalance || 0)).toLocaleString()}
                         </span>
-                        <span className="text-[6px] font-bold text-yellow-900/80 tracking-tighter">G</span>
+                        <span className={`text-[6px] font-bold tracking-tighter ${isDark ? 'text-yellow-400/80' : 'text-yellow-900/80'}`}>G</span>
                     </div>
                 </div>
 
                 {/* Prominent HP Bar - Always Visible for Mon */}
                 <div className="flex flex-col gap-0.5 mt-0">
                     <div className="flex justify-between items-center px-0.5">
-                        <span className="text-[7px] font-black text-black/60 tracking-widest uppercase">VITALITY</span>
-                        <span className="text-[8px] font-black text-black/90 tabular-nums">{Math.floor(stats?.hp || monsterData?.baseStats?.hp || 0)}</span>
+                        <span className={`text-[7px] font-black tracking-widest uppercase ${isDark ? 'text-white/60' : 'text-black/60'}`}>VITALITY</span>
+                        <span className={`text-[8px] font-black tabular-nums ${textColor}`}>{Math.floor(stats?.hp || monsterData?.baseStats?.hp || 0)}</span>
                     </div>
-                    <div className="w-full h-2 bg-black/20 rounded-full overflow-hidden border border-black/10 relative p-[1px]">
+                    <div className={`w-full h-2 bg-black/20 rounded-full overflow-hidden border relative p-[1px] ${isDark ? 'border-white/10' : 'border-black/10'}`}>
                         <motion.div
-                            className={`h-full rounded-full shadow-[inset_0_-1px_2px_rgba(0,0,0,0.2)] ${(stats?.hp || monsterData?.baseStats?.hp || 0) / (monsterData?.baseStats?.maxHp || 100) < 0.3 ? 'bg-red-500' : 'bg-[#3b82f6]' // Blue/Red
+                            className={`h-full rounded-full shadow-[inset_0_-1px_2px_rgba(0,0,0,0.2)] ${(stats?.hp || monsterData?.baseStats?.hp || 0) / (monsterData?.baseStats?.maxHp || 100) < 0.3 ? 'bg-red-500' : (isDark ? 'bg-cyan-500' : 'bg-[#3b82f6]')
                                 }`}
                             initial={{ width: "100%" }}
                             animate={{
@@ -117,13 +122,13 @@ export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, acti
                 </div>
 
                 {/* Secondary Stats Grid */}
-                <div className="grid grid-cols-3 gap-x-1 gap-y-0.5 pt-0.5 border-t border-black/5">
-                    <HUDStat label="HNG" value={Math.floor(stats?.hunger || 0)} icon="🍎" />
-                    <HUDStat label="HAP" value={Math.floor(stats?.happiness || 0)} icon="💖" />
-                    <HUDStat label="NRG" value={Math.floor(stats?.energy || 0)} icon="⚡" />
-                    <HUDStat label="STR" value={Math.floor(stats?.strength || 0)} icon="💪" />
-                    <HUDStat label="PWR" value={Math.floor(stats?.power || 0)} icon="💥" />
-                    <HUDStat label="WGT" value={Math.floor(stats?.weight || 0)} icon="⚖️" />
+                <div className={`grid grid-cols-3 gap-x-1 gap-y-0.5 pt-0.5 border-t ${isDark ? 'border-white/10' : 'border-black/5'}`}>
+                    <HUDStat label="HNG" value={Math.floor(stats?.hunger || 0)} icon="🍎" isDark={isDark} />
+                    <HUDStat label="HAP" value={Math.floor(stats?.happiness || 0)} icon="💖" isDark={isDark} />
+                    <HUDStat label="NRG" value={Math.floor(stats?.energy || 0)} icon="⚡" isDark={isDark} />
+                    <HUDStat label="STR" value={Math.floor(stats?.strength || 0)} icon="💪" isDark={isDark} />
+                    <HUDStat label="PWR" value={Math.floor(stats?.power || 0)} icon="💥" isDark={isDark} />
+                    <HUDStat label="WGT" value={Math.floor(stats?.weight || 0)} icon="⚖️" isDark={isDark} />
                 </div>
             </div>
 
@@ -170,7 +175,7 @@ export const Screen = ({ state, skin, stats, monsterData, backgroundId = 0, acti
                 />
             )}
 
-            {state === "SLEEP" && <div className="absolute top-4 right-4 text-xs font-bold animate-pulse text-black/70 z-20">Zzz...</div>}
+            {state === "SLEEP" && <div className={`absolute top-4 right-4 text-xs font-bold animate-pulse z-20 ${isDark ? 'text-white/70' : 'text-black/70'}`}>Zzz...</div>}
             {state === "FAINTED" && (
                 <motion.div
                     animate={{ opacity: [0.5, 1, 0.5] }}

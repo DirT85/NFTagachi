@@ -21,7 +21,12 @@ const DEVICES = [
     'GLACIER_ICE', 'SMOKE_BLACK', 'JUNGLE_GREEN', 'ATOMIC_PURPLE',
     'METAL_SILVER', 'METAL_GOLD', 'METAL_BLUE',
     'WOOD_GRAIN', 'CARBON_FIBER', 'MINECRAFT_GRASS', 'WARNING_STRIPE',
-    'GALAXY_SWIRL', 'GOLD_PLATED', 'CYBER', 'FIRE_RED', 'ELECTRIC_BLUE', 'PIKACHU_YELLOW'
+    'GALAXY_SWIRL', 'GOLD_PLATED', 'CYBER', 'FIRE_RED', 'ELECTRIC_BLUE', 'PIKACHU_YELLOW',
+    'LAVA_FLOW', 'ICE_CRYSTAL', 'MATRIX_CORE', 'CHROME_PLATED', 'RUBY_RED',
+    'SAPPHIRE_BLUE', 'EMERALD_GREEN', 'OBSIDIAN', 'NEON_STREAK', 'MARBLE_WHITE',
+    'BRUSHED_STEEL', 'COPPER_PLATE', 'DIAMOND_CUT', 'COSMIC_DUST', 'VINTAGE_PLASTIC',
+    'CAMO_URBAN', 'PEARL_GLOSS', 'STARDUST', 'VOID_WALKER', 'AURA_GOLD',
+    'MAGMA', 'GLITCH_ART', 'HOLO_GRAPHIC'
 ];
 
 export default function AdminUploadPage() {
@@ -36,7 +41,23 @@ export default function AdminUploadPage() {
 
     useEffect(() => {
         setMounted(true);
+        // Load persisted URIs
+        const savedUris = localStorage.getItem('nftagachi_skin_upload_uris');
+        if (savedUris) {
+            try {
+                setUris(JSON.parse(savedUris));
+            } catch (e) {
+                console.error("Failed to parse saved device URIs", e);
+            }
+        }
     }, []);
+
+    // Persist URIs on change
+    useEffect(() => {
+        if (Object.keys(uris).length > 0) {
+            localStorage.setItem('nftagachi_skin_upload_uris', JSON.stringify(uris));
+        }
+    }, [uris]);
 
     const log = (msg: string) => setLogs(p => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...p].slice(0, 50));
 
