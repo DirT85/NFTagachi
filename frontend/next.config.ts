@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    // Throttle compilation to prevent OOM errors on Render Free Tier
+    workerThreads: false,
+    cpus: 1,
+  }
 };
 
 export default nextConfig;
