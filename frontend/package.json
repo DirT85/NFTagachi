@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm install --legacy-peer-deps && next build",
+    "build": "npm install --legacy-peer-deps && cross-env NODE_OPTIONS=--max-old-space-size=400 next build",
     "start": "next start",
     "lint": "eslint"
   },
@@ -21,6 +21,17 @@
     "@solana/wallet-adapter-react-ui": "^0.9.39",
     "@solana/wallet-adapter-wallets": "^0.19.37",
     "@solana/web3.js": "^1.98.4",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/file-saver": "^2.0.7",
+    "@types/jszip": "^3.4.0",
+    "@types/node": "^20",
+    "@types/pngjs": "^6.0.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^9",
+    "eslint-config-next": "^15.5.12",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.33.0",
     "html-to-image": "^1.11.13",
@@ -32,17 +43,7 @@
     "pngjs": "^7.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "@types/file-saver": "^2.0.7",
-    "@types/jszip": "^3.4.0",
-    "@types/node": "^20",
-    "@types/pngjs": "^6.0.5",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "^15.5.12",
-    "typescript": "^5",
-    "@tailwindcss/postcss": "^4.1.18",
-    "babel-plugin-react-compiler": "1.0.0",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
