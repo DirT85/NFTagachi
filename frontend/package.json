@@ -40,9 +40,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "^15.5.12",
-    "typescript": "^5"
-  },
-  "devDependencies": {
+    "typescript": "^5",
     "@tailwindcss/postcss": "^4.1.18",
     "babel-plugin-react-compiler": "1.0.0",
     "tailwindcss": "^4"
