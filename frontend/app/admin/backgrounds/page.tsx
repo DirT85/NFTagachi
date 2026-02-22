@@ -30,6 +30,16 @@ export default function AdminBackgroundUploadPage() {
 
     const log = (msg: string) => setLogs(p => [msg, ...p]);
 
+    useEffect(() => {
+        if (mounted) {
+            log(`Wallet: ${wallet.connected ? 'CONNECTED ✅' : 'DISCONNECTED ❌'}`);
+            if (wallet.publicKey) log(`Address: ${wallet.publicKey.toBase58().substring(0, 8)}...`);
+            if (typeof window !== 'undefined' && !(window as any).solana) {
+                log("⚠️ Phantom extension not detected.");
+            }
+        }
+    }, [wallet.connected, wallet.publicKey, mounted]);
+
     const openInPhantom = () => {
         try {
             const url = window.location.href.replace('https://', '').replace('http://', '');
@@ -139,25 +149,20 @@ export default function AdminBackgroundUploadPage() {
                         </div>
                     </div>
                     <div className="flex gap-4">
-                        {
-                            typeof window !== 'undefined' && window.innerWidth < 768 && !wallet.connected ? (
-                                <button
-                                    onClick={openInPhantom}
-                                    className="px-6 py-3 bg-purple-600 hover:bg-purple-500 rounded-lg font-bold flex items-center gap-2"
-                                >
-                                    <Wallet size={16} /> OPEN IN PHANTOM
-                                </button>
-                            ) : (
-                                <WalletMultiButton />
-                            )
-                        }
-                        <button
-                            onClick={handleAutoGenerate}
-                            disabled={isProcessing || !wallet.connected}
-                            className={`px-6 py-3 rounded-lg font-bold ${isProcessing ? 'bg-gray-600' : 'bg-green-600 hover:scale-105'}`}
-                        >
-                            {isProcessing ? `Processing ${Math.floor(progress)}%...` : '✨ Generate & Upload'}
-                        </button>
+                        <WalletMultiButton />
+                        {wallet.connected ? (
+                            <button
+                                onClick={handleAutoGenerate}
+                                disabled={isProcessing}
+                                className={`px-6 py-3 rounded-lg font-bold transition-all shadow-lg ${isProcessing ? 'bg-gray-600' : 'bg-green-600 hover:scale-105 hover:bg-green-500'}`}
+                            >
+                                {isProcessing ? `Processing ${Math.floor(progress)}%...` : '✨ Generate & Upload'}
+                            </button>
+                        ) : (
+                            <div className="px-6 py-3 bg-gray-800 text-gray-400 rounded-lg text-sm font-bold border border-white/5">
+                                CONNECT WALLET TO GENERATE
+                            </div>
+                        )}
                     </div>
                 </div>
 

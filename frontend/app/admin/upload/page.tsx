@@ -39,6 +39,16 @@ export default function AdminUploadPage() {
 
     const log = (msg: string) => setLogs(p => [msg, ...p]);
 
+    useEffect(() => {
+        if (mounted) {
+            log(`Wallet: ${wallet.connected ? 'CONNECTED ✅' : 'DISCONNECTED ❌'}`);
+            if (wallet.publicKey) log(`Key: ${wallet.publicKey.toBase58().substring(0, 8)}...`);
+            if (typeof window !== 'undefined' && !(window as any).solana) {
+                log("⚠️ Phantom extension not detected in this browser.");
+            }
+        }
+    }, [wallet.connected, wallet.publicKey, mounted]);
+
     const openInPhantom = () => {
         try {
             const url = window.location.href.replace('https://', '').replace('http://', '');
@@ -169,25 +179,20 @@ export default function AdminUploadPage() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        {
-                            typeof window !== 'undefined' && window.innerWidth < 768 && !wallet.connected ? (
-                                <button
-                                    onClick={openInPhantom}
-                                    className="px-6 py-2 bg-purple-600 hover:bg-purple-500 rounded font-bold flex items-center gap-2"
-                                >
-                                    <Wallet size={16} /> OPEN IN PHANTOM
-                                </button>
-                            ) : (
-                                <WalletMultiButton />
-                            )
-                        }
-                        <button
-                            onClick={uploadAllDevices}
-                            disabled={isProcessing}
-                            className="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded font-bold disabled:opacity-50"
-                        >
-                            {isProcessing ? `Processing (${progress}%)...` : 'UPLOAD ALL DEVICES'}
-                        </button>
+                        <WalletMultiButton />
+                        {wallet.connected ? (
+                            <button
+                                onClick={uploadAllDevices}
+                                disabled={isProcessing}
+                                className="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded font-bold disabled:opacity-50 transition-all shadow-lg"
+                            >
+                                {isProcessing ? `Processing (${progress}%)...` : 'UPLOAD ALL DEVICES'}
+                            </button>
+                        ) : (
+                            <div className="px-4 py-2 bg-gray-800 text-gray-400 rounded text-xs font-bold border border-white/5">
+                                CONNECT WALLET TO UPLOAD
+                            </div>
+                        )}
                     </div>
                 </div>
 
