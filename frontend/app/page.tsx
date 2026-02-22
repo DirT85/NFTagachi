@@ -167,16 +167,26 @@ export default function Home() {
         </button>
 
         {
-          mounted && typeof window !== 'undefined' && window.innerWidth < 768 && !wallet && (
+          mounted && typeof window !== 'undefined' && window.innerWidth < 768 && (
             <>
               <div className="w-[1px] h-4 bg-white/10 mx-1" />
-              <button
-                onClick={openInPhantom}
-                className="flex items-center gap-2 px-4 py-2 rounded-full transition-all hover:bg-[#AB9FF2]/20 group"
-              >
-                <Wallet size={12} className="text-[#AB9FF2] opacity-60 group-hover:opacity-100" />
-                <span className="text-[10px] font-black text-white uppercase tracking-wider">PHANTOM</span>
-              </button>
+              {wallet ? (
+                <button
+                  onClick={() => setWalletOpen(true)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 border border-green-500/40 group"
+                >
+                  <div className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-[10px] font-black text-green-400 uppercase tracking-wider">CONNECTED</span>
+                </button>
+              ) : (
+                <button
+                  onClick={openInPhantom}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full transition-all hover:bg-[#AB9FF2]/20 group"
+                >
+                  <Wallet size={12} className="text-[#AB9FF2] opacity-60 group-hover:opacity-100" />
+                  <span className="text-[10px] font-black text-white uppercase tracking-wider">PHANTOM</span>
+                </button>
+              )}
             </>
           )
         }
@@ -401,24 +411,6 @@ export default function Home() {
               </>
             )}
           </Device>
-          <Inventory
-            isOpen={inventoryOpen}
-            onClose={() => setInventoryOpen(false)}
-            ownedMonsters={ownedMonsters}
-            currentMonsterId={monsterData?.id}
-            onSwitchMonster={switchMonster}
-            ownedDevices={ownedDevices}
-            ownedBackgrounds={ownedBackgrounds}
-            currentDevice={currentDevice}
-            currentBackground={currentBackground}
-            onEquipDevice={(id) => equipItem('DEVICE', id)}
-            onEquipBackground={(id) => equipItem('BG', id)}
-            isAuthenticating={isAuthenticating}
-            onSyncMetadata={syncOnChainMetadata}
-            gameBalance={gameBalance}
-            tokenBalance={tokenBalance}
-            solBalance={solBalance}
-          />
         </motion.div>
       </div>
 
