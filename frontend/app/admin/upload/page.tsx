@@ -6,7 +6,13 @@ import { createGenericFile } from "@metaplex-foundation/umi";
 import { Device } from "../../../components/Device";
 import { toBlob } from "html-to-image";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import dynamic from "next/dynamic";
+import { Wallet } from "lucide-react";
+
+const WalletMultiButton = dynamic(
+    () => import("@solana/wallet-adapter-react-ui").then((mod) => mod.WalletMultiButton),
+    { ssr: false }
+);
 
 // Full List of Devices
 const DEVICES = [
@@ -32,6 +38,17 @@ export default function AdminUploadPage() {
     }, []);
 
     const log = (msg: string) => setLogs(p => [msg, ...p]);
+
+    const openInPhantom = () => {
+        try {
+            const url = window.location.href.replace('https://', '').replace('http://', '');
+            const phantomUrl = `https://phantom.app/ul/browse/${encodeURIComponent(url)}?ref=${encodeURIComponent(window.location.host)}`;
+            window.location.href = phantomUrl;
+        } catch (e) {
+            console.error(e);
+            alert("Please open in Phantom browser on mobile!");
+        }
+    };
 
     if (!mounted) return <div className="p-8 bg-gray-900 text-white font-mono">Loading Admin Tools...</div>;
 
@@ -152,7 +169,18 @@ export default function AdminUploadPage() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <WalletMultiButton />
+                        {
+                            typeof window !== 'undefined' && window.innerWidth < 768 && !wallet.connected ? (
+                                <button
+                                    onClick={openInPhantom}
+                                    className="px-6 py-2 bg-purple-600 hover:bg-purple-500 rounded font-bold flex items-center gap-2"
+                                >
+                                    <Wallet size={16} /> OPEN IN PHANTOM
+                                </button>
+                            ) : (
+                                <WalletMultiButton />
+                            )
+                        }
                         <button
                             onClick={uploadAllDevices}
                             disabled={isProcessing}

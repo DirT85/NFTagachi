@@ -434,7 +434,29 @@ export default function AdminDashboard() {
                             <span className="text-xs text-green-500 font-bold tracking-widest uppercase">SYSTEM ONLINE // v2.4.0 (BATCH)</span>
                         </div>
                     </div>
-                    <WalletMultiButton />
+                    <div className="flex items-center gap-4">
+                        {
+                            isMounted && typeof window !== 'undefined' && window.innerWidth < 768 && !wallet.connected ? (
+                                <button
+                                    onClick={() => {
+                                        try {
+                                            const url = window.location.href.replace('https://', '').replace('http://', '');
+                                            const phantomUrl = `https://phantom.app/ul/browse/${encodeURIComponent(url)}?ref=${encodeURIComponent(window.location.host)}`;
+                                            window.location.href = phantomUrl;
+                                        } catch (e) {
+                                            console.error(e);
+                                            alert("Please open in Phantom browser on mobile!");
+                                        }
+                                    }}
+                                    className="px-6 py-2 bg-purple-600 hover:bg-purple-500 rounded font-bold flex items-center gap-2"
+                                >
+                                    <Sparkles size={16} /> OPEN IN PHANTOM
+                                </button>
+                            ) : (
+                                <WalletMultiButton />
+                            )
+                        }
+                    </div>
                 </header>
 
                 {/* NAVIGATION GRID (Compact) */}
