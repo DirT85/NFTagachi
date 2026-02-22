@@ -28,17 +28,40 @@ export default function AdminBackgroundUploadPage() {
         setMounted(true);
     }, []);
 
-    const log = (msg: string) => setLogs(p => [msg, ...p]);
+    const log = (msg: string) => setLogs(p => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...p]);
+
+    useEffect(() => {
+        const handleError = (e: ErrorEvent) => log(`🚨 ERROR: ${e.message}`);
+        window.addEventListener('error', handleError);
+        return () => window.removeEventListener('error', handleError);
+    }, []);
 
     useEffect(() => {
         if (mounted) {
-            log(`Wallet: ${wallet.connected ? 'CONNECTED ✅' : 'DISCONNECTED ❌'}`);
-            if (wallet.publicKey) log(`Address: ${wallet.publicKey.toBase58().substring(0, 8)}...`);
+            const status = wallet.connected ? 'CONNECTED ✅' : wallet.connecting ? 'CONNECTING... 🔄' : 'DISCONNECTED ❌';
+            log(`Wallet State: ${status}`);
+            if (wallet.wallet) log(`Selected Adapter: ${wallet.wallet.adapter.name}`);
+            if (wallet.publicKey) log(`Address: ${wallet.publicKey.toBase58()}`);
             if (typeof window !== 'undefined' && !(window as any).solana) {
-                log("⚠️ Phantom extension not detected.");
+                log("⚠️ WARNING: window.solana not found.");
             }
         }
-    }, [wallet.connected, wallet.publicKey, mounted]);
+    }, [wallet.connected, wallet.connecting, wallet.wallet, mounted]);
+
+    const diagnoseConnection = async () => {
+        log("🔍 Running Diagnostics...");
+        if (!wallet.wallet) {
+            log("❌ No wallet selected. Please click the 'Select Wallet' button.");
+            return;
+        }
+        log(`🔄 Attempting to force connect to ${wallet.wallet.adapter.name}...`);
+        try {
+            await wallet.connect();
+            log("✅ Connect call finished.");
+        } catch (e: any) {
+            log(`❌ Connect Error: ${e.message}`);
+        }
+    };
 
     const openInPhantom = () => {
         try {
@@ -150,6 +173,12 @@ export default function AdminBackgroundUploadPage() {
                     </div>
                     <div className="flex gap-4">
                         <WalletMultiButton />
+                        <button
+                            onClick={diagnoseConnection}
+                            className="px-4 py-2 bg-purple-600/20 text-purple-400 rounded border border-purple-500/30 text-xs font-bold hover:bg-purple-600/40 transition-all"
+                        >
+                            DIAGNOSE CONNECTION
+                        </button>
                         {wallet.connected ? (
                             <button
                                 onClick={handleAutoGenerate}
