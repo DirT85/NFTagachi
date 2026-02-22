@@ -23,6 +23,7 @@ export default function AdminBackgroundUploadPage() {
     const [uris, setUris] = useState<Record<string, string>>({});
     const [isProcessing, setIsProcessing] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [activeBgId, setActiveBgId] = useState<string | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -132,9 +133,12 @@ export default function AdminBackgroundUploadPage() {
             for (let i = 0; i < BACKGROUND_IDS.length; i++) {
                 const bg = BACKGROUND_IDS[i];
                 log(`[${i + 1}/${BACKGROUND_IDS.length}] Processing ${bg}...`);
+                setActiveBgId(bg);
                 setProgress(((i + 1) / BACKGROUND_IDS.length) * 100);
 
                 try {
+                    await new Promise(r => setTimeout(r, 200));
+
                     const timeout = new Promise<string>((_, reject) =>
                         setTimeout(() => reject(new Error("Timeout (60s)")), 60000)
                     );
@@ -152,6 +156,7 @@ export default function AdminBackgroundUploadPage() {
                 }
                 await new Promise(r => setTimeout(r, 500));
             }
+            setActiveBgId(null);
             log("🎉 ALL DONE!");
         } catch (e: any) {
             log(`FATAL ERROR: ${e.message}`);
@@ -196,19 +201,38 @@ export default function AdminBackgroundUploadPage() {
                 </div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                    {BACKGROUND_IDS.map(bg => (
-                        <div key={bg} className="flex flex-col items-center">
-                            {/* Capture Target: 384x256 (w-96 h-64 equivalent) */}
+                    {BACKGROUND_IDS.map(bg => {
+                        const isActive = activeBgId === bg;
+                        const isUploaded = !!uris[bg];
+
+                        return (
                             <div
-                                id={`bg-preview-${bg}`}
-                                className="w-96 h-64 relative overflow-hidden border-4 border-black/50 shadow-xl"
+                                key={bg}
+                                onClick={() => setActiveBgId(bg)}
+                                className={`
+                                    cursor-pointer p-2 rounded border transition-all flex flex-col items-center
+                                    ${isActive ? 'bg-green-600/20 border-green-500 scale-105 shadow-xl' : 'bg-black/20 border-gray-700 hover:border-gray-500'}
+                                    ${isUploaded ? 'opacity-50' : ''}
+                                `}
                             >
-                                <LcdBackground id={bg} />
+                                {/* Capture Target: 384x256 (w-96 h-64 equivalent) */}
+                                <div
+                                    id={`bg-preview-${bg}`}
+                                    className="w-full aspect-video relative overflow-hidden border-2 border-black/50 shadow-lg bg-gray-800"
+                                >
+                                    {isActive ? (
+                                        <LcdBackground id={bg} />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <div className="text-[10px] text-gray-500 uppercase font-bold">{bg}</div>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="mt-2 text-[10px] font-bold uppercase tracking-wider">{bg}</div>
+                                {isUploaded && <div className="text-green-400 text-[9px] font-bold uppercase">● Uploaded</div>}
                             </div>
-                            <div className="mt-2 text-xs text-gray-500">{bg}</div>
-                            {uris[bg] && <div className="text-green-400 text-xs">● Uploaded</div>}
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

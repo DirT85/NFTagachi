@@ -32,6 +32,7 @@ export default function AdminUploadPage() {
     const [uris, setUris] = useState<Record<string, string>>({});
     const [isProcessing, setIsProcessing] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [activeDeviceId, setActiveDeviceId] = useState<string | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -132,10 +133,13 @@ export default function AdminUploadPage() {
         for (const device of DEVICES) {
             count++;
             log(`[${count}/${total}] Processing ${device}...`);
+            setActiveDeviceId(device);
             setProgress(Math.floor((count / total) * 100));
 
             try {
-                // Wrap in 60s timeout to prevent hanging forever
+                // Give React a moment to render the newly active device before capture
+                await new Promise(r => setTimeout(r, 200));
+
                 const timeout = new Promise<string>((_, reject) =>
                     setTimeout(() => reject(new Error("Timeout (60s)")), 60000)
                 );
@@ -151,12 +155,11 @@ export default function AdminUploadPage() {
             } catch (e: any) {
                 console.error(e);
                 log(`❌ Failed ${device}: ${e.message}`);
-                // Don't crash the whole process, just log and continue
             }
 
-            // Small delay to let the UI update and prevent rate-limiting
             await new Promise(r => setTimeout(r, 500));
         }
+        setActiveDeviceId(null);
         log("🎉 ALL DONE! Copy the config below.");
         setIsProcessing(false);
     };
@@ -193,30 +196,46 @@ export default function AdminUploadPage() {
                 </div>
 
                 {/* VISIBLE GRID FOR PREVIEW & CAPTURE */}
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {DEVICES.map(device => (
-                        <div key={device} className="bg-black/20 p-4 rounded border border-gray-700 flex flex-col items-center">
-                            <div id={`device-preview-${device}`} className="w-48 h-48 flex items-center justify-center p-4">
-                                <Device device={device} hideLogo>
-                                    <div className="w-full h-full bg-[#1a1a1a] rounded flex flex-col items-center justify-center border-4 border-black/20 shadow-inner">
-                                        <div className="text-[8px] font-mono text-green-500 animate-pulse tracking-widest">
-                                            NFTAGACHI
-                                        </div>
-                                        <div className="text-[6px] text-green-500/50 mt-1">
-                                            v1.0
-                                        </div>
-                                    </div>
-                                </Device>
-                            </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12">
+                    {DEVICES.map(device => {
+                        const isActive = activeDeviceId === device;
+                        const isUploaded = !!uris[device];
 
-                            <div className="mt-4 font-bold text-xs">{device}</div>
-                            {uris[device] ? (
-                                <span className="text-xs text-green-400">● Uploaded</span>
-                            ) : (
-                                <span className="text-xs text-gray-700">● Pending</span>
-                            )}
-                        </div>
-                    ))}
+                        return (
+                            <div
+                                key={device}
+                                onClick={() => setActiveDeviceId(device)}
+                                className={`
+                                    cursor-pointer p-4 rounded border transition-all flex flex-col items-center
+                                    ${isActive ? 'bg-blue-600/20 border-blue-500 scale-105 shadow-xl' : 'bg-black/20 border-gray-700 hover:border-gray-500'}
+                                    ${isUploaded ? 'opacity-50' : ''}
+                                `}
+                            >
+                                <div id={`device-preview-${device}`} className="w-48 h-48 flex items-center justify-center p-4">
+                                    {isActive ? (
+                                        <Device device={device} hideLogo>
+                                            <div className="w-full h-full bg-[#1a1a1a] rounded flex flex-col items-center justify-center border-4 border-black/20 shadow-inner">
+                                                <div className="text-[8px] font-mono text-green-500 animate-pulse tracking-widest leading-tight">
+                                                    NFTAGACHI
+                                                </div>
+                                            </div>
+                                        </Device>
+                                    ) : (
+                                        <div className="w-32 h-24 bg-gray-800 rounded-lg flex items-center justify-center border border-white/10 shadow-inner">
+                                            <div className="text-[10px] text-gray-500 font-bold uppercase">{device.replace('_', ' ')}</div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="mt-2 font-bold text-[10px] text-center w-full truncate">{device}</div>
+                                {isUploaded ? (
+                                    <span className="text-[9px] text-green-400 font-bold uppercase tracking-widest mt-1">● Uploaded</span>
+                                ) : (
+                                    <span className="text-[9px] text-gray-600 font-bold uppercase tracking-widest mt-1">● Pending</span>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* LOGS & OUTPUT */}
