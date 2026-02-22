@@ -31,20 +31,20 @@
     "next": "^15.5.12",
     "pngjs": "^7.0.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.18",
+    "react-dom": "19.2.3",
     "@types/file-saver": "^2.0.7",
     "@types/jszip": "^3.4.0",
     "@types/node": "^20",
     "@types/pngjs": "^6.0.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "^15.5.12",
-    "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "babel-plugin-react-compiler": "1.0.0",
+    "tailwindcss": "^4"
   }
 }
